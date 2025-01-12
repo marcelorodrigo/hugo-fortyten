@@ -1,7 +1,22 @@
 {{ define "main" }}
-  {{ .Content }}
+  <div class="py-10 px-6 bg-orange-50">
+    <div class="container mx-auto p-4 flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
+      <div class="flex-1">
+        <h2 class="text-4xl font-bold text-gray-900">Hello, my name is Marcelo :wave:</h2>
+        <p class="text-lg text-gray-700 mt-4">{{ .Content }}</p>
+      </div>
+      <div class="flex-1">
+        <img src="/treta.jpg" alt="Dog" class="rounded-lg shadow h-60 lg:h-120">
+      </div>
+    </div>
+  </div>
+  <section class="container mx-auto mt-12 grid gap-6 md:grid-cols-1 lg:grid-cols-3">
   {{ range site.RegularPages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-    {{ .Summary }}
+    <article class="bg-white rounded-lg shadow-md p-6">
+      <p class="text-sm text-gray-500">2 Jan 2025</p>
+      <a class="text-xl font-bold text-gray-900 mt-2" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      <p class="text-gray-700 mt-2">{{ .Summary }}</p>
+    </article>
   {{ end }}
+  </section>
 {{ end }}

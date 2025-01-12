@@ -1,0 +1,38 @@
+name: 'FortyTen'
+license: 'MIT'
+licenselink: 'https://github.com/marcelorodrigo/hugo-fortyten/LICENSE'
+description: 'Theme description'
+homepage: 'https://github.com/marcelorodrigo/hugo-fortyten'
+demosite: 'https://owner.github.io/repo'
+tags:
+  - 'blog'
+  - 'developer'
+  - 'simple'
+  - 'personal'
+  - 'responsive'
+  - 'minimalist'
+  - 'dark mode'
+  - 'dark'
+  - 'light'
+  - 'tailwindcss'
+features:
+  - 'favicon'
+author:
+  name: 'Marcelo Rodrigo'
+  homepage: 'https://marcelorodrigo.com'
+module:
+  hugoVersion:
+    min: "0.140.2"
+    extended: true
+build:
+  buildStats:
+    enable: true
+  cachebusters:
+    - source: assets/watching/hugo_stats\.json
+      target: styles\.css
+    - source: "layouts/.*"
+      target: css
+    - source: (postcss|tailwind)\.config\.js
+      target: css
+    - source: "assets/.*\\.(.*)$"
+      target: "$1"

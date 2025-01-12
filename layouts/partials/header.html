@@ -1,2 +1,11 @@
-<h1>{{ site.Title }}</h1>
-{{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+<header class="pt-4">
+    <div class="container mx-auto p-8">
+        <div class="flex flex-row justify-between">
+            <h1 id="logo">
+                <a href="{{ absURL "" }}" title="{{ site.Title }}"
+                   class="text-xl font-bold hover:text-sky-700 transition ease-in-out">{{ site.Title }}</a>
+            </h1>
+            {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+        </div>
+    </div>
+</header>
