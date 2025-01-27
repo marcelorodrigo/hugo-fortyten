@@ -1,4 +1,4 @@
 <footer class="container mx-auto flex justify-between text-xs pt-10">
-    <div>{{ now.Year }} &copy;  {{site.Title}}. All rights reserved.</div>
+    <div>{{ now.Year }} &copy;  {{ .Site.Params.copyright | markdownify }}</div>
     <div>Published with <a href="https://gohugo.io" title="GoHugo">GoHugo</a></div>
 </footer>

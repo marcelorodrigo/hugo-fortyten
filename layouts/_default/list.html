@@ -1,8 +1,25 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-  {{ range .Pages }}
-    <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-    {{ .Summary }}
-  {{ end }}
+  <div class="container mx-auto">
+    <h2 class="text-xl font-bold antialiased">{{ .Title }}</h2>
+    <p>{{ .Content }}</p>
+      {{ $pages := where .Pages "Type" "posts" }}
+      {{ $paginator := .Paginate $pages.ByTitle 6 }}
+      <section class="mt-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {{ range $paginator.Pages }}
+          <article class="bg-white rounded-lg shadow-md p-6 transition ease-in-out delay-150 duration-300
+        hover:-translate-y-1 hover:scale-105 hover:bg-orange-50">
+            <p class="text-sm text-gray-500">{{ .Date | time.Format ":date_medium" }}</p>
+            <a class="text-xl font-bold text-gray-900 mt-2" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+            <p class="text-gray-700 mt-2">
+              {{ if isset .Params "description" | and (ne .Params.description "") -}}
+                {{ .Description | markdownify }}
+              {{- else -}}
+                {{ .Summary | strings.Truncate 90 }}
+              {{- end }}
+            </p>
+          </article>
+        {{ end }}
+      </section>
+      {{ partial "pagination.html" . }}
+  </div>
 {{ end }}
