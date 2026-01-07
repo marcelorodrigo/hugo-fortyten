@@ -1,6 +1,6 @@
-baseURL: 'https://example.org/'
+baseURL: 'https://fourtyten.marcelorodrigo.com/'
 languageCode: 'en-US'
-title: 'My New Hugo Site'
+title: 'Hugo FortyTen Theme'
 
 menus:
   main:
