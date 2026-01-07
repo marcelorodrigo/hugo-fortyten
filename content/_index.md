@@ -1,9 +1,12 @@
 +++
-title = 'Home'
+title = 'Welcome to Hugo FortyTen'
 date = 2023-01-01T08:00:00-07:00
 draft = false
+summary = 'The official Hugo FortyTen demo site. Explore example posts, meet Treta our mascot, and get started quickly!'
 +++
 
-Laborum voluptate pariatur ex culpa magna nostrud est incididunt fugiat
-pariatur do dolor ipsum enim. Consequat tempor do dolor eu. Non id id anim anim
-excepteur excepteur pariatur nostrud qui irure ullamco.
+Welcome to **Hugo FortyTen**—the open-source, Tailwind-powered theme for Hugo!
+
+This starter site showcases features and layouts of the FortyTen theme. You'll find example posts below explaining (in plain language!) how everything works.
+
+Need help? Check the sample posts, say hello to our mascot Treta, or dive into the docs!
