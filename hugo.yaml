@@ -14,4 +14,9 @@ menus:
       pageRef: '/tags'
       weight: 30
 
+params:
+  author:
+    name: "Your Name"
+    email: "your-email@example.com"
+    bio: "A brief author biography or tagline."
 module: {}

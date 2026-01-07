@@ -1,0 +1,27 @@
+<div class="mb-6">
+  {{ with .Params.image }}
+    <img src="{{ . }}" alt="Featured" class="w-full h-64 sm:h-80 object-cover rounded-lg border border-gray-200 mb-6" loading="lazy">
+  {{ end }}
+
+  {{ $tags := .Params.tags }}
+  {{ if $tags }}
+    <div class="flex flex-wrap gap-2 mb-4">
+      {{ range $tags }}
+        <span class="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">{{ . }}</span>
+      {{ end }}
+    </div>
+  {{ end }}
+
+  <h1 class="text-3xl md:text-4xl font-extrabold leading-tight tracking-tight text-gray-900 mb-4">{{ .Title }}</h1>
+
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-gray-500 text-sm mb-2">
+    {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
+    {{ $dateHuman := .Date | time.Format ":date_long" }}
+    <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
+    {{ if gt .ReadingTime 0 }}
+      <span aria-label="Estimated reading time">· {{ .ReadingTime }} min read</span>
+    {{ end }}
+    <span aria-label="Word count">· {{ .WordCount }} words</span>
+  </div>
+
+</div>

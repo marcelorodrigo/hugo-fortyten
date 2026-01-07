@@ -1,0 +1,28 @@
+{{ $current := . }}
+{{ $tags := $current.Params.tags }}
+{{ if $tags }}
+  {{/* Find related posts by overlapping tags, sorted by date descending, exclude current */}}
+  {{ $allPosts := where site.RegularPages "Type" "posts" }}
+  {{ $related := where $allPosts "Params.tags" "intersect" $tags }}
+  {{ $related := where $related "Permalink" "ne" $current.Permalink }}
+  {{ $related := first 4 $related }}
+  {{ if gt (len $related) 0 }}
+    <section class="container mx-auto max-w-4xl py-6">
+      <h2 class="text-xl font-bold mb-4 text-gray-900">You may also like</h2>
+      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {{ range $related }}
+          <article class="group bg-white rounded-lg border border-gray-200 shadow-md p-4 flex flex-col justify-between hover:shadow-lg hover:-translate-y-1 transition-all duration-150">
+            {{ with .Params.image }}
+              <img src="{{ . }}" alt="{{ $.Title }} thumbnail" class="w-full h-32 object-cover rounded-md mb-3 border border-gray-100" loading="lazy">
+            {{ end }}
+            <div>
+              <time class="block text-xs text-gray-500 mb-1" datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_medium" }}</time>
+              <a href="{{ .RelPermalink }}" class="block font-semibold text-gray-800 text-base mb-1 group-hover:text-blue-600 transition">{{ .Title }}</a>
+              <p class="text-sm text-gray-600 line-clamp-3">{{ with .Description }}{{ . | markdownify }}{{ else }}{{ .Summary | strings.Truncate 90 }}{{ end }}</p>
+            </div>
+          </article>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+{{ end }}

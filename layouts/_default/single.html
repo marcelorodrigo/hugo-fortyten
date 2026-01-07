@@ -1,10 +1,12 @@
 {{ define "main" }}
-  <h1>{{ .Title }}</h1>
-
-  {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
-  {{ $dateHuman := .Date | time.Format ":date_long" }}
-  <time datetime="{{ $dateMachine }}">{{ $dateHuman }}</time>
-
-  {{ .Content }}
-  {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+  <div class="container mx-auto px-4 py-8 max-w-4xl bg-white rounded-lg">
+    {{ partial "post-header.html" . }}
+    <article class="prose lg:prose-xl mx-auto">
+      {{ .Content }}
+    </article>
+  </div>
+  {{ if and (site.Params.author.name) (site.Params.author.email) }}
+    {{ partial "post-author.html" . }}
+  {{ end }}
+  {{ partial "post-related.html" . }}
 {{ end }}
