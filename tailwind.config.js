@@ -1,5 +1,3 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-
 module.exports = {
     content: [
         './layouts/**/*.html',
@@ -8,9 +6,6 @@ module.exports = {
     ],
     theme: {
         extend: {
-            fontFamily: {
-                'sans': ['Jost', ...defaultTheme.fontFamily.sans],
-            },
             colors: {
                 'brand-accent': {
                     50: '#fef3c7',
