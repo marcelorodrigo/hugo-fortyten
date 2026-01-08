@@ -2,8 +2,8 @@
   <div class="py-10 px-6 bg-linear-to-r from-amber-100 to-orange-200">
     <div class="container mx-auto p-4 flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-8">
       <div class="flex-1">
-        <h2 class="text-4xl font-bold text-gray-900">Meet Treta, the Hugo FortyTen mascot!</h2>
-        <p class="text-lg text-gray-700 mt-4">{{ .Content }}</p>
+        <h2 class="text-3xl font-bold text-gray-900">Meet Treta, the Hugo FortyTen mascot!</h2>
+        <p class="text-xl text-gray-700 mt-4">{{ .Content }}</p>
       </div>
       <div class="flex-1 flex justify-center items-center">
         <img src="/treta.jpg" alt="Dog" class="rounded-lg w-full max-w-xs md:max-w-sm aspect-4/3 object-cover shadow-lg">
@@ -14,15 +14,15 @@
   {{ range site.RegularPages }}
     <article class="relative bg-white rounded-lg shadow-md p-6 transition ease-in-out delay-150 duration-300 border-l-4 border-orange-300 hover:-translate-y-1 hover:scale-105 hover:bg-orange-50 hover:border-l-4 hover:border-orange-500">
       <a href="{{ .RelPermalink }}" class="absolute inset-0 z-10" aria-hidden="true" tabindex="-1"></a>
-      <time class="text-sm text-orange-400" datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_medium" }}</time>
+      <time class="text-sm text-orange-400" datetime="{{ .Date | time.Format "" }}">{{ .Date | time.Format ":date_medium" }}</time>
       <h3 class="text-xl font-bold text-gray-900 mt-2 relative z-20">
         <a href="{{ .RelPermalink }}" class="hover:text-orange-600 transition">{{ .LinkTitle }}</a>
       </h3>
-      <p class="text-gray-700 mt-2">
+      <p class="text-gray-700 mt-2 text-lg">
         {{ if isset .Params "description" | and (ne .Params.description "") -}}
           {{ .Description | markdownify }}
         {{- else -}}
-          {{ .Summary | strings.Truncate 90 }}
+          {{ .Summary | strings.Truncate 120 }}
         {{- end }}
       </p>
     </article>

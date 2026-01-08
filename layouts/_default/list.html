@@ -9,7 +9,7 @@
            {{ range $paginator.Pages }}
             <article class="relative bg-white rounded-lg shadow-md p-6 transition ease-in-out delay-150 duration-300 border-l-4 border-orange-300 hover:-translate-y-1 hover:scale-105 hover:bg-orange-50 hover:border-l-4 hover:border-orange-500">
               <a href="{{ .RelPermalink }}" class="absolute inset-0 z-10" aria-hidden="true" tabindex="-1"></a>
-              <time class="text-sm text-orange-400" datetime="{{ .Date | time.Format "2006-01-02T15:04:05-07:00" }}">{{ .Date | time.Format ":date_medium" }}</time>
+              <time class="text-sm text-orange-400" datetime="{{ .Date | time.Format "" }}">{{ .Date | time.Format ":date_medium" }}</time>
               <h3 class="text-xl font-bold text-gray-900 mt-2 relative z-20">
                 <a href="{{ .RelPermalink }}" class="hover:text-orange-600 transition">{{ .LinkTitle }}</a>
               </h3>
