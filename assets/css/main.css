@@ -35,12 +35,3 @@
     @apply antialiased font-sans;
   }
 }
-
-@layer utilities {
-  .text_shadow {
-    text-shadow: 1px 1px 0 #f1f1f1;
-  }
-  .text-shadow-white {
-    text-shadow: 1px 1px 0 white;
-  }
-}
