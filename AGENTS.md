@@ -35,20 +35,16 @@ This project is a free and open-source theme for the Hugo static site generator,
 - **Start development server:**
   - `hugo server` (from site root, not theme directory)
 - **Edit styling:**
-  - Update Tailwind classes in HTML or add config in `tailwind.config.js`, then rebuild Tailwind if not using Hugo Pipes.
-- **Tailwind CSS:**
-  - Add or change Tailwind classes directly in templates or content.
-  - Run Tailwind CLI manually for production CSS if needed:
-    ```sh
-    npx tailwindcss -c tailwind.config.js -o assets/css/main.css --minify
-    ```
+  - Update Tailwind classes in HTML or add config in `tailwind.config.js`.
+  - **IMPORTANT:** Do NOT manually call `npx tailwindcss` or the Tailwind CLI. Changes to `tailwind.config.js` will be automatically picked up by Hugo's development server on next rebuild.
 - **No custom tests, lints, or scripts** exist by default.
 
 ## Coding & Best Practices
 - Use Hugo templating idioms – see `/layouts/_default/baseof.html` and related blocks/partials for structure.
-- Add new UI/structure using Hugo’s partials system. Example: nav/header/footer are under `/layouts/partials/`.
+- Add new UI/structure using Hugo's partials system. Example: nav/header/footer are under `/layouts/partials/`.
 - For drastic CSS changes, modify `tailwind.config.js` or swap fonts in `static/fonts/`.
 - Store new JS/CSS in `assets/`, referencing from templates.
+- **Typography Styling:** The theme uses `@tailwindcss/typography` plugin for beautiful prose styling on all blog posts. The `prose` class is applied to post content in `layouts/_default/single.html`. Do not remove or modify this class without understanding the impact on post readability.
 
 ## Notable Patterns/Conventions
 - Posts are stored as Markdown in `/content/posts/`, optionally as bundles for assets

@@ -19,4 +19,13 @@ params:
     name: "Your Name"
     email: "your-email@example.com"
     bio: "A brief author biography or tagline."
-module: {}
+  postsPerPage: 9
+
+# Chroma syntax highlighting for orange theme
+markup:
+  highlight:
+    style: monokailight # Light style for base, will override with orange theme CSS
+    noClasses: false   # Use Chroma token classes so we can style them
+    tabWidth: 2
+    guessSyntax: true
+    lineNos: false
