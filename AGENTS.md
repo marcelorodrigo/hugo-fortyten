@@ -41,9 +41,10 @@ This project is a free and open-source theme for the Hugo static site generator,
 
 ## Coding & Best Practices
 - Use Hugo templating idioms – see `/layouts/_default/baseof.html` and related blocks/partials for structure.
-- Add new UI/structure using Hugo’s partials system. Example: nav/header/footer are under `/layouts/partials/`.
+- Add new UI/structure using Hugo's partials system. Example: nav/header/footer are under `/layouts/partials/`.
 - For drastic CSS changes, modify `tailwind.config.js` or swap fonts in `static/fonts/`.
 - Store new JS/CSS in `assets/`, referencing from templates.
+- **Typography Styling:** The theme uses `@tailwindcss/typography` plugin for beautiful prose styling on all blog posts. The `prose` class is applied to post content in `layouts/_default/single.html`. Do not remove or modify this class without understanding the impact on post readability.
 
 ## Notable Patterns/Conventions
 - Posts are stored as Markdown in `/content/posts/`, optionally as bundles for assets
