@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
     content: [
         './layouts/**/*.html',
@@ -23,7 +24,4 @@ module.exports = {
             }
         },
     },
-    plugins: [
-        require('@tailwindcss/typography'),
-    ],
 }
