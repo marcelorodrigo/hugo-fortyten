@@ -12,9 +12,9 @@ Hugo FortyTen uses Tailwind CSS to create a fully responsive grid system that ad
 
 The theme uses standard Tailwind breakpoints:
 
-- **Mobile (sm)**: `< 640px` - Single column layouts
-- **Tablet (md)**: `640px - 1024px` - Two to three columns
-- **Desktop (lg)**: `> 1024px` - Full multi-column layouts
+- **Mobile (base)**: `< 640px` - Single column layouts
+- **Tablet (sm-md)**: `640px - 1024px` - Two to three columns  
+- **Desktop (lg+)**: `≥ 1024px` - Full multi-column layouts
 
 ## Grid System Architecture
 
