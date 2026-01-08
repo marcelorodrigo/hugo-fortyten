@@ -166,7 +166,7 @@ When adding images to posts:
 Search engines consider page speed. FortyTen excels here:
 
 - **Lightweight CSS** - Tailwind CSS is minimal
-- **No external dependencies** - Open Sans fonts are self-hosted
+- **No external dependencies** - Jost fonts are self-hosted
 - **Optimized assets** - Images in static folder are served efficiently
 - **Mobile-friendly** - Responsive design is built in
 

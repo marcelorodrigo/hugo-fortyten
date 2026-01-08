@@ -35,13 +35,8 @@ This project is a free and open-source theme for the Hugo static site generator,
 - **Start development server:**
   - `hugo server` (from site root, not theme directory)
 - **Edit styling:**
-  - Update Tailwind classes in HTML or add config in `tailwind.config.js`, then rebuild Tailwind if not using Hugo Pipes.
-- **Tailwind CSS:**
-  - Add or change Tailwind classes directly in templates or content.
-  - Run Tailwind CLI manually for production CSS if needed:
-    ```sh
-    npx tailwindcss -c tailwind.config.js -o assets/css/main.css --minify
-    ```
+  - Update Tailwind classes in HTML or add config in `tailwind.config.js`.
+  - **IMPORTANT:** Do NOT manually call `npx tailwindcss` or the Tailwind CLI. Changes to `tailwind.config.js` will be automatically picked up by Hugo's development server on next rebuild.
 - **No custom tests, lints, or scripts** exist by default.
 
 ## Coding & Best Practices

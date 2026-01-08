@@ -2,33 +2,23 @@
 
 @layer base {
   :root {
-    --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 
   @font-face {
     font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: "Open Sans";
+    font-family: "Jost";
     font-style: normal;
     font-weight: 400;
-    src: url("/fonts/open-sans-regular.woff2") format("woff2"),
-         url("/fonts/open-sans-variable.ttf") format("truetype");
+    src: url("/fonts/jost-variable.ttf") format("truetype");
   }
 
   @font-face {
     font-display: swap;
-    font-family: "Open Sans";
+    font-family: "Jost";
     font-style: italic;
     font-weight: 400;
-    src: url("/fonts/open-sans-italic.woff2") format("woff2"),
-         url("/fonts/open-sans-italic-variable.ttf") format("truetype");
-  }
-
-  @font-face {
-    font-display: swap;
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: 700;
-    src: url("/fonts/open-sans-variable.ttf") format("truetype");
+    src: url("/fonts/jost-italic-variable.ttf") format("truetype");
   }
 
   body {
