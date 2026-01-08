@@ -1,9 +1,9 @@
-<header class="pt-4">
+<header class="pt-4 border-b border-orange-100">
     <div class="container mx-auto py-8">
         <div class="flex flex-row justify-between">
             <h1 id="logo">
                 <a href="{{ absURL "" }}" title="{{ site.Title }}"
-                   class="text-2xl antialiased font-extrabold hover:text-sky-700 transition ease-in-out">{{ site.Title }}</a>
+                   class="text-2xl antialiased font-extrabold hover:text-orange-600 transition ease-in-out">{{ site.Title }}</a>
             </h1>
             {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
         </div>
