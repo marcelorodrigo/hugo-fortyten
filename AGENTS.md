@@ -45,6 +45,46 @@ This project is a free and open-source theme for the Hugo static site generator,
 - For drastic CSS changes, modify `tailwind.config.js` or swap fonts in `static/fonts/`.
 - Store new JS/CSS in `assets/`, referencing from templates.
 - **Typography Styling:** The theme uses `@tailwindcss/typography` plugin for beautiful prose styling on all blog posts. The `prose` class is applied to post content in `layouts/_default/single.html`. Do not remove or modify this class without understanding the impact on post readability.
+- **Icons:** Always use **Ionicons** for any icons needed in this project. Ionicons is loaded via CDN at the end of `baseof.html`. Search available icons at https://ionic.io/ionicons. Icons support variants (e.g., `ios`, `md`), sizes, colors, stroke width, and accessibility attributes—explore these options as needed for your use case. Example: `<ion-icon name="heart" size="large" color="red" aria-label="Favorite"></ion-icon>`
+
+## Accessibility, SEO & Readability Standards
+Every navigation element, link, and interactive component must follow these best practices:
+
+### Accessibility (WCAG 2.1 AA compliance)
+- **ARIA Labels & Roles:** Use `aria-label`, `aria-labelledby`, and `role` attributes to provide context for screen readers
+  - Example: `<a href="..." aria-label="View all posts tagged with design">design</a>`
+  - Example: `<div role="navigation" aria-label="Post tags">...</div>`
+- **Semantic HTML:** Prefer semantic elements (`<nav>`, `<button>`, `<a>`) over generic divs
+- **Color Contrast:** Ensure text contrast meets WCAG AA standards (minimum 4.5:1 for normal text, 3:1 for large text)
+- **Focus States:** Interactive elements must have visible focus indicators for keyboard navigation
+- **Skip Links:** Consider skip-to-content links for improved keyboard navigation
+- **Alt Text:** All images must have descriptive alt text using Hugo's `alt=""` in markdown or template attributes
+
+### SEO Optimization
+- **Semantic HTML & Microdata:** Use proper heading hierarchy (h1, h2, h3...), `<time>` for dates, and structured data where appropriate
+- **Link Relationships:** Use `rel` attributes to define relationships:
+  - `rel="tag"` for tag/taxonomy links
+  - `rel="prev"` / `rel="next"` for pagination (if applicable)
+  - `rel="canonical"` for duplicate content (handled by Hugo)
+- **Meta Information:** Ensure page titles, descriptions, and keywords are properly set
+- **Internal Linking:** Use descriptive link text (avoid "click here") for better SEO and accessibility
+
+### Readability Standards
+- **Font Size & Line Height:** Use Tailwind's typography scales; maintain readable line-height (1.5-1.75)
+- **Contrast & Colors:** Text must be legible against its background; avoid relying on color alone to convey information
+- **White Space:** Proper margins and padding improve scannability
+- **List Structure:** Use semantic `<ul>` and `<ol>` elements for lists, not plain text or divs
+- **Heading Hierarchy:** Maintain logical heading structure; no skipped levels (h1→h3 is bad)
+
+### Implementation Checklist
+When adding new UI elements (links, buttons, navigation, tags, etc.):
+- [ ] Does it have appropriate ARIA labels/roles for screen readers?
+- [ ] Does it use semantic HTML (`<a>`, `<button>`, `<nav>`, etc.)?
+- [ ] Does it have a visible focus state for keyboard users?
+- [ ] Does it use proper `rel` attributes for semantic link types?
+- [ ] Does link text clearly describe the destination/action?
+- [ ] Does it maintain WCAG AA color contrast standards?
+- [ ] Is the visual hierarchy clear for readability?
 
 ## Notable Patterns/Conventions
 - Posts are stored as Markdown in `/content/posts/`, optionally as bundles for assets
