@@ -1,6 +1,6 @@
 baseURL: 'https://fourtyten.marcelorodrigo.com/'
 languageCode: 'en-US'
-title: 'Hugo FortyTen Theme'
+title: 'FortyTen Theme'
 
 menus:
   main:
