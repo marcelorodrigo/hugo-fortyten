@@ -45,6 +45,7 @@ This project is a free and open-source theme for the Hugo static site generator,
 - For drastic CSS changes, modify `tailwind.config.js` or swap fonts in `static/fonts/`.
 - Store new JS/CSS in `assets/`, referencing from templates.
 - **Typography Styling:** The theme uses `@tailwindcss/typography` plugin for beautiful prose styling on all blog posts. The `prose` class is applied to post content in `layouts/_default/single.html`. Do not remove or modify this class without understanding the impact on post readability.
+- **Icons:** Always use **Ionicons** for any icons needed in this project. Ionicons is loaded via CDN at the end of `baseof.html`. Search available icons at https://ionic.io/ionicons. Icons support variants (e.g., `ios`, `md`), sizes, colors, stroke width, and accessibility attributes—explore these options as needed for your use case. Example: `<ion-icon name="heart" size="large" color="red" aria-label="Favorite"></ion-icon>`
 
 ## Accessibility, SEO & Readability Standards
 Every navigation element, link, and interactive component must follow these best practices:
