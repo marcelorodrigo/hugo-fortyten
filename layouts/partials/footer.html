@@ -1,4 +1,12 @@
 <footer class="container mx-auto flex justify-between items-center text-sm pt-10 pb-6 border-t border-orange-100 flex-wrap gap-4">
-    <div>{{ now.Year }} &copy; {{ .Site.Title }}. All Rights Reserved.</div>
-    <div>Published with <a href="https://gohugo.io" title="GoHugo" class="hover:text-orange-600 transition ease-in-out">Hugo</a>.</div>
+    <div>
+        {{ if .Site.Params.footer.content }}
+            {{ .Site.Params.footer.content | .Page.RenderString }}
+        {{ else }}
+            {{ now.Year }} &copy; {{ .Site.Title }}. All Rights Reserved.
+        {{ end }}
+    </div>
+    {{ if ne .Site.Params.footer.showHugoCredit false }}
+        <div>Published with <a href="https://gohugo.io" target="_blank" title="GoHugo" class="hover:text-orange-600 transition ease-in-out">Hugo</a>.</div>
+    {{ end }}
 </footer>
