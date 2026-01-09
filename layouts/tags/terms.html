@@ -1,0 +1,48 @@
+{{ define "main" }}
+  <!-- Tags index page showing all tags as a cloud -->
+  <div class="container mx-auto px-4 py-12 max-w-4xl">
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3">Explore Topics</h1>
+      <p class="text-lg text-gray-600">Discover all posts organized by topic. Larger tags indicate more posts in that category.</p>
+    </div>
+
+    {{ if site.Taxonomies.tags }}
+      <div role="navigation" aria-label="Topic tags cloud" class="flex flex-wrap gap-3 justify-center md:justify-start">
+        {{ $tags := slice }}
+        {{ range $name, $taxonomy := site.Taxonomies.tags }}
+          {{ $tags = $tags | append (dict "name" $name "count" (len $taxonomy)) }}
+        {{ end }}
+
+        {{ $sortedTags := sort $tags "count" "desc" }}
+
+        {{ range $sortedTags }}
+          {{ $tagCount := .count }}
+          {{ $bgClass := "bg-orange-50" }}
+          {{ if gt $tagCount 5 }}
+            {{ $bgClass = "bg-orange-100" }}
+          {{ end }}
+          {{ if gt $tagCount 10 }}
+            {{ $bgClass = "bg-orange-200" }}
+          {{ end }}
+          {{ if gt $tagCount 15 }}
+            {{ $bgClass = "bg-orange-300" }}
+          {{ end }}
+
+          <a 
+            href="{{ (path.Join "tags" .name) | relURL }}" 
+            class="inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-all duration-200 whitespace-nowrap {{ $bgClass }} text-orange-900 hover:bg-orange-400 hover:shadow-lg hover:scale-110 text-base"
+            rel="tag"
+            aria-label="View {{ $tagCount }} post{{ if ne $tagCount 1 }}s{{ end }} tagged with {{ .name }}"
+          >
+            {{ .name }}
+            <span class="text-sm text-orange-700">({{ $tagCount }})</span>
+          </a>
+        {{ end }}
+      </div>
+    {{ else }}
+      <div class="text-center py-12">
+        <p class="text-gray-600 text-lg">No tags found yet.</p>
+      </div>
+    {{ end }}
+  </div>
+{{ end }}
