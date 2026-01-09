@@ -1,8 +1,8 @@
 <footer class="container mx-auto flex justify-between items-center text-sm pt-10 pb-6 border-t border-orange-100 flex-wrap gap-4">
     <div>
-        {{ if .Site.Params.footer.content }}
-            {{ .Site.Params.footer.content | .Page.RenderString }}
-        {{ else }}
+         {{ if .Site.Params.footer.content }}
+             {{ .Site.Params.footer.content | .RenderString }}
+         {{ else }}
             {{ now.Year }} &copy; {{ .Site.Title }}. All Rights Reserved.
         {{ end }}
         <ion-icon name="heart" size="64"></ion-icon>
