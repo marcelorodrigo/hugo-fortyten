@@ -11,7 +11,7 @@ Renders a menu for the given menu ID.
 {{- $menuID := .menuID }}
 
 {{- with index site.Menus $menuID }}
-  <nav>
+  <nav aria-label="Main navigation">
     <ul class="flex flex-row space-x-6">
       {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
     </ul>
@@ -22,8 +22,10 @@ Renders a menu for the given menu ID.
   {{- $page := .page }}
   {{- range .menuEntries }}
     {{- $attrs := dict "href" .URL }}
+    {{- $icon := .Params.icon }}
+    {{- $iconSize := .Params.iconSize }}
     {{- if $page.IsMenuCurrent .Menu . }}
-      {{- $attrs = merge $attrs (dict "class" "active" "aria-current" "page") }}
+      {{- $attrs = merge $attrs (dict "class" "active font-bold text-sky-700" "aria-current" "page") }}
     {{- else if $page.HasMenuCurrent .Menu .}}
       {{- $attrs = merge $attrs (dict "class" "ancestor" "aria-current" "true") }}
     {{- end }}
@@ -33,16 +35,21 @@ Renders a menu for the given menu ID.
         {{- $name = . }}
       {{- end }}
     {{- end }}
-    <li>
-      <a class="text-md font-bold hover:text-sky-700 transition ease-in-out lowercase"
+    <li class="flex items-center gap-1">
+      <a class="text-md font-bold hover:text-sky-700 transition ease-in-out flex items-center gap-1" title="{{ $name }}"
         {{- range $k, $v := $attrs }}
           {{- with $v }}
             {{- printf " %s=%q" $k $v | safeHTMLAttr }}
           {{- end }}
         {{- end -}}
-      >{{ $name }}</a>
+      >
+        {{- with $icon }}
+          <ion-icon name="{{ . }}"{{ with $iconSize }} size="{{ . }}"{{ end }} class="inline-block" aria-hidden="true"></ion-icon>
+        {{- end }}
+        {{ $name }}
+      </a>
       {{- with .Children }}
-        <ul>
+        <ul role="list">
           {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
         </ul>
       {{- end }}

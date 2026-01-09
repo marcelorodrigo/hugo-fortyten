@@ -4,15 +4,21 @@ title: 'FortyTen Theme'
 
 menus:
   main:
-    - name: 'Home'
+    - name: 'home'
       pageRef: '/'
       weight: 10
-    - name: 'Posts'
+      params:
+        icon: 'home'
+    - name: 'posts'
       pageRef: '/posts'
       weight: 20
     - name: 'Tags'
       pageRef: '/tags'
       weight: 30
+      params:
+        icon: 'pricetag'
+    - name: 'test'
+      url: 'https://example.com'
 
 params:
   author:

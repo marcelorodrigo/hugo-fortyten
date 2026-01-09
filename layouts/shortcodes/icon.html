@@ -1,0 +1,19 @@
+{{- $name := .Get "name" }}
+{{- $size := .Get "size" }}
+{{- $link := .Get "link" }}
+{{- $target := .Get "target" }}
+{{- $ariaHidden := .Get "aria-hidden" }}
+{{- $ariaLabel := .Get "aria-label" }}
+
+{{- if not $name }}
+  {{- errorf "icon shortcode requires 'name' parameter" }}
+{{- end }}
+
+{{- if $link }}
+  <a href="{{ $link }}"{{ if $target }} target="{{ $target }}"{{ end }} class="inline-flex items-center justify-center">
+    <ion-icon name="{{ $name }}"{{ if $size }} size="{{ $size }}"{{ end }}{{ if $ariaHidden }} aria-hidden="{{ $ariaHidden }}"{{ end }}{{ if $ariaLabel }} aria-label="{{ $ariaLabel }}"{{ end }}></ion-icon>
+  </a>
+{{- else }}
+  <ion-icon name="{{ $name }}"{{ if $size }} size="{{ $size }}"{{ end }}{{ if $ariaHidden }} aria-hidden="{{ $ariaHidden }}"{{ end }}{{ if $ariaLabel }} aria-label="{{ $ariaLabel }}"{{ end }}></ion-icon>
+{{- end }}
+
