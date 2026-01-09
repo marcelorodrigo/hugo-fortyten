@@ -1,29 +1,4 @@
 <footer class="container mx-auto flex justify-between items-center text-sm pt-10 pb-6 border-t border-orange-100 flex-wrap gap-4">
-    <div>{{ now.Year }} &copy; {{ .Site.Title }}. All Rights Reserved. Published with <a href="https://gohugo.io" title="GoHugo" class="hover:text-orange-600 transition ease-in-out">Hugo</a>.</div>
-    <button 
-        id="scroll-to-top" 
-        class="flex items-center justify-center w-8 h-8 text-orange-600 hover:text-orange-700 transition ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-md opacity-0 pointer-events-none"
-        aria-label="Scroll to top"
-    >
-        Maoe
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m0 0l4 4m10-4v12m0 0l4-4m0 0l-4-4"/>
-        </svg>
-    </button>
-    <script>
-        const scrollBtn = document.getElementById('scroll-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
-            } else {
-                scrollBtn.classList.add('opacity-0', 'pointer-events-none');
-            }
-        });
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    </script>
+    <div>{{ now.Year }} &copy; {{ .Site.Title }}. All Rights Reserved.</div>
+    <div>Published with <a href="https://gohugo.io" title="GoHugo" class="hover:text-orange-600 transition ease-in-out">Hugo</a>.</div>
 </footer>
