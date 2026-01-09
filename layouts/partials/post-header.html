@@ -5,9 +5,9 @@
 
   {{ $tags := .Params.tags }}
   {{ if $tags }}
-    <div class="flex flex-wrap gap-2 mb-4" role="navigation" aria-label="Post tags">
+    <div class="flex flex-wrap gap-2 mb-4" role="list" aria-label="Post tags">
       {{ range $tags }}
-        <a href="{{ (path.Join "tags" . | relURL) }}" class="inline-block bg-orange-100 text-orange-900 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-orange-300 hover:shadow-md hover:scale-105" rel="tag" aria-label="View all posts tagged with {{ . }}">{{ . }}</a>
+        <a href="{{ (path.Join "tags" . | relURL) }}" class="inline-block bg-orange-100 text-orange-900 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-orange-300 hover:shadow-md hover:scale-105" rel="tag" role="listitem" aria-label="View all posts tagged with {{ . }}">{{ . }}</a>
       {{ end }}
     </div>
   {{ end }}
