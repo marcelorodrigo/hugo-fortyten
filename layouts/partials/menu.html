@@ -60,7 +60,7 @@ Example:
   {{- if $page.IsMenuCurrent $item.Menu $item }}
     {{- $attrs = merge $attrs (dict "class" "active font-bold text-sky-700" "aria-current" "page") }}
   {{- else if $page.HasMenuCurrent $item.Menu $item }}
-    {{- $attrs = merge $attrs (dict "class" "ancestor" "aria-current" "true") }}
+    {{- $attrs = merge $attrs (dict "class" "ancestor" "data-ancestor" "true") }}
   {{- end }}
   
   {{- $name := $item.Name }}
