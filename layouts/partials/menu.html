@@ -1,5 +1,31 @@
 {{- /*
-Renders a menu for the given menu ID.
+Renders a menu for the given menu ID with support for nested menus.
+
+Hugo menu system documentation:
+https://gohugo.io/configuration/menus/
+
+Nested menus are created by setting the 'parent' property to the parent item's identifier.
+Child items should NOT have identifiers for best compatibility.
+
+Example:
+  menus:
+    main:
+      - identifier: 'about'
+        name: 'About'
+        pageRef: '/about'
+        weight: 40
+      - name: 'Our Story'
+        pageRef: '/about/our-story'
+        parent: 'about'        # References the parent's IDENTIFIER
+        weight: 41
+      - name: 'Our Team'
+        pageRef: '/about/team'
+        parent: 'about'        # References the parent's IDENTIFIER
+        weight: 42
+      - name: 'Marcelo'
+        url: 'https://example.com'
+        parent: 'Our Team'     # References the parent's NAME (since 'Our Team' has no identifier)
+        weight: 43
 
 @context {page} page The current page.
 @context {string} menuID The menu ID.
@@ -11,46 +37,78 @@ Renders a menu for the given menu ID.
 {{- $menuID := .menuID }}
 
 {{- with index site.Menus $menuID }}
+  
   <nav aria-label="Main navigation">
     <ul class="flex flex-row space-x-6">
-      {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+      {{- /* Only render items that have identifiers (top-level items) */ -}}
+      {{- range . }}
+        {{- if .Identifier }}
+          {{- partial "inline/menu/item.html" (dict "page" $page "item" .) }}
+        {{- end }}
+      {{- end }}
     </ul>
   </nav>
 {{- end }}
 
-{{- define "partials/inline/menu/walk.html" }}
+{{- define "partials/inline/menu/item.html" }}
   {{- $page := .page }}
-  {{- range .menuEntries }}
-    {{- $attrs := dict "href" .URL }}
-    {{- $icon := .Params.icon }}
-    {{- $iconSize := .Params.iconSize }}
-    {{- if $page.IsMenuCurrent .Menu . }}
-      {{- $attrs = merge $attrs (dict "class" "active font-bold text-sky-700" "aria-current" "page") }}
-    {{- else if $page.HasMenuCurrent .Menu .}}
-      {{- $attrs = merge $attrs (dict "class" "ancestor" "aria-current" "true") }}
+  {{- $item := .item }}
+  
+  {{- $attrs := dict "href" $item.URL }}
+  {{- $icon := $item.Params.icon }}
+  {{- $iconSize := $item.Params.iconSize }}
+  {{- if $page.IsMenuCurrent $item.Menu $item }}
+    {{- $attrs = merge $attrs (dict "class" "active font-bold text-sky-700" "aria-current" "page") }}
+  {{- else if $page.HasMenuCurrent $item.Menu $item }}
+    {{- $attrs = merge $attrs (dict "class" "ancestor" "aria-current" "true") }}
+  {{- end }}
+  
+  {{- $name := $item.Name }}
+  {{- with $item.Identifier }}
+    {{- with T . }}
+      {{- $name = . }}
     {{- end }}
-    {{- $name := .Name }}
-    {{- with .Identifier }}
-      {{- with T . }}
-        {{- $name = . }}
-      {{- end }}
-    {{- end }}
-    <li class="flex items-center gap-1">
-      <a class="text-md font-bold hover:text-sky-700 transition ease-in-out flex items-center gap-1" title="{{ $name }}"
-        {{- range $k, $v := $attrs }}
-          {{- with $v }}
-            {{- printf " %s=%q" $k $v | safeHTMLAttr }}
-          {{- end }}
-        {{- end -}}
-      >
-        {{- with $icon }}
-          <ion-icon name="{{ . }}"{{ with $iconSize }} size="{{ . }}"{{ end }} class="inline-block" aria-hidden="true"></ion-icon>
+  {{- end }}
+  
+  {{- /* Check if item has children */ -}}
+  {{- $hasChildren := gt (len $item.Children) 0 }}
+  
+  <li class="relative group flex items-center gap-1">
+    <a class="text-md font-bold hover:text-sky-700 transition ease-in-out flex items-center gap-1 py-2" title="{{ $name }}"
+      {{- range $k, $v := $attrs }}
+        {{- with $v }}
+          {{- printf " %s=%q" $k $v | safeHTMLAttr }}
         {{- end }}
-        {{ $name }}
+      {{- end -}}
+    >
+      {{- with $icon }}
+        <ion-icon name="{{ . }}"{{ with $iconSize }} size="{{ . }}"{{ end }} class="inline-block" aria-hidden="true"></ion-icon>
+      {{- end }}
+      {{ $name }}
+      {{- if $hasChildren }}
+        <ion-icon name="chevron-down" class="inline-block text-xs transition-transform group-hover:rotate-180" aria-hidden="true"></ion-icon>
+      {{- end }}
+    </a>
+    {{- if $hasChildren }}
+      <ul role="menu" aria-label="Submenu for {{ $name }}" class="absolute left-0 mt-0 pt-2 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+        {{- partial "inline/menu/render-children.html" (dict "children" $item.Children) }}
+      </ul>
+    {{- end }}
+  </li>
+{{- end }}
+
+{{- define "partials/inline/menu/render-children.html" }}
+  {{- range .children }}
+    <li class="hover:bg-gray-100">
+      <a href="{{ .URL }}" class="block px-4 py-2 text-md font-bold text-gray-900 hover:text-sky-700 transition ease-in-out flex items-center gap-1">
+        {{ .Name }}
+        {{- if gt (len .Children) 0 }}
+          <ion-icon name="chevron-right" class="inline-block text-xs ml-auto" aria-hidden="true"></ion-icon>
+        {{- end }}
       </a>
-      {{- with .Children }}
-        <ul role="list">
-          {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
+      {{- if gt (len .Children) 0 }}
+        <ul role="menu" class="absolute left-full top-0 ml-0 pt-0 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          {{- partial "inline/menu/render-children.html" (dict "children" .Children) }}
         </ul>
       {{- end }}
     </li>

@@ -152,6 +152,60 @@ When adding new UI elements (links, buttons, navigation, tags, etc.):
 - **Typography plugin:** Applied via `prose` class in `layouts/_default/single.html`; provides semantic typography for blog posts
 - **Dynamic site generation:** Theme expects all Hugo content mechanisms to be supported (posts, taxonomies, pages, lists)
 
+## Menu Configuration
+
+The theme supports nested (multi-level) menus through Hugo's standard menu system. Menus are defined in `hugo.yaml` and rendered using the `menu.html` partial.
+
+### Key Rules for Nested Menus
+
+1. **Parent items MUST have an `identifier`** (e.g., `identifier: 'about'`)
+2. **Child items reference parents by the parent's identifier**, NOT the name (e.g., `parent: 'about'` for a child of identifier `about`)
+3. **Child items should NOT have identifiers** – they inherit from their parents
+4. **Deep nesting is supported** – grandchildren reference their parent's NAME (not identifier) since they don't have one
+
+### Example Configuration
+
+```yaml
+menus:
+  main:
+    # Top-level items (must have identifier)
+    - identifier: 'about'
+      name: 'About'
+      pageRef: '/about'
+      weight: 40
+      params:
+        icon: 'person'
+    
+    # Children of 'about' – reference parent by its identifier
+    - name: 'Our Story'
+      pageRef: '/about/our-story'
+      parent: 'about'        # References parent identifier (not name!)
+      weight: 41
+    
+    - name: 'Our Team'
+      pageRef: '/about/team'
+      parent: 'about'        # References parent identifier
+      weight: 42
+    
+    # Grandchildren of 'about' – reference parent by its name
+    - name: 'Marcelo Rodrigo'
+      url: 'https://marcelorodrigo.com'
+      parent: 'Our Team'     # References parent NAME (since 'Our Team' has no identifier)
+      weight: 43
+      params:
+        icon: 'link'
+```
+
+### Rendering
+
+The theme automatically renders nested menus with:
+- **Chevron-down icon** on parent items (appears on parent hover)
+- **Chevron-right icon** on items with children (in dropdown menus)
+- **Hover-based dropdowns** – submenus appear/disappear on parent hover
+- **Accessibility support** – proper ARIA labels and semantic HTML
+
+The menu template is at `layouts/partials/menu.html` and uses inline partials for recursive rendering.
+
 ## Integration Points
 - Minimal, but expects:
   - Hugo CLI & config as orchestrator
