@@ -25,24 +25,29 @@ This project is a free and open-source theme for the Hugo static site generator,
   - The theme is localization-ready using Hugo's built-in i18n.
 
 ## Build & Development Workflow
-- **Requirements:** `git`, `hugo` (v0.140.2+, extended mode), `npm` or `pnpm`
+- **Requirements:** `git`, `hugo` (v0.140.2+, extended mode), `npm`
 - **Install in any Hugo site:**
   - Clone this repo to your `themes/` directory:
     ```sh
     git clone https://github.com/marcelorodrigo/hugo-fortyten.git themes/hugo-fortyten
     ```
   - Activate via `hugo.yaml`: `theme: "hugo-fortyten"`
-- **Development server for this theme:**
-  - Navigate to `exampleSite/` (contains demo content + config): `cd exampleSite && hugo server`
+- **Development server (this repository):**
+  - From project root: `hugo server`
   - Server runs at `http://localhost:1313`
   - Hugo automatically rebuilds on layout/content changes
+  - Content is at `/content/posts` and configuration in `/hugo.yaml`
 - **Production build:**
-  - From `exampleSite/`: `hugo --minify`
+  - From project root: `hugo --minify`
   - Output written to `public/`
-- **Editing styling:**
+- **Styling workflow:**
   - Update Tailwind classes in templates or extend `tailwind.config.js`
-  - **IMPORTANT:** Do NOT manually call `npx tailwindcss` or CLI. Hugo's build system handles Tailwind compilation via `@tailwindcss/cli` integration.
-  - Tailwind config includes build cache busters for CSS regeneration on layout/JS/CSS changes (see `theme.yaml` buildStats config)
+  - **IMPORTANT:** Do NOT manually call `npx tailwindcss`. Hugo's build system handles Tailwind compilation automatically via `@tailwindcss/cli` integration
+  - Tailwind config includes build cache busters (see `theme.yaml` buildStats config) that trigger CSS regeneration on layout/JS/CSS changes
+  - Tailwind 4 with `@tailwindcss/typography` plugin for prose styling
+- **NPM dependencies:**
+  - Run `npm ci --frozen-lockfile` before development to ensure reproducible builds
+  - CI/CD uses this approach (see `.github/workflows/compile.yml`)
 - **No custom test runner or lint scripts** – project focuses on theme simplicity
 
 ## Coding & Best Practices
@@ -138,10 +143,10 @@ When adding new UI elements (links, buttons, navigation, tags, etc.):
 ## Notable Patterns/Conventions
 - **Posts:** Stored as Markdown in `/content/posts/`, optionally as bundles for assets
 - **Menus:** Configured in `hugo.yaml#menus` and referenced in layouts via `menu.html` partial
-- **Theme structure:** This repo contains both the theme AND an exampleSite:
+- **Theme structure:** This repo contains both the theme and demo content in the root:
   - Theme files: `layouts/`, `assets/`, `static/`, `tailwind.config.js`, `theme.yaml`
-  - Demo site: `exampleSite/` with its own `content/`, `static/`, `hugo.yaml`
-  - Development: Always work from `exampleSite/` for live testing (`cd exampleSite && hugo server`)
+  - Demo content: `content/` posts and `hugo.yaml` configuration in root
+  - Development: Run `hugo server` from the root directory
 - **Tailwind integration:** Uses Tailwind 4 with `@tailwindcss/typography` for prose styling
 - **Brand color:** Custom accent color defined in `tailwind.config.js` as `brand-accent` (orange palette)
 - **Typography plugin:** Applied via `prose` class in `layouts/_default/single.html`; provides semantic typography for blog posts

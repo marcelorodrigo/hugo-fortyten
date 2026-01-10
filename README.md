@@ -32,19 +32,17 @@ theme: "hugo-fortyten"
 
 ### Project Structure
 
-This repository contains both the theme and an example site:
+This repository contains the theme and demo content:
 
 ```
 hugo-fortyten/
 ├── layouts/              # Theme templates
 ├── assets/               # Theme styles and scripts
-├── static/fonts/         # Theme fonts
+├── static/               # Theme fonts and demo images
+├── content/              # Demo posts and pages
 ├── tailwind.config.js    # Tailwind CSS configuration
 ├── theme.yaml            # Theme metadata
-├── exampleSite/          # Example site (demo content)
-│   ├── content/          # Demo posts and pages
-│   ├── static/           # Demo images
-│   └── hugo.yaml         # Example site configuration
+├── hugo.yaml             # Site configuration
 └── ...
 ```
 
@@ -53,18 +51,17 @@ hugo-fortyten/
 To preview the theme during development:
 
 ```shell
-cd exampleSite
 hugo server
 ```
 
-This starts a development server at `http://localhost:1313` with the example site.
+This starts a development server at `http://localhost:1313`.
 
 ### Building
 
-To build the example site for production:
+To build the site for production:
 
 ```shell
-hugo --minify --source exampleSite
+hugo --minify
 ```
 
 The output will be in the `public/` directory.
