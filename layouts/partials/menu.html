@@ -99,10 +99,11 @@ Example:
 
 {{- define "partials/inline/menu/render-children.html" }}
   {{- range .children }}
+    {{- $item := . }}
     <li class="relative group/submenu hover:bg-gray-100">
       <a href="{{ .URL }}" class="block px-4 py-2 text-md font-bold text-gray-900 hover:text-sky-700 transition ease-in-out flex items-center gap-1">
         {{- with .Params.icon }}
-          <ion-icon name="{{ . }}"{{ with $.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block" aria-hidden="true"></ion-icon>
+          <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block" aria-hidden="true"></ion-icon>
         {{- end }}
         {{ .Name }}
         {{- if gt (len .Children) 0 }}

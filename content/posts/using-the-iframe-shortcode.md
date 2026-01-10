@@ -19,13 +19,13 @@ This renders an iframe with a default width of 800px and height of 600px.
 
 ## Positional Arguments (Backward Compatible)
 
-For backward compatibility, you can use positional arguments for source, width, and height:
+For backward compatibility, you can use positional arguments for source, width, height, and title:
 
 ```markdown
-{{< iframe "https://www.youtube.com/embed/dQw4w9WgXcQ" "560" "315" >}}
+{{< iframe "https://www.youtube.com/embed/dQw4w9WgXcQ" "560" "315" "YouTube Video" >}}
 ```
 
-This syntax is useful for simple embeds where you don't need to specify a title.
+The positional syntax follows the order: URL, width, height, title. Note that title (4th parameter) is required for accessibility.
 
 ## Named Parameters (Recommended)
 
@@ -140,10 +140,10 @@ The iframe shortcode works in all modern browsers. Responsive sizing is supporte
 
 ## Backward Compatibility
 
-The shortcode maintains full backward compatibility with the original positional argument syntax. Existing posts using the old format will continue to work without changes.
+The shortcode maintains full backward compatibility with the original positional argument syntax, now extended to include accessibility attributes.
 
 ```markdown
-{{< iframe "https://example.com/embed" "800" "600" >}}
+{{< iframe "https://example.com/embed" "800" "600" "Example Embed" >}}
 ```
 
-However, for new embeds, we recommend using named parameters with accessibility attributes for better maintainability and accessibility.
+The positional parameters are: URL, width, height, and title. For new embeds, we recommend using named parameters for better readability and maintainability.

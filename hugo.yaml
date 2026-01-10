@@ -34,6 +34,8 @@ menus:
       pageRef: '/about/team'
       parent: 'about'
       weight: 42
+      params:
+        icon: 'people'
     - name: 'Marcelo Rodrigo'
       url: 'https://marcelorodrigo.com'
       parent: 'Our Team'

@@ -8,7 +8,7 @@
 {{- if not $height -}}
   {{- $height = .Get 2 | default "600" -}}
 {{- end -}}
-{{- $title := .Get "title" -}}
+{{- $title := .Get 3 | default (.Get "title") -}}
 {{- $ariaLabel := .Get "aria-label" -}}
 {{- $responsive := .Get "responsive" -}}
 {{- $sandbox := .Get "sandbox" -}}
@@ -23,7 +23,7 @@
 
 {{- /* Enforce accessibility in ALL cases (named OR positional argument for src) */ -}}
 {{- if and $src (and (not $title) (not $ariaLabel)) -}}
-  {{- errorf "iframe shortcode requires either a 'title' or 'aria-label' attribute for accessibility on all usages (named or positional src). Usage: {{< iframe src=\"https://example.com\" title=\"Description\" >}} or {{< iframe \"https://example.com\" title=\"Description\" >}}. Refer to $isNamed, .Get, title, ariaLabel and the iframe shortcode block for details." -}}
+  {{- errorf "iframe shortcode requires either a 'title' or 'aria-label' attribute for accessibility. Usage with named params: {{< iframe src=\"https://example.com\" title=\"Description\" >}}. Usage with positional params: {{< iframe \"https://example.com\" \"800\" \"600\" \"Description\" >}} (url, width, height, title)" -}}
 {{- end -}}
 
 {{- /* Only render sandbox attribute if specified and non-empty */ -}}
