@@ -211,6 +211,59 @@ The menu template is at `layouts/partials/menu.html` and uses inline partials fo
   - Hugo CLI & config as orchestrator
   - Tailwind CLI for CSS if not using Hugo Pipes
 
+## Site Search
+
+The theme includes an optional site-wide search feature with a modal UI.
+
+### Enabling Search
+
+To enable search, add the following to your site's `hugo.yaml`:
+
+```yaml
+params:
+  enable_site_search: true
+
+# Required: Enable JSON output for the search index
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+```
+
+**Important:** The `outputs` configuration cannot be inherited from themes (Hugo limitation). Users must add this to their site config for search to work.
+
+### How It Works
+
+1. **Search Index:** Hugo generates `/index.json` containing all pages (title, URL, summary, date)
+2. **Search Button:** Appears in the menu bar (rightmost) when search is enabled
+3. **Modal UI:** Click the search icon or press `Ctrl+K` / `Cmd+K` to open
+4. **Features:**
+   - Instant search with fuzzy matching on title and summary
+   - Shows 10 most recent posts when modal opens (before typing)
+   - Keyboard navigation (arrow keys, Enter to select, Esc to close)
+   - Click outside or X button to close
+
+### Excluding Content from Search
+
+Add `search_hidden: true` to any page's front matter to exclude it from the search index:
+
+```yaml
+---
+title: "Private Page"
+search_hidden: true
+---
+```
+
+### Files
+
+| Purpose | File |
+|---------|------|
+| Search index template | `layouts/_default/index.json` |
+| Modal HTML | `layouts/partials/search-modal.html` |
+| JavaScript | `assets/js/main.js` |
+| Menu button | `layouts/partials/menu.html` (conditional) |
+
 
 ---
 *If you have project-specific scripts, tests, or contribution rules not covered here, please add them to this file for AI readiness.*

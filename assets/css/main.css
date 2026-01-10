@@ -25,4 +25,10 @@
   body {
     @apply antialiased font-sans;
   }
+
+  /* Dialog positioning - override browser defaults */
+  dialog {
+    inset-block-start: 20vh;
+    inset-block-end: auto;
+  }
 }
