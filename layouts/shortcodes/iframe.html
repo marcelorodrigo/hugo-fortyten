@@ -23,7 +23,7 @@
 
 {{- /* Enforce accessibility in ALL cases (named OR positional argument for src) */ -}}
 {{- if and $src (and (not $title) (not $ariaLabel)) -}}
-  {{- errorf "iframe shortcode requires either a 'title' or 'aria-label' attribute for accessibility. Usage with named params: {{< iframe src=\"https://example.com\" title=\"Description\" >}}. Usage with positional params: {{< iframe \"https://example.com\" \"800\" \"600\" \"Description\" >}} (url, width, height, title)" -}}
+  {{- errorf "iframe shortcode requires a title or aria-label for accessibility. Example: {{< iframe src=\"https://example.com\" title=\"Page Title\" >}} or {{< iframe \"https://example.com\" \"800\" \"600\" \"Page Title\" >}}" -}}
 {{- end -}}
 
 {{- /* Only render sandbox attribute if specified and non-empty */ -}}
