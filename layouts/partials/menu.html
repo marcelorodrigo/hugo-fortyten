@@ -86,7 +86,7 @@ Example:
       {{- end }}
       {{ $name }}
       {{- if $hasChildren }}
-        <ion-icon name="chevron-down" class="inline-block text-xs transition-transform group-hover:rotate-180" aria-hidden="true"></ion-icon>
+        <ion-icon name="chevron-down" class="inline-block text-xs" aria-hidden="true"></ion-icon>
       {{- end }}
     </a>
     {{- if $hasChildren }}
@@ -99,15 +99,18 @@ Example:
 
 {{- define "partials/inline/menu/render-children.html" }}
   {{- range .children }}
-    <li class="relative group hover:bg-gray-100">
+    <li class="relative group/submenu hover:bg-gray-100">
       <a href="{{ .URL }}" class="block px-4 py-2 text-md font-bold text-gray-900 hover:text-sky-700 transition ease-in-out flex items-center gap-1">
+        {{- with .Params.icon }}
+          <ion-icon name="{{ . }}"{{ with $.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block" aria-hidden="true"></ion-icon>
+        {{- end }}
         {{ .Name }}
         {{- if gt (len .Children) 0 }}
-          <ion-icon name="chevron-right" class="inline-block text-xs ml-auto" aria-hidden="true"></ion-icon>
+          <ion-icon name="chevron-forward" class="inline-block text-xs ml-auto" aria-hidden="true"></ion-icon>
         {{- end }}
       </a>
       {{- if gt (len .Children) 0 }}
-        <ul role="menu" class="absolute left-full top-0 ml-1 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+        <ul role="menu" class="absolute left-full top-0 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover/submenu:opacity-100 group-hover/submenu:visible transition-all duration-200 z-50 before:content-[''] before:absolute before:top-0 before:right-full before:w-2 before:h-full">
           {{- partial "inline/menu/render-children.html" (dict "children" .Children) }}
         </ul>
       {{- end }}
