@@ -34,5 +34,4 @@ jobs:
           extended: true
 
       - name: Build Hugo site
-        run: hugo --minify
-
+        run: hugo --minify --source exampleSite
