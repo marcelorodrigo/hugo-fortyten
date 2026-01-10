@@ -99,7 +99,7 @@ Example:
 
 {{- define "partials/inline/menu/render-children.html" }}
   {{- range .children }}
-    <li class="hover:bg-gray-100">
+    <li class="relative group hover:bg-gray-100">
       <a href="{{ .URL }}" class="block px-4 py-2 text-md font-bold text-gray-900 hover:text-sky-700 transition ease-in-out flex items-center gap-1">
         {{ .Name }}
         {{- if gt (len .Children) 0 }}
@@ -107,7 +107,7 @@ Example:
         {{- end }}
       </a>
       {{- if gt (len .Children) 0 }}
-        <ul role="menu" class="absolute left-full top-0 ml-0 pt-0 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+        <ul role="menu" class="absolute left-full top-0 ml-1 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
           {{- partial "inline/menu/render-children.html" (dict "children" .Children) }}
         </ul>
       {{- end }}
