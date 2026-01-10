@@ -52,6 +52,15 @@ params:
     content: This is my custom footer text.
     showHugoCredit: true
   postsPerPage: 9
+  # Enable site-wide search functionality
+  enable_site_search: true
+
+# Enable JSON output for search index (required when enable_site_search is true)
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
 
 # Chroma syntax highlighting for orange theme
 markup:

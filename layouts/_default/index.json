@@ -1,0 +1,22 @@
+{{- $searchIndex := slice -}}
+{{- range site.RegularPages -}}
+  {{- if not .Params.search_hidden -}}
+    {{- $summary := "" -}}
+    {{- if .Params.summary -}}
+      {{- $summary = .Params.summary -}}
+    {{- else if .Summary -}}
+      {{- $summary = .Summary | plainify | truncate 150 -}}
+    {{- else -}}
+      {{- $summary = .Content | plainify | truncate 150 -}}
+    {{- end -}}
+    {{- $entry := dict
+      "title" .Title
+      "url" .RelPermalink
+      "summary" $summary
+      "date" (.Date.Format "2006-01-02")
+      "section" .Section
+    -}}
+    {{- $searchIndex = $searchIndex | append $entry -}}
+  {{- end -}}
+{{- end -}}
+{{- $searchIndex | jsonify (dict "indent" "  ") -}}
