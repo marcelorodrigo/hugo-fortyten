@@ -90,7 +90,7 @@ Example:
       {{- end }}
     </a>
     {{- if $hasChildren }}
-      <ul role="menu" aria-label="Submenu for {{ $name }}" class="absolute left-0 mt-0 pt-2 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+      <ul role="menu" aria-label="Submenu for {{ $name }}" class="absolute left-0 top-full mt-2 w-max bg-white border border-gray-200 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
         {{- partial "inline/menu/render-children.html" (dict "children" $item.Children) }}
       </ul>
     {{- end }}
