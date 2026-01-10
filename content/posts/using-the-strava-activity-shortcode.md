@@ -72,7 +72,7 @@ The default style is `"standard"`. You can experiment with other style values if
 
 The shortcode:
 
-1. Accepts the Strava activity ID (with or without the full URL)
+1. Accepts either the Strava activity ID or a full Strava activity URL (e.g., https://www.strava.com/activities/1234567). Automatically extracts the numeric ID from common URL patterns, including those ending with slashes or query strings.
 2. Generates the embed placeholder HTML
 3. Loads Strava's embed script (`https://strava-embeds.com/embed.js`)
 4. The script automatically fetches and renders the activity card
@@ -83,7 +83,7 @@ The script is loaded only when the shortcode is used, so it won't slow down page
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `id` or position arg | Yes | The Strava activity ID (numeric) |
+| `id` or position arg | Yes | The Strava activity ID (numeric), or a full Strava activity URL (the shortcode will automatically extract the ID from supported URL patterns) |
 | `style` | No | Embed style (defaults to `"standard"`) |
 
 ## Important Notes

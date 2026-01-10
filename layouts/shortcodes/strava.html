@@ -1,14 +1,18 @@
 {{- /* Get activity ID from either positional or named parameter */ -}}
-{{- $id := .Get 0 | default (.Get "id") -}}
+{{- $param := .Get 0 | default (.Get "id") -}}
 
 {{- /* Get style parameter, default to "standard" */ -}}
 {{- $style := .Get "style" | default "standard" -}}
 
-{{- /* Validate that we have an ID */ -}}
-{{- if not $id -}}
-  {{- errorf "strava shortcode requires an activity ID. Usage: {{< strava \"ID\" >}} or {{< strava id=\"ID\" >}}" -}}
+{{- /* Validate that we have a parameter */ -}}
+{{- if not $param -}}
+  {{- errorf "strava shortcode requires an activity ID. Usage: {{< strava \"ID\" >}} or {{< strava id=\"ID\" >}} or {{< strava id=\"https://www.strava.com/activities/ID\" >}}" -}}
 {{- end -}}
 
-{{- /* Render the Strava embed placeholder and script */ -}}
+{{- /* Extract numeric ID if input is a Strava activity URL; else pass as-is */ -}}
+{{- $match := replaceRE ".*?/activities/(\\d+)(?:[/?].*)?$" "$param" "$1" -}}
+{{- $id := cond (findRE "^\\d+$" $match | len | gt 0) $match $param -}}
+
+{{- /* Render the Strava embed placeholder and set flag to inject script once in head */ -}}
 <div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id="{{ $id }}" data-style="{{ $style }}" data-from-embed="false"></div>
-<script src="https://strava-embeds.com/embed.js"></script>
+{{- $.Page.Scratch.Set "includeStravaEmbed" true -}}

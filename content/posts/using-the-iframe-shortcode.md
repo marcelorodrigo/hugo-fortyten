@@ -101,6 +101,7 @@ The responsive option uses a `56.25%` aspect ratio (16:9) which is perfect for v
 | `title` | String | No* | — | Accessible title for the iframe |
 | `aria-label` | String | No* | — | Accessible label for the iframe |
 | `responsive` | String | No | `false` | Set to `"true"` for responsive sizing |
+| `sandbox` | String | No | — | Optional security restrictions (see below; passes value directly to `sandbox` attribute) |
 
 *When using named parameters, either `title` or `aria-label` is required for accessibility.
 
@@ -111,8 +112,9 @@ The responsive option uses a `56.25%` aspect ratio (16:9) which is perfect for v
 The shortcode includes security and accessibility features:
 
 - **CORS & Permissions:** The `allow` attribute includes necessary permissions for common embed types (accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture)
-- **Sandbox Attributes:** Standard iframe security settings with `frameborder="0"` for clean integration
-- **Accessible Labels:** Requires descriptive titles or aria-labels for screen reader users
+- **Sandbox Attribute:** Supports optional `sandbox` parameter, allowing fine-grained control over iframe restrictions and security. See below for usage and best practices.
+- **Frameborder:** Uses `frameborder="0"` for legacy visual integration, but this attribute is deprecated. For border styling, use CSS (`border: none;`).
+- **Accessible Labels:** Requires descriptive titles or aria-labels for screen reader users.
 
 ### Responsive Sizing
 
@@ -129,10 +131,12 @@ The iframe shortcode works in all modern browsers. Responsive sizing is supporte
 
 1. **Always use `responsive="true"` for videos** – This ensures they look good on mobile devices
 2. **Provide descriptive titles** – Help screen reader users understand what the iframe contains
-3. **Use trusted sources** – Only embed content from sources you trust
-4. **Test on mobile** – Always preview your posts on mobile devices to ensure iframes display correctly
-5. **YouTube embeds** – Use the embed URL format: `https://www.youtube.com/embed/VIDEO_ID`
-6. **Vimeo embeds** – Use: `https://player.vimeo.com/video/VIDEO_ID`
+3. **Sandbox for Security:** Use the `sandbox` parameter (e.g., `sandbox="allow-scripts allow-same-origin"` or just `sandbox=""` for strictest mode) to control embedded content permissions. Review [MDN iframe sandbox documentation](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#attr-sandbox) for all options.
+4. **Frameborder Is Deprecated:** While `frameborder="0"` is set for backward compatibility, control borders using CSS only (`border: none;` for no border).
+5. **Use trusted sources** – Only embed content from sources you trust
+6. **Test on mobile** – Always preview your posts on mobile devices to ensure iframes display correctly
+7. **YouTube embeds** – Use the embed URL format: `https://www.youtube.com/embed/VIDEO_ID`
+8. **Vimeo embeds** – Use: `https://player.vimeo.com/video/VIDEO_ID`
 
 ## Backward Compatibility
 
