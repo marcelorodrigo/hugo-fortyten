@@ -27,3 +27,41 @@ The basic configuration is done on your `hugo.yaml` file
 ```yaml
 theme: "hugo-fortyten"
 ```
+
+## Development
+
+### Project Structure
+
+This repository contains the theme and demo content:
+
+```
+hugo-fortyten/
+├── layouts/              # Theme templates
+├── assets/               # Theme styles and scripts
+├── static/               # Theme fonts and demo images
+├── content/              # Demo posts and pages
+├── tailwind.config.js    # Tailwind CSS configuration
+├── theme.yaml            # Theme metadata
+├── hugo.yaml             # Site configuration
+└── ...
+```
+
+### Local Development
+
+To preview the theme during development:
+
+```shell
+hugo server
+```
+
+This starts a development server at `http://localhost:1313`.
+
+### Building
+
+To build the site for production:
+
+```shell
+hugo --minify
+```
+
+The output will be in the `public/` directory.

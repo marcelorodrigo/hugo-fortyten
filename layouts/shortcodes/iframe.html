@@ -1,0 +1,58 @@
+{{- /* Get parameters - support both positional and named syntax */ -}}
+{{- $src := .Get 0 | default (.Get "src") -}}
+{{- $width := .Get "width" -}}
+{{- if not $width -}}
+  {{- $width = .Get 1 | default "800" -}}
+{{- end -}}
+{{- $height := .Get "height" -}}
+{{- if not $height -}}
+  {{- $height = .Get 2 | default "600" -}}
+{{- end -}}
+{{- $title := .Get 3 | default (.Get "title") -}}
+{{- $ariaLabel := .Get "aria-label" -}}
+{{- $responsive := .Get "responsive" -}}
+{{- $sandbox := .Get "sandbox" -}}
+
+{{- /* Validate that we have a src */ -}}
+{{- if not $src -}}
+  {{- errorf "iframe shortcode requires a src URL. Usage: {{< iframe \"https://example.com\" >}} or {{< iframe src=\"https://example.com\" width=\"800\" height=\"600\" title=\"Description\" >}}" -}}
+{{- end -}}
+
+{{- /* Check if using named parameters (has 'src' param explicitly) */ -}}
+{{- $isNamed := .Get "src" -}}
+
+{{- /* Enforce accessibility in ALL cases (named OR positional argument for src) */ -}}
+{{- if and $src (and (not $title) (not $ariaLabel)) -}}
+  {{- errorf "iframe shortcode requires a title or aria-label for accessibility. Example: {{< iframe src=\"https://example.com\" title=\"Page Title\" >}} or {{< iframe \"https://example.com\" \"800\" \"600\" \"Page Title\" >}}" -}}
+{{- end -}}
+
+{{- /* Only render sandbox attribute if specified and non-empty */ -}}
+{{- $sandboxAttr := "" -}}
+{{- if $sandbox -}}
+  {{- $sandboxAttr = printf " sandbox=\"%s\"" $sandbox -}}
+{{- end -}}
+
+{{- /* Render the iframe with responsive support */ -}}
+{{- if eq $responsive "true" -}}
+<div style="position: relative; width: 100%; padding-bottom: 56.25%;">
+  <iframe 
+    src="{{ $src }}" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen{{ $sandboxAttr }}
+    {{ if $title }}title="{{ $title }}"{{ end }}
+    {{ if $ariaLabel }}aria-label="{{ $ariaLabel }}"{{ end }}>
+  </iframe>
+</div>
+{{- else -}}
+<iframe 
+  src="{{ $src }}" 
+  width="{{ $width }}" 
+  height="{{ $height }}"
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen{{ $sandboxAttr }}
+  {{ if $title }}title="{{ $title }}"{{ end }}
+  {{ if $ariaLabel }}aria-label="{{ $ariaLabel }}"{{ end }}></iframe>
+{{- end -}}

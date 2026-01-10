@@ -35,4 +35,3 @@ jobs:
 
       - name: Build Hugo site
         run: hugo --minify
-

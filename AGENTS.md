@@ -25,19 +25,30 @@ This project is a free and open-source theme for the Hugo static site generator,
   - The theme is localization-ready using Hugo's built-in i18n.
 
 ## Build & Development Workflow
-- **Requirements:** `git`, `hugo`, `npm` or `pnpm`
+- **Requirements:** `git`, `hugo` (v0.140.2+, extended mode), `npm`
 - **Install in any Hugo site:**
   - Clone this repo to your `themes/` directory:
     ```sh
     git clone https://github.com/marcelorodrigo/hugo-fortyten.git themes/hugo-fortyten
     ```
   - Activate via `hugo.yaml`: `theme: "hugo-fortyten"`
-- **Start development server:**
-  - `hugo server` (from site root, not theme directory)
-- **Edit styling:**
-  - Update Tailwind classes in HTML or add config in `tailwind.config.js`.
-  - **IMPORTANT:** Do NOT manually call `npx tailwindcss` or the Tailwind CLI. Changes to `tailwind.config.js` will be automatically picked up by Hugo's development server on next rebuild.
-- **No custom tests, lints, or scripts** exist by default.
+- **Development server (this repository):**
+  - From project root: `hugo server`
+  - Server runs at `http://localhost:1313`
+  - Hugo automatically rebuilds on layout/content changes
+  - Content is at `/content/posts` and configuration in `/hugo.yaml`
+- **Production build:**
+  - From project root: `hugo --minify`
+  - Output written to `public/`
+- **Styling workflow:**
+  - Update Tailwind classes in templates or extend `tailwind.config.js`
+  - **IMPORTANT:** Do NOT manually call `npx tailwindcss`. Hugo's build system handles Tailwind compilation automatically via `@tailwindcss/cli` integration
+  - Tailwind config includes build cache busters (see `theme.yaml` buildStats config) that trigger CSS regeneration on layout/JS/CSS changes
+  - Tailwind 4 with `@tailwindcss/typography` plugin for prose styling
+- **NPM dependencies:**
+  - Run `npm ci --frozen-lockfile` before development to ensure reproducible builds
+  - CI/CD uses this approach (see `.github/workflows/compile.yml`)
+- **No custom test runner or lint scripts** – project focuses on theme simplicity
 
 ## Coding & Best Practices
 - Use Hugo templating idioms – see `/layouts/_default/baseof.html` and related blocks/partials for structure.
@@ -46,6 +57,49 @@ This project is a free and open-source theme for the Hugo static site generator,
 - Store new JS/CSS in `assets/`, referencing from templates.
 - **Typography Styling:** The theme uses `@tailwindcss/typography` plugin for beautiful prose styling on all blog posts. The `prose` class is applied to post content in `layouts/_default/single.html`. Do not remove or modify this class without understanding the impact on post readability.
 - **Icons:** Always use **Ionicons** for any icons needed in this project. Ionicons is loaded via CDN at the end of `baseof.html`. Search available icons at https://ionic.io/ionicons. Icons support variants (e.g., `ios`, `md`), sizes, colors, stroke width, and accessibility attributes—explore these options as needed for your use case. Example: `<ion-icon name="heart" size="large" color="red" aria-label="Favorite"></ion-icon>`
+
+## Available Shortcodes
+
+The theme includes reusable shortcodes for blog content:
+
+### Icon Shortcode (`icon`)
+- **Purpose:** Embed Ionicons with optional links and accessibility labels
+- **Syntax:** `{{< icon name="heart" size="large" link="https://example.com" aria-label="Favorite" >}}`
+- **File:** `layouts/shortcodes/icon.html` (19 lines)
+- **Key features:**
+  - Named parameters only (supports `name`, `size`, `link`, `target`, `aria-label`, `aria-hidden`)
+  - Validates required `name` parameter
+  - Wraps in `<a>` tag when `link` is provided
+  - Supports accessibility attributes for screen readers
+
+### Iframe Shortcode (`iframe`)
+- **Purpose:** Embed external content (YouTube, Vimeo, Google Maps) with responsive support
+- **Syntax:** 
+  - Positional: `{{< iframe "https://www.youtube.com/embed/VIDEO_ID" "560" "315" >}}` (backward compatible)
+  - Named: `{{< iframe src="URL" width="560" height="315" title="Description" >}}`
+  - Responsive: `{{< iframe src="URL" responsive="true" title="Description" >}}`
+- **File:** `layouts/shortcodes/iframe.html` (51 lines)
+- **Key features:**
+  - Supports both positional args (for backward compatibility) and named parameters
+  - Requires `title` OR `aria-label` when using named parameters (accessibility requirement)
+  - Responsive mode uses 56.25% padding (16:9 aspect ratio) for video content
+  - Includes modern `allow` attribute for permissions (accelerometer, autoplay, clipboard-write, encrypted-media, gyroscope, picture-in-picture)
+  - Validates src is provided; clear error messages for missing accessibility attributes
+
+### Strava Shortcode (`strava`)
+- **Purpose:** Embed Strava activity cards (runs, rides, swims) using Strava's official embed API
+- **Syntax:**
+  - Positional: `{{< strava "16998446947" >}}`
+  - Named: `{{< strava id="16998446947" >}}`
+  - With style: `{{< strava id="16998446947" style="standard" >}}`
+- **File:** `layouts/shortcodes/strava.html` (14 lines)
+- **Key features:**
+  - Accepts activity ID as positional or named parameter
+  - Loads Strava embed script only when shortcode is used (performance optimized)
+  - Script loads via `https://strava-embeds.com/embed.js` and renders interactive activity card
+  - Optional `style` parameter (defaults to "standard")
+  - No validation of IDs—lets Strava handle invalid activities gracefully
+  - Activity must be public for embed to display
 
 ## Accessibility, SEO & Readability Standards
 Every navigation element, link, and interactive component must follow these best practices:
@@ -87,9 +141,70 @@ When adding new UI elements (links, buttons, navigation, tags, etc.):
 - [ ] Is the visual hierarchy clear for readability?
 
 ## Notable Patterns/Conventions
-- Posts are stored as Markdown in `/content/posts/`, optionally as bundles for assets
-- Menus are configured in `hugo.yaml#menus` and referenced in layouts
-- The theme expects all Hugo content mechanisms (pages, taxonomies) to be supported
+- **Posts:** Stored as Markdown in `/content/posts/`, optionally as bundles for assets
+- **Menus:** Configured in `hugo.yaml#menus` and referenced in layouts via `menu.html` partial
+- **Theme structure:** This repo contains both the theme and demo content in the root:
+  - Theme files: `layouts/`, `assets/`, `static/`, `tailwind.config.js`, `theme.yaml`
+  - Demo content: `content/` posts and `hugo.yaml` configuration in root
+  - Development: Run `hugo server` from the root directory
+- **Tailwind integration:** Uses Tailwind 4 with `@tailwindcss/typography` for prose styling
+- **Brand color:** Custom accent color defined in `tailwind.config.js` as `brand-accent` (orange palette)
+- **Typography plugin:** Applied via `prose` class in `layouts/_default/single.html`; provides semantic typography for blog posts
+- **Dynamic site generation:** Theme expects all Hugo content mechanisms to be supported (posts, taxonomies, pages, lists)
+
+## Menu Configuration
+
+The theme supports nested (multi-level) menus through Hugo's standard menu system. Menus are defined in `hugo.yaml` and rendered using the `menu.html` partial.
+
+### Key Rules for Nested Menus
+
+1. **Parent items MUST have an `identifier`** (e.g., `identifier: 'about'`)
+2. **Child items reference parents by the parent's identifier**, NOT the name (e.g., `parent: 'about'` for a child of identifier `about`)
+3. **Child items should NOT have identifiers** – they inherit from their parents
+4. **Deep nesting is supported** – grandchildren reference their parent's NAME (not identifier) since they don't have one
+
+### Example Configuration
+
+```yaml
+menus:
+  main:
+    # Top-level items (must have identifier)
+    - identifier: 'about'
+      name: 'About'
+      pageRef: '/about'
+      weight: 40
+      params:
+        icon: 'person'
+    
+    # Children of 'about' – reference parent by its identifier
+    - name: 'Our Story'
+      pageRef: '/about/our-story'
+      parent: 'about'        # References parent identifier (not name!)
+      weight: 41
+    
+    - name: 'Our Team'
+      pageRef: '/about/team'
+      parent: 'about'        # References parent identifier
+      weight: 42
+    
+    # Grandchildren of 'about' – reference parent by its name
+    - name: 'Marcelo Rodrigo'
+      url: 'https://marcelorodrigo.com'
+      parent: 'Our Team'     # References parent NAME (since 'Our Team' has no identifier)
+      weight: 43
+      params:
+        icon: 'link'
+```
+
+### Rendering
+
+The theme automatically renders nested menus with:
+- **Chevron-down icon** on parent items (appears on parent hover)
+- **Chevron-right icon** on items with children (in dropdown menus)
+- **Hover-based dropdowns** – submenus appear/disappear on parent hover
+- **Accessibility support** – proper ARIA labels and semantic HTML
+
+The menu template is at `layouts/partials/menu.html` and uses inline partials for recursive rendering.
 
 ## Integration Points
 - Minimal, but expects:
