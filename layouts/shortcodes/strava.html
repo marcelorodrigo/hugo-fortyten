@@ -1,0 +1,14 @@
+{{- /* Get activity ID from either positional or named parameter */ -}}
+{{- $id := .Get 0 | default (.Get "id") -}}
+
+{{- /* Get style parameter, default to "standard" */ -}}
+{{- $style := .Get "style" | default "standard" -}}
+
+{{- /* Validate that we have an ID */ -}}
+{{- if not $id -}}
+  {{- errorf "strava shortcode requires an activity ID. Usage: {{< strava \"ID\" >}} or {{< strava id=\"ID\" >}}" -}}
+{{- end -}}
+
+{{- /* Render the Strava embed placeholder and script */ -}}
+<div class="strava-embed-placeholder" data-embed-type="activity" data-embed-id="{{ $id }}" data-style="{{ $style }}" data-from-embed="false"></div>
+<script src="https://strava-embeds.com/embed.js"></script>

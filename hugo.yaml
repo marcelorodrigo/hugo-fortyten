@@ -1,8 +1,6 @@
 baseURL: 'https://fortyten.marcelorodrigo.com/'
 languageCode: 'en-US'
 title: 'FortyTen Theme'
-themesDir: '../'
-theme: '.'
 
 menus:
   main:
