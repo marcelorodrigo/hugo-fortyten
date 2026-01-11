@@ -1,0 +1,43 @@
+name = 'FortyTen'
+license = 'MIT'
+licenselink = 'https://github.com/marcelorodrigo/hugo-fortyten/blob/master/LICENSE'
+description = 'FortyTen is a minimalist, responsive Hugo theme for personal blogs and developer portfolios, built with Tailwind CSS and supporting dark mode.'
+homepage = 'https://github.com/marcelorodrigo/hugo-fortyten'
+demosite = 'https://fortyten.marcelorodrigo.com'
+tags = [
+  'blog',
+  'developer',
+  'simple',
+  'personal',
+  'responsive',
+  'minimalist',
+  'dark mode',
+  'dark',
+  'light',
+  'tailwindcss',
+  'alpinejs',
+  'search',
+]
+features = [
+  'favicon',
+  'responsive design',
+  'dark mode support',
+  'syntax highlighting',
+  'pagination',
+  'tags',
+  'author bio',
+  'social links',
+  'custom footer',
+  'post excerpts',
+  'SEO friendly',
+  'performance optimized',
+  'search',
+]
+
+[author]
+name = 'Marcelo Wiebbelling'
+homepage = 'https://marcelorodrigo.com'
+
+[module.hugoVersion]
+min = '0.140.2'
+extended = true
