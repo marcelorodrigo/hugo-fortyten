@@ -202,11 +202,12 @@ Features:
         <p class="mt-4 text-sm text-gray-600" x-text="errorMessage"></p>
       </div>
       
-      {{- /* Results list */ -}}
-      <ul x-ref="resultsList" 
-          x-show="!isLoading && !loadError && results.length > 0" 
-          role="listbox" 
-          class="divide-y divide-gray-100 p-2">
+       {{- /* Results list */ -}}
+       <ul x-ref="resultsList" 
+           id="search-results"
+           x-show="!isLoading && !loadError && results.length > 0" 
+           role="listbox" 
+           class="divide-y divide-gray-100 p-2">
         {{- /* Results populated by Alpine */ -}}
         <template x-for="(result, index) in results" :key="result.url">
           <li role="option" 
