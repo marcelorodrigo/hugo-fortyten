@@ -379,6 +379,11 @@
   const MobileMenu = {
     // State
     isOpen: false,
+    focusableElements: [],
+    firstFocusableElement: null,
+    lastFocusableElement: null,
+    previousActiveElement: null,
+    focusTrapHandler: null,
     
     // DOM Elements (cached after init)
     elements: {},
@@ -451,12 +456,74 @@
     },
 
     /**
-     * Open mobile menu
+     * Get all focusable elements within a container
+     * Focusable elements: a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])
+     */
+    getFocusableElements(container) {
+      if (!container) return [];
+      
+      const focusableSelector = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        'textarea:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])'
+      ].join(', ');
+      
+      return Array.from(container.querySelectorAll(focusableSelector));
+    },
+
+    /**
+     * Build focus trap: identify first and last focusable elements
+     */
+    buildFocusTrap() {
+      if (!this.elements.panel) return;
+      
+      this.focusableElements = this.getFocusableElements(this.elements.panel);
+      this.firstFocusableElement = this.focusableElements[0] || null;
+      this.lastFocusableElement = this.focusableElements[this.focusableElements.length - 1] || null;
+    },
+
+    /**
+     * Handle Tab key for focus cycling
+     */
+    handleFocusTrap(e) {
+      if (e.key !== 'Tab') return;
+
+      const { activeElement } = document;
+      
+      // If no focusable elements, prevent Tab
+      if (!this.firstFocusableElement || !this.lastFocusableElement) {
+        e.preventDefault();
+        return;
+      }
+
+      // Shift + Tab: move to previous element
+      if (e.shiftKey) {
+        if (activeElement === this.firstFocusableElement) {
+          e.preventDefault();
+          this.lastFocusableElement.focus();
+        }
+      } else {
+        // Tab: move to next element
+        if (activeElement === this.lastFocusableElement) {
+          e.preventDefault();
+          this.firstFocusableElement.focus();
+        }
+      }
+    },
+
+    /**
+     * Open mobile menu with focus trap
      */
     open() {
       const { panel, overlay, toggle, body } = this.elements;
       
       if (!panel || !overlay) return;
+
+      // Save the currently focused element to restore later
+      this.previousActiveElement = document.activeElement;
 
       // Show panel with slide-in animation
       panel.classList.remove('-translate-x-full');
@@ -474,14 +541,21 @@
         toggle.setAttribute('aria-pressed', 'true');
       }
 
-      this.isOpen = true;
+      // Build focus trap
+      this.buildFocusTrap();
 
       // Focus the close button for accessibility
-      document.getElementById('mobile-menu-close')?.focus();
+      this.elements.closeBtn?.focus();
+
+      // Set up focus trap handler
+      this.focusTrapHandler = this.handleFocusTrap.bind(this);
+      this.elements.panel.addEventListener('keydown', this.focusTrapHandler);
+
+      this.isOpen = true;
     },
 
     /**
-     * Close mobile menu
+     * Close mobile menu and restore focus
      */
     close() {
       const { panel, overlay, toggle, body } = this.elements;
@@ -502,6 +576,23 @@
       if (toggle) {
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-pressed', 'false');
+      }
+
+      // Remove focus trap handler
+      if (this.focusTrapHandler && panel) {
+        panel.removeEventListener('keydown', this.focusTrapHandler);
+        this.focusTrapHandler = null;
+      }
+
+      // Clear focus trap state
+      this.focusableElements = [];
+      this.firstFocusableElement = null;
+      this.lastFocusableElement = null;
+
+      // Restore focus to the element that opened the menu
+      if (this.previousActiveElement && this.previousActiveElement.focus) {
+        this.previousActiveElement.focus();
+      } else if (toggle) {
         toggle.focus();
       }
 
