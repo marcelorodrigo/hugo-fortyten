@@ -12,7 +12,30 @@ menus:
     name: 'Setup'
     url: '/setup'
     weight: 2
+  - identifier: 'configuration'
+    name: 'Configuration'
+    weight: 3
+    url: '#'
+  - identifier: 'site-settings'
+    name: 'Site Settings'
+    url: '/configuration/site-settings'
+    parent: 'configuration'
+    weight: 1
+  - identifier: 'page-settings'
+    name: 'Page Settings'
+    url: '/configuration/page-settings'
+    parent: 'configuration'
+    weight: 2
+  - identifier: 'site-search'
+    name: 'Search'
+    url: '/configuration/enabling-site-search'
+    parent: 'configuration'
+    weight: 3
+outputs:
+  - html
+  - rss
+  - json
 params:
   description: "FortyTen is a modern, clean, and responsive Hugo theme designed for personal blogs and portfolios."
   keywords: "Hugo, Theme, Blog, Portfolio, Responsive, Dark Mode, Search, SEO"
-  enable_site_search: true
+  enableSiteSearch: true

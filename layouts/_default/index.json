@@ -1,6 +1,6 @@
 {{- $searchIndex := slice -}}
 {{- range site.RegularPages -}}
-  {{- if not .Params.search_hidden -}}
+  {{- if not .Params.searchHidden -}}
     {{- $summary := "" -}}
     {{- if .Params.summary -}}
       {{- $summary = .Params.summary -}}
