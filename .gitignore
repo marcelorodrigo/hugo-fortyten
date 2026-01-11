@@ -1,5 +1,6 @@
 .idea
 node_modules
-/.hugo_build.lock
+.hugo_build.lock
 /public
+exampleSite/public
 .DS_Store
