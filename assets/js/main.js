@@ -34,17 +34,17 @@
     /**
      * Cache DOM elements for performance
      */
-    cacheElements() {
-      this.elements = {
-        button: document.getElementById('search-button'),
-        dialog: document.getElementById('search-modal'),
-        input: document.getElementById('search-input'),
-        closeBtn: document.getElementById('search-close'),
-        results: document.getElementById('search-results'),
-        noResults: document.getElementById('search-no-results'),
-        loading: document.getElementById('search-loading')
-      };
-    },
+     cacheElements() {
+       this.elements = {
+         button: document.getElementById('search-button') || document.getElementById('search-button-desktop'),
+         dialog: document.getElementById('search-modal'),
+         input: document.getElementById('search-input'),
+         closeBtn: document.getElementById('search-close'),
+         results: document.getElementById('search-results'),
+         noResults: document.getElementById('search-no-results'),
+         loading: document.getElementById('search-loading')
+       };
+     },
 
     /**
      * Bind event listeners
@@ -372,11 +372,247 @@
     }
   };
 
+  // ============================================
+  // Mobile Menu Functionality
+  // ============================================
+
+  const MobileMenu = {
+    // State
+    isOpen: false,
+    focusableElements: [],
+    firstFocusableElement: null,
+    lastFocusableElement: null,
+    previousActiveElement: null,
+    focusTrapHandler: null,
+    
+    // DOM Elements (cached after init)
+    elements: {},
+
+    /**
+     * Initialize mobile menu functionality
+     */
+    init() {
+      this.cacheElements();
+      if (!this.elements.toggle) return; // Mobile menu not in DOM
+      
+      this.bindEvents();
+    },
+
+    /**
+     * Cache DOM elements for performance
+     */
+    cacheElements() {
+      this.elements = {
+        toggle: document.getElementById('mobile-menu-toggle'),
+        panel: document.getElementById('mobile-menu-panel'),
+        overlay: document.getElementById('mobile-menu-overlay'),
+        closeBtn: document.getElementById('mobile-menu-close'),
+        body: document.body
+      };
+    },
+
+    /**
+     * Bind event listeners
+     */
+    bindEvents() {
+      const { toggle, overlay, closeBtn } = this.elements;
+
+      // Open on hamburger click
+      if (toggle) {
+        toggle.addEventListener('click', () => this.open());
+      }
+
+      // Close on X button
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => this.close());
+      }
+
+      // Close on overlay click
+      if (overlay) {
+        overlay.addEventListener('click', () => this.close());
+      }
+
+      // Close on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.isOpen) {
+          this.close();
+        }
+      });
+
+      // Close on window resize to desktop (lg breakpoint = 1024px)
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024 && this.isOpen) {
+          this.close();
+        }
+      });
+
+      // Close on link click inside mobile menu
+      const menuLinks = this.elements.panel?.querySelectorAll('a');
+      if (menuLinks) {
+        menuLinks.forEach(link => {
+          link.addEventListener('click', () => this.close());
+        });
+      }
+    },
+
+    /**
+     * Get all focusable elements within a container
+     * Focusable elements: a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])
+     */
+    getFocusableElements(container) {
+      if (!container) return [];
+      
+      const focusableSelector = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        'textarea:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])'
+      ].join(', ');
+      
+      return Array.from(container.querySelectorAll(focusableSelector));
+    },
+
+    /**
+     * Build focus trap: identify first and last focusable elements
+     */
+    buildFocusTrap() {
+      if (!this.elements.panel) return;
+      
+      this.focusableElements = this.getFocusableElements(this.elements.panel);
+      this.firstFocusableElement = this.focusableElements[0] || null;
+      this.lastFocusableElement = this.focusableElements[this.focusableElements.length - 1] || null;
+    },
+
+    /**
+     * Handle Tab key for focus cycling
+     */
+    handleFocusTrap(e) {
+      if (e.key !== 'Tab') return;
+
+      const { activeElement } = document;
+      
+      // If no focusable elements, prevent Tab
+      if (!this.firstFocusableElement || !this.lastFocusableElement) {
+        e.preventDefault();
+        return;
+      }
+
+      // Shift + Tab: move to previous element
+      if (e.shiftKey) {
+        if (activeElement === this.firstFocusableElement) {
+          e.preventDefault();
+          this.lastFocusableElement.focus();
+        }
+      } else {
+        // Tab: move to next element
+        if (activeElement === this.lastFocusableElement) {
+          e.preventDefault();
+          this.firstFocusableElement.focus();
+        }
+      }
+    },
+
+    /**
+     * Open mobile menu with focus trap
+     */
+    open() {
+      const { panel, overlay, toggle, body } = this.elements;
+      
+      if (!panel || !overlay) return;
+
+      // Save the currently focused element to restore later
+      this.previousActiveElement = document.activeElement;
+
+      // Show panel with slide-in animation
+      panel.classList.remove('-translate-x-full');
+      panel.setAttribute('aria-hidden', 'false');
+
+      // Show overlay
+      overlay.classList.remove('hidden');
+
+      // Prevent body scroll
+      body.classList.add('overflow-hidden');
+
+      // Update toggle button state
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-pressed', 'true');
+      }
+
+      // Build focus trap
+      this.buildFocusTrap();
+
+      // Focus the first menu item for better UX (or close button if no menu items)
+      if (this.firstFocusableElement) {
+        this.firstFocusableElement.focus();
+      } else {
+        this.elements.closeBtn?.focus();
+      }
+
+      // Set up focus trap handler
+      this.focusTrapHandler = this.handleFocusTrap.bind(this);
+      this.elements.panel.addEventListener('keydown', this.focusTrapHandler);
+
+      this.isOpen = true;
+    },
+
+    /**
+     * Close mobile menu and restore focus
+     */
+    close() {
+      const { panel, overlay, toggle, body } = this.elements;
+      
+      if (!panel || !overlay) return;
+
+      // Hide panel with slide-out animation
+      panel.classList.add('-translate-x-full');
+      panel.setAttribute('aria-hidden', 'true');
+
+      // Hide overlay
+      overlay.classList.add('hidden');
+
+      // Restore body scroll
+      body.classList.remove('overflow-hidden');
+
+      // Update toggle button state
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-pressed', 'false');
+      }
+
+      // Remove focus trap handler
+      if (this.focusTrapHandler && panel) {
+        panel.removeEventListener('keydown', this.focusTrapHandler);
+        this.focusTrapHandler = null;
+      }
+
+      // Clear focus trap state
+      this.focusableElements = [];
+      this.firstFocusableElement = null;
+      this.lastFocusableElement = null;
+
+      // Restore focus to the element that opened the menu
+      if (this.previousActiveElement && this.previousActiveElement.focus) {
+        this.previousActiveElement.focus();
+      } else if (toggle) {
+        toggle.focus();
+      }
+
+      this.isOpen = false;
+    }
+  };
+
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => Search.init());
+    document.addEventListener('DOMContentLoaded', () => {
+      Search.init();
+      MobileMenu.init();
+    });
   } else {
     Search.init();
+    MobileMenu.init();
   }
 
 })();
