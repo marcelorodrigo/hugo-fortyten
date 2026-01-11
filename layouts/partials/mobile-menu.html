@@ -1,0 +1,113 @@
+{{- /*
+Renders the mobile menu panel with slide-in animation.
+
+This partial renders the mobile menu overlay, panel, and treeview navigation.
+It should be included outside any hidden containers to ensure proper visibility.
+
+@context {page} page The current page.
+@context {string} menuID The menu ID.
+
+@example: {{ partial "mobile-menu.html" (dict "menuID" "main" "page" .) }}
+*/}}
+
+{{- $page := .page }}
+{{- $menuID := .menuID }}
+
+{{- with index site.Menus $menuID }}
+
+  <!-- MOBILE MENU OVERLAY (backdrop) -->
+  <div id="mobile-menu-overlay" 
+       class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300" 
+       aria-hidden="true"
+       role="presentation"></div>
+  
+  <!-- MOBILE MENU PANEL (slide-in from left) -->
+  <aside id="mobile-menu-panel" 
+         class="fixed top-0 left-0 h-full w-72 bg-white z-50 
+                transform -translate-x-full transition-transform duration-300 ease-in-out
+                overflow-y-auto shadow-xl"
+         aria-label="Mobile navigation"
+         aria-hidden="true"
+         role="navigation">
+    
+    <!-- Close button -->
+    <div class="flex justify-end p-4 border-b border-orange-100">
+      <button 
+        id="mobile-menu-close" 
+        type="button"
+        class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+        aria-label="Close menu"
+      >
+        <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
+      </button>
+    </div>
+    
+    <!-- Mobile menu content (treeview - all expanded) -->
+    <nav class="p-4">
+      <ul class="space-y-1">
+        {{- /* Render all top-level items with children expanded */ -}}
+        {{- range . }}
+          {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" 0) }}
+        {{- end }}
+      </ul>
+    </nav>
+  </aside>
+
+{{- end }}
+
+{{- define "partials/inline/mobile-menu/item.html" }}
+  {{- $page := .page }}
+  {{- $item := .item }}
+  {{- $level := .level }}
+  {{- $hasChildren := gt (len $item.Children) 0 }}
+  
+  {{- /* Calculate indentation based on nesting level */ -}}
+  {{- $paddingClass := "" }}
+  {{- if eq $level 1 }}
+    {{- $paddingClass = "pl-4" }}
+  {{- else if eq $level 2 }}
+    {{- $paddingClass = "pl-8" }}
+  {{- else if ge $level 3 }}
+    {{- $paddingClass = "pl-12" }}
+  {{- end }}
+  
+  <li>
+    {{- if $hasChildren }}
+      {{- /* Parent item with children - render as header with link if URL exists */ -}}
+      {{- if $item.URL }}
+        <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
+          {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
+        >
+          {{- with $item.Params.icon }}
+            <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+          {{- end }}
+          {{ $item.Name }}
+        </a>
+      {{- else }}
+        <div class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
+          {{- with $item.Params.icon }}
+            <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+          {{- end }}
+          <span>{{ $item.Name }}</span>
+        </div>
+      {{- end }}
+      
+      {{- /* Render children (always expanded) */ -}}
+      <ul class="space-y-1">
+        {{- range $item.Children }}
+          {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" (add $level 1)) }}
+        {{- end }}
+      </ul>
+    {{- else }}
+      {{- /* Leaf item - render as link */ -}}
+      <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}"
+        {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page" class="text-sky-700 font-bold"{{ end -}}
+      >
+        {{- with $item.Params.icon }}
+          <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+        {{- end }}
+        {{ $item.Name }}
+      </a>
+    {{- end }}
+  </li>
+{{- end }}
