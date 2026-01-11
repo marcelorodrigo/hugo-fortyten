@@ -61,15 +61,15 @@ window.ThemeUtilities = {
   },
 
   /**
-   * Escape HTML to prevent XSS attacks
-   * 
-   * @param {string} text - Text to escape
-   * @returns {string} - Escaped HTML string
-   */
-  escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
+    * Escape HTML to prevent XSS attacks
+    * 
+    * @param {string|number|boolean} text - Text to escape (handles strings, numbers, booleans, etc.)
+    * @returns {string} - Escaped HTML string
+    */
+   escapeHtml(text) {
+     if (text === null || text === undefined) return '';
+     const div = document.createElement('div');
+     div.textContent = text;
+     return div.innerHTML;
+   }
 };
