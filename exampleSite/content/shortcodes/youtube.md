@@ -2,6 +2,10 @@
 title: "YouTube Shortcode"
 description: "Embed YouTube videos with Hugo's native shortcode"
 slug: "youtube"
+tags:
+  - "shortcode"
+  - "youtube"
+date: 2026-01-09T12:00:00Z
 ---
 
 ## Overview

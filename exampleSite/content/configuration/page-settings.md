@@ -2,6 +2,8 @@
 title: "Page Settings"
 description: "Configure individual pages with title, images, search behavior, and more"
 slug: "page-settings"
+tags: ["configuration", "settings"]
+date: 2026-01-10T12:00:00Z
 ---
 
 ## Overview

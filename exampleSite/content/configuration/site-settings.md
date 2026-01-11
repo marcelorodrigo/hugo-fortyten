@@ -3,6 +3,8 @@ title: "Site Settings"
 description: "Configure your FortyTen site with essential settings like title, theme, base URL, and favicons"
 draft: false
 slug: "site-settings"
+tags: ["configuration", "settings"]
+date: 2026-01-09T12:00:00Z
 ---
 
 ## Overview

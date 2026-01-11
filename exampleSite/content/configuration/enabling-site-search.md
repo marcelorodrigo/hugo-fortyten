@@ -2,6 +2,8 @@
 title: "Enabling Site Search"
 description: "Enable and configure the built-in site search functionality in FortyTen"
 slug: "enabling-site-search"
+tags: ["configuration", "settings"]
+date: 2026-01-11T12:00:00Z
 ---
 
 ## Overview
