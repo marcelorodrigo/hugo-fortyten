@@ -103,11 +103,11 @@ Alpine.js Implementation Notes:
   
    <li>
      {{- if $hasChildren }}
-       {{- /* Parent item with children - render as header with link if URL exists */ -}}
-       {{- if $item.URL }}
-         <a href="{{ $item.URL }}" role="treeitem" :aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
-           {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
-         >
+        {{- /* Parent item with children - render as header with link if URL exists */ -}}
+        {{- if $item.URL }}
+          <a href="{{ $item.URL }}" role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
+            {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
+          >
            {{- with $item.Params.icon }}
              <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
            {{- end }}
@@ -115,7 +115,7 @@ Alpine.js Implementation Notes:
            <ion-icon name="chevron-down" class="ml-auto text-sm flex-shrink-0" aria-hidden="true"></ion-icon>
          </a>
        {{- else }}
-         <div role="treeitem" :aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
+          <div role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
            {{- with $item.Params.icon }}
              <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
            {{- end }}
