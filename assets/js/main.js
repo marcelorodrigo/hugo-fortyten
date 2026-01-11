@@ -544,8 +544,12 @@
       // Build focus trap
       this.buildFocusTrap();
 
-      // Focus the close button for accessibility
-      this.elements.closeBtn?.focus();
+      // Focus the first menu item for better UX (or close button if no menu items)
+      if (this.firstFocusableElement) {
+        this.firstFocusableElement.focus();
+      } else {
+        this.elements.closeBtn?.focus();
+      }
 
       // Set up focus trap handler
       this.focusTrapHandler = this.handleFocusTrap.bind(this);
