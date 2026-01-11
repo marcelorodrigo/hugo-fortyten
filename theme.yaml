@@ -15,6 +15,8 @@ tags:
   - 'dark'
   - 'light'
   - 'tailwindcss'
+  - 'alpinejs'
+  - 'search'
 features:
   - 'favicon'
   - 'responsive design'
@@ -28,6 +30,7 @@ features:
   - 'post excerpts'
   - 'SEO friendly'
   - 'performance optimized'
+  - 'search'
 author:
   name: 'Marcelo Rodrigo'
   homepage: 'https://marcelorodrigo.com'
