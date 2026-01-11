@@ -100,8 +100,8 @@ It should be included outside any hidden containers to ensure proper visibility.
       </ul>
     {{- else }}
       {{- /* Leaf item - render as link */ -}}
-      <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}"
-        {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page" class="text-sky-700 font-bold"{{ end -}}
+      <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}{{ if $page.IsMenuCurrent $item.Menu $item }} text-sky-700 font-bold{{ end }}"
+        {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
       >
         {{- with $item.Params.icon }}
           <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
