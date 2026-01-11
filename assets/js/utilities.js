@@ -1,8 +1,15 @@
 /**
  * Hugo FortyTen Theme - Utility Functions
  * 
- * Pure utility functions for search, sorting, and HTML escaping.
+ * Collection of utility functions for search, sorting, and HTML escaping.
  * No dependencies on Alpine.js or other frameworks.
+ * 
+ * Pure Functions:
+ * - fuzzySearch(query, items): Searches and scores items by relevance
+ * - sortByDate(items): Sorts items by date (newest first)
+ * 
+ * DOM-Dependent Functions:
+ * - escapeHtml(text): Uses document.createElement() for XSS prevention via browser's HTML parser
  */
 
 window.ThemeUtilities = {
