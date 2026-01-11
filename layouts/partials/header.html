@@ -20,14 +20,14 @@
                 </h1>
             </div>
             
-            <!-- Right side: Desktop menu + Search (visible on lg+) + Search on mobile -->
+            <!-- Right side: Search (on mobile only) + Desktop menu and search (on lg+) -->
             <div class="flex items-center gap-4">
-                <!-- Search button (visible on all screen sizes if enabled) -->
+                <!-- Search button on mobile (hidden on lg+) -->
                 {{- if site.Params.enable_site_search }}
                 <button 
                   type="button" 
                   id="search-button" 
-                  class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  class="lg:hidden text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   aria-label="Open search"
                   title="Search (Ctrl+K or Cmd+K)"
                 >
@@ -35,9 +35,22 @@
                 </button>
                 {{- end }}
                 
-                <!-- Desktop menu (hidden on mobile, visible on lg+) -->
+                <!-- Desktop menu and search (hidden on mobile, visible on lg+) -->
                 <div class="hidden lg:flex lg:items-center lg:gap-6">
                     {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+                    
+                    <!-- Search button on desktop (after menu) -->
+                    {{- if site.Params.enable_site_search }}
+                    <button 
+                      type="button" 
+                      id="search-button-desktop" 
+                      class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      aria-label="Open search"
+                      title="Search (Ctrl+K or Cmd+K)"
+                    >
+                      <ion-icon name="search" class="text-xl" aria-hidden="true"></ion-icon>
+                    </button>
+                    {{- end }}
                 </div>
             </div>
         </div>

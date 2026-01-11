@@ -34,17 +34,17 @@
     /**
      * Cache DOM elements for performance
      */
-    cacheElements() {
-      this.elements = {
-        button: document.getElementById('search-button'),
-        dialog: document.getElementById('search-modal'),
-        input: document.getElementById('search-input'),
-        closeBtn: document.getElementById('search-close'),
-        results: document.getElementById('search-results'),
-        noResults: document.getElementById('search-no-results'),
-        loading: document.getElementById('search-loading')
-      };
-    },
+     cacheElements() {
+       this.elements = {
+         button: document.getElementById('search-button') || document.getElementById('search-button-desktop'),
+         dialog: document.getElementById('search-modal'),
+         input: document.getElementById('search-input'),
+         closeBtn: document.getElementById('search-close'),
+         results: document.getElementById('search-results'),
+         noResults: document.getElementById('search-no-results'),
+         loading: document.getElementById('search-loading')
+       };
+     },
 
     /**
      * Bind event listeners
