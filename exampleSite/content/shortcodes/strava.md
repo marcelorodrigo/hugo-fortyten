@@ -30,32 +30,32 @@ Perfect for fitness bloggers, athletes, and anyone sharing their Strava accompli
 
 Embed using the numeric activity ID:
 
-```
-{{&lt; strava "182316148" >}}
+```html
+{{</* strava "182316148" */>}}
 ```
 
 ### With Strava URL
 
 Paste the full Strava activity URL (ID is auto-extracted):
 
-```
-{{&lt; strava "https://www.strava.com/activities/182316148" >}}
+```html
+{{</* strava "https://www.strava.com/activities/182316148" */>}}
 ```
 
 ### Named Parameter
 
 Use the `id` parameter explicitly:
 
-```
-{{&lt; strava id="182316148" >}}
+```html
+{{</* strava id="182316148" */>}}
 ```
 
 ### With Style
 
 Specify embed style:
 
-```
-{{&lt; strava id="182316148" style="standard" >}}
+```html
+{{</* strava id="182316148" style="standard" */>}}
 ```
 
 ## Finding Your Activity ID
@@ -78,10 +78,10 @@ Specify embed style:
 
 All of these work the same way:
 
-```
-{{&lt; strava "182316148" >}}
-{{&lt; strava "https://www.strava.com/activities/182316148" >}}
-{{&lt; strava "https://www.strava.com/activities/182316148/" >}}
+```html
+{{</* strava "182316148" */>}}
+{{</* strava "https://www.strava.com/activities/182316148" */>}}
+{{</* strava "https://www.strava.com/activities/182316148/" */>}}
 ```
 
 All extract the numeric ID and produce identical output.

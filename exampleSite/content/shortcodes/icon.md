@@ -24,38 +24,43 @@ FortyTen loads Ionicons via CDN, so icons render instantly without requiring any
 | `aria-hidden` | string | No | — | Set to "true" to hide icon from screen readers (for decorative icons) |
 | `aria-label` | string | No | — | Descriptive text for screen readers. Required when icon has semantic meaning |
 
+## Available Icons
+
+Browse the complete list at [ionicons.com](https://ionicons.com).
+
+
 ## Basic Usage
 
 ### Simple Icon
 
 Display a single icon by name:
 
-```
-{{ icon name="search" }}
+```html
+{{</* icon name="search" */>}}
 ```
 
 ### Icon with Size
 
 Adjust icon size to "small" or "large":
 
-```
-{{ icon name="menu" size="large" }}
+```html
+{{</* icon name="menu" size="large" */>}}
 ```
 
 ### Icon as a Link
 
 Make an icon clickable with a URL:
 
-```
-{{ icon name="github" link="https://github.com/yourprofile" }}
+```html
+{{</* icon name="github" link="https://fortyten.marcelorodrigo.com" */>}}
 ```
 
 ### Icon Link with Target
 
 Open link in new tab:
 
-```
-{{ icon name="external-link" link="https://example.com" target="_blank" }}
+```html
+{{</* icon name="external-link" target="_blank" link="https://marcelorodrigo.com" */>}}
 ```
 
 ## Advanced Examples
@@ -64,51 +69,45 @@ Open link in new tab:
 
 Create a row of social icons:
 
-```
-{{ icon name="github" link="https://github.com" aria-label="GitHub" }}
-{{ icon name="twitter" link="https://twitter.com" aria-label="Twitter" }}
-{{ icon name="linkedin" link="https://linkedin.com" aria-label="LinkedIn" }}
+```html
+{{</* icon name="github" link="https://github.com" aria-label="GitHub" */>}}
+{{</* icon name="twitter" link="https://twitter.com" aria-label="Twitter" */>}}
+{{</* icon name="linkedin" link="https://linkedin.com" aria-label="LinkedIn" */>}}
 ```
 
 ### Accessible Icon with Label
 
 Provide context for assistive technologies:
 
-```
-{{ icon name="download" link="/resume.pdf" aria-label="Download my resume" }}
+```html
+{{</* icon name="download" link="/resume.pdf" aria-label="Download my resume" */>}}
 ```
 
 ### Decorative Icon
 
 Hide from screen readers when text provides context:
 
+```html
+Search {{</* icon name="search" aria-hidden="true" */>}}
 ```
-Search {{ icon name="search" aria-hidden="true" }}
-```
-
-## Available Icons
-
-Browse the complete list at [ionicons.com](https://ionicons.com).
-
-Common icon names: `menu`, `close`, `github`, `twitter`, `linkedin`, `search`, `download`, `heart`, `star`, `settings`, `home`, and many more.
 
 ## Accessibility Considerations
 
 ### Screen Reader Support
 
 1. **Semantic Icons** — Provide an `aria-label`:
-   ```
-   {{ icon name="download" aria-label="Download" }}
+   ```html
+   {{</* icon name="download" aria-label="Download" */>}}
    ```
 
 2. **Decorative Icons** — Hide with `aria-hidden="true"` when text provides context:
-   ```
-   {{ icon name="star" aria-hidden="true" }} Favorite
+   ```html
+   {{</* icon name="star" aria-hidden="true" */>}} Favorite
    ```
 
 3. **Icon Links** — Always include an accessible label:
-   ```
-   {{ icon name="github" link="..." aria-label="Visit GitHub" }}
+   ```html
+   {{</* icon name="github" link="https://fortyten.marcelorodrigo.com" aria-label="Visit FortyTen" */>}}
    ```
 
 ### WCAG Compliance
@@ -119,22 +118,3 @@ This shortcode follows WCAG 2.1 Level AA standards with keyboard navigation and 
 
 1. Always add `aria-label` to linked icons
 2. Use `aria-hidden="true"` for purely decorative icons
-3. Keep icon purposes clear and consistent
-4. Test with screen readers to verify accessibility
-
-## Common Patterns
-
-### Social Links Footer
-
-```
-Follow us:
-{{ icon name="github" link="https://github.com" aria-label="GitHub" }}
-{{ icon name="twitter" link="https://twitter.com" aria-label="Twitter" }}
-{{ icon name="linkedin" link="https://linkedin.com" aria-label="LinkedIn" }}
-```
-
-### Download Link
-
-```
-{{ icon name="download" link="/app.zip" aria-label="Download application" }}
-```

@@ -65,30 +65,30 @@ Usage: `{{&lt; youtube 0RKpf3rK57I &gt;}}`
 
 ### Creating a Social Link Bar
 
-```
-{{&lt; icon name="github" link="https://github.com/yourprofile" aria-label="GitHub" &gt;}}
-{{&lt; icon name="twitter" link="https://twitter.com/yourprofile" aria-label="Twitter" &gt;}}
-{{&lt; icon name="linkedin" link="https://linkedin.com/in/yourprofile" aria-label="LinkedIn" &gt;}}
+```html
+{{</* icon name="github" link="https://github.com/yourprofile" aria-label="GitHub" */>}}
+{{</* icon name="twitter" link="https://twitter.com/yourprofile" aria-label="Twitter" */>}}
+{{</* icon name="linkedin" link="https://linkedin.com/in/yourprofile" aria-label="LinkedIn" */>}}
 ```
 
 ### Embedding a Responsive Video
 
-```
-{{&lt; youtube id="0RKpf3rK57I" responsive="true" &gt;}}
+```html
+{{</* youtube id="0RKpf3rK57I" responsive="true" */>}}
 ```
 
 ### Showcasing a Fitness Activity
 
-```
+```html
 Check out my recent run:
 
-{{&lt; strava id="182316148" &gt;}}
+{{</* strava id="182316148" */>}}
 ```
 
 ### Embedding External Content
 
-```
-{{&lt; iframe src="https://dashboard.example.com" title="Analytics Dashboard" responsive="true" sandbox="allow-scripts allow-same-origin" &gt;}}
+```html
+{{</* iframe src="https://dashboard.example.com" title="Analytics Dashboard" responsive="true" sandbox="allow-scripts allow-same-origin" */>}}
 ```
 
 ---

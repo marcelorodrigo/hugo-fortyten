@@ -25,32 +25,37 @@ It's perfect for embedding third-party content while maintaining security and en
 | `responsive` | string | No | — | Set to "true" for responsive 16:9 aspect ratio |
 | `sandbox` | string | No | — | Space-separated sandbox restrictions |
 
+## Example
+This iframe renders the page at example.org with a height of 240 pixels.
+
+{{< iframe src="https://example.org" title="Example.org" height="240" >}}
+
 ## Basic Usage
 
 ### Simple Embed with Fixed Dimensions
 
-```
-{{ iframe "https://example.com" "800" "600" "Example Site" }}
+```html
+{{</* iframe "https://example.org" "800" "600" "Example Site" */>}}
 ```
 
 ### Named Parameters (Recommended)
 
-```
-{{ iframe src="https://example.com" title="Example Site" }}
+```html
+{{</* iframe src="https://example.org" title="Example Site" */>}}
 ```
 
 ### Responsive Embed
 
 Perfect for videos and flexible content:
 
-```
-{{ iframe src="https://example.com" title="Content" responsive="true" }}
+```html
+{{</* iframe src="https://example.org" title="Content" responsive="true" */>}}
 ```
 
 ### With Security Sandbox
 
-```
-{{ iframe src="https://example.com" title="Safe" sandbox="allow-scripts" }}
+```html
+{{</* iframe src="https://example.org" title="Safe" sandbox="allow-scripts" */>}}
 ```
 
 ## Special Features
