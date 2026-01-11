@@ -22,10 +22,11 @@ Alpine.js Implementation Notes:
 {{- with index site.Menus $menuID }}
 
 <!-- Mobile Menu Container (Alpine.js component) -->
-<div x-data="{ isOpen: false, open() { this.isOpen = true; document.body.classList.add('overflow-hidden'); this.$nextTick(() => this.$refs.closeBtn?.focus()); }, close() { this.isOpen = false; document.body.classList.remove('overflow-hidden'); document.getElementById('mobile-menu-toggle')?.focus(); }, toggle() { this.isOpen ? this.close() : this.open(); } }" 
-x-init="(() => { const handler = () => { if (window.innerWidth >= 1024 && this.isOpen) this.close(); }; window.addEventListener('resize', handler); return () => window.removeEventListener('resize', handler); })()"
-@keydown.escape.window="isOpen && close()"
-@mobile-menu-toggle.window="toggle()">
+<div id="mobile-menu"
+     x-data="{ isOpen: false, open() { this.isOpen = true; document.body.classList.add('overflow-hidden'); this.$nextTick(() => this.$refs.closeBtn?.focus()); }, close() { this.isOpen = false; document.body.classList.remove('overflow-hidden'); document.getElementById('mobile-menu-toggle')?.focus(); }, toggle() { this.isOpen ? this.close() : this.open(); } }" 
+     x-init="(() => { const handler = () => { if (window.innerWidth >= 1024 && this.isOpen) this.close(); }; window.addEventListener('resize', handler); return () => window.removeEventListener('resize', handler); })()"
+     @keydown.escape.window="isOpen && close()"
+     @mobile-menu-toggle.window="toggle()">
 
   <!-- MOBILE MENU OVERLAY (backdrop with fade transition) -->
   <div x-show="isOpen"
