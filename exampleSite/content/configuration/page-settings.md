@@ -4,6 +4,7 @@ description: "Configure individual pages with title, images, search behavior, an
 slug: "page-settings"
 tags: ["configuration", "settings"]
 date: 2026-01-10T12:00:00Z
+image: "https://images.unsplash.com/photo-1554757387-2a28855c78fb?q=80"
 ---
 
 ## Overview

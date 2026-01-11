@@ -2,6 +2,7 @@
 title: "YouTube Shortcode"
 description: "Embed YouTube videos with Hugo's native shortcode"
 slug: "youtube"
+image: "https://images.unsplash.com/photo-1637806631554-bcfe2c618058?q=80"
 tags:
   - "shortcode"
   - "youtube"

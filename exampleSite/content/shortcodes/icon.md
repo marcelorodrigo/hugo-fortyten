@@ -5,6 +5,8 @@ slug: "icon"
 tags:
     - shortcode
     - icon
+date: 2026-01-11T12:00:00Z
+image: "https://images.unsplash.com/photo-1615031465602-20f3ff3ca279?q=80"
 ---
 
 ## Overview

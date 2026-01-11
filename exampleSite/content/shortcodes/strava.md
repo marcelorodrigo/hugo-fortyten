@@ -3,6 +3,7 @@ title: "Strava Shortcode"
 description: "Embed Strava activity cards to showcase fitness activities"
 slug: "strava"
 date: 2026-01-11T12:00:00Z
+image: "https://images.unsplash.com/photo-1607109254266-c03207907d81?q=80"
 tags:
   - shortcode
   - strava

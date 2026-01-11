@@ -2,6 +2,8 @@
 title: "iframe Shortcode"
 description: "Embed external content with responsive sizing and security controls"
 slug: "iframe"
+date: 2026-01-11T12:00:00Z
+image: "https://images.unsplash.com/photo-1508004680771-708b02aabdc0?q=80"
 tags:
     - shortcode
     - iframe

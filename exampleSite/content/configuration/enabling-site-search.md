@@ -4,6 +4,7 @@ description: "Enable and configure the built-in site search functionality in For
 slug: "enabling-site-search"
 tags: ["configuration", "settings"]
 date: 2026-01-11T12:00:00Z
+image: "https://images.unsplash.com/photo-1674027326476-3ea3cbf7b9be?q=80"
 ---
 
 ## Overview

@@ -4,6 +4,7 @@ description: "Get started with FortyTen theme - installation and configuration g
 date: 2026-01-09T12:00:00Z
 draft: false
 tags: ["setup", "configuration"]
+image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80"
 ---
 
 ## Quick Start

@@ -4,6 +4,7 @@ description: "Configure your FortyTen site with essential settings like title, t
 draft: false
 slug: "site-settings"
 tags: ["configuration", "settings"]
+image: "https://images.unsplash.com/photo-1609097828576-3b620e86039e?q=80"
 date: 2026-01-09T12:00:00Z
 ---
 
