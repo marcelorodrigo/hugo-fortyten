@@ -1,8 +1,14 @@
 {{- /*
-Renders the mobile menu panel with slide-in animation.
+Renders the mobile menu panel with slide-in animation using Alpine.js.
 
 This partial renders the mobile menu overlay, panel, and treeview navigation.
 It should be included outside any hidden containers to ensure proper visibility.
+
+Alpine.js Implementation Notes:
+- Uses inline x-data for component state and methods
+- Resize listener is properly initialized and cleaned up in x-init
+- The x-init function returns a cleanup function that removes the listener when the component is destroyed
+- This prevents memory leaks from multiple listener registrations
 
 @context {page} page The current page.
 @context {string} menuID The menu ID.
@@ -15,43 +21,67 @@ It should be included outside any hidden containers to ensure proper visibility.
 
 {{- with index site.Menus $menuID }}
 
-  <!-- MOBILE MENU OVERLAY (backdrop) -->
-  <div id="mobile-menu-overlay" 
-       class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300" 
+<!-- Mobile Menu Container (Alpine.js component) -->
+<div id="mobile-menu"
+     x-data="{ isOpen: false, open() { this.isOpen = true; document.body.classList.add('overflow-hidden'); this.$nextTick(() => this.$refs.closeBtn?.focus()); }, close() { this.isOpen = false; document.body.classList.remove('overflow-hidden'); document.getElementById('mobile-menu-toggle')?.focus(); }, toggle() { this.isOpen ? this.close() : this.open(); } }" 
+     x-init="(() => { const handler = () => { if (window.innerWidth >= 1024 && this.isOpen) this.close(); }; window.addEventListener('resize', handler); return () => window.removeEventListener('resize', handler); })()"
+     @keydown.escape.window="isOpen && close()"
+     @mobile-menu-toggle.window="toggle()">
+
+  <!-- MOBILE MENU OVERLAY (backdrop with fade transition) -->
+  <div x-show="isOpen"
+       x-transition:enter="transition-opacity ease-out duration-300"
+       x-transition:enter-start="opacity-0"
+       x-transition:enter-end="opacity-100"
+       x-transition:leave="transition-opacity ease-in duration-300"
+       x-transition:leave-start="opacity-100"
+       x-transition:leave-end="opacity-0"
+       @click="close()"
+       class="fixed inset-0 bg-black/50 z-40" 
        aria-hidden="true"
-       role="presentation"></div>
+       role="presentation"
+       x-cloak></div>
   
   <!-- MOBILE MENU PANEL (slide-in from left) -->
-  <aside id="mobile-menu-panel" 
+  <aside x-show="isOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="-translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-300"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="-translate-x-full"
          class="fixed top-0 left-0 h-full w-72 bg-white z-50 
-                transform -translate-x-full transition-transform duration-300 ease-in-out
-                overflow-y-auto shadow-xl"
+                transform overflow-y-auto shadow-xl"
          aria-label="Mobile navigation"
-         aria-hidden="true"
-         role="navigation">
+         :aria-hidden="!isOpen"
+         role="navigation"
+         x-cloak>
+     
+     <!-- Header: Close button only -->
+     <div class="flex justify-end p-4 border-b border-orange-100">
+       <button 
+         x-ref="closeBtn"
+         type="button"
+         @click="close()"
+         class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+         aria-label="Close menu"
+       >
+         <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
+       </button>
+     </div>
     
-    <!-- Close button -->
-    <div class="flex justify-end p-4 border-b border-orange-100">
-      <button 
-        id="mobile-menu-close" 
-        type="button"
-        class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
-        aria-label="Close menu"
-      >
-        <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
-      </button>
-    </div>
-    
-    <!-- Mobile menu content (treeview - all expanded) -->
-    <nav class="p-4">
-      <ul class="space-y-1">
-        {{- /* Render all top-level items with children expanded */ -}}
-        {{- range . }}
-          {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" 0) }}
-        {{- end }}
-      </ul>
-    </nav>
+     <!-- Mobile menu content (treeview - all expanded) -->
+     <nav class="p-4" aria-label="Site navigation">
+       <ul class="space-y-1" role="tree">
+         {{- /* Render all top-level items with children expanded */ -}}
+         {{- range . }}
+           {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" 0) }}
+         {{- end }}
+       </ul>
+     </nav>
   </aside>
+  
+</div>
 
 {{- end }}
 
@@ -71,43 +101,45 @@ It should be included outside any hidden containers to ensure proper visibility.
     {{- $paddingClass = "pl-12" }}
   {{- end }}
   
-  <li>
-    {{- if $hasChildren }}
-      {{- /* Parent item with children - render as header with link if URL exists */ -}}
-      {{- if $item.URL }}
-        <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
-          {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
-        >
-          {{- with $item.Params.icon }}
-            <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
-          {{- end }}
-          {{ $item.Name }}
-        </a>
-      {{- else }}
-        <div class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
-          {{- with $item.Params.icon }}
-            <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
-          {{- end }}
-          <span>{{ $item.Name }}</span>
-        </div>
-      {{- end }}
-      
-      {{- /* Render children (always expanded) */ -}}
-      <ul class="space-y-1">
-        {{- range $item.Children }}
-          {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" (add $level 1)) }}
-        {{- end }}
-      </ul>
-    {{- else }}
-      {{- /* Leaf item - render as link */ -}}
-      <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}{{ if $page.IsMenuCurrent $item.Menu $item }} text-sky-700 font-bold{{ end }}"
-        {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
-      >
-        {{- with $item.Params.icon }}
-          <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
-        {{- end }}
-        {{ $item.Name }}
-      </a>
-    {{- end }}
-  </li>
+   <li>
+     {{- if $hasChildren }}
+        {{- /* Parent item with children - render as header with link if URL exists */ -}}
+        {{- if $item.URL }}
+          <a href="{{ $item.URL }}" role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
+            {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
+          >
+           {{- with $item.Params.icon }}
+             <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+           {{- end }}
+           {{ $item.Name }}
+           <ion-icon name="chevron-down" class="ml-auto text-sm flex-shrink-0" aria-hidden="true"></ion-icon>
+         </a>
+       {{- else }}
+          <div role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
+           {{- with $item.Params.icon }}
+             <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+           {{- end }}
+           <span>{{ $item.Name }}</span>
+           <ion-icon name="chevron-down" class="ml-auto text-sm flex-shrink-0" aria-hidden="true"></ion-icon>
+         </div>
+       {{- end }}
+       
+       {{- /* Render children (always expanded) */ -}}
+       <ul class="space-y-1" role="group">
+         {{- range $item.Children }}
+           {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" (add $level 1)) }}
+         {{- end }}
+       </ul>
+     {{- else }}
+       {{- /* Leaf item - render as link */ -}}
+       <a href="{{ $item.URL }}" role="treeitem" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}{{ if $page.IsMenuCurrent $item.Menu $item }} text-sky-700 font-bold{{ end }}"
+         {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
+       >
+         {{- with $item.Params.icon }}
+           <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+         {{- end }}
+         {{ $item.Name }}
+       </a>
+     {{- end }}
+   </li>
 {{- end }}
