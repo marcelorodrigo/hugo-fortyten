@@ -5,55 +5,23 @@ title: 'FortyTen Theme'
 menus:
   main:
     - identifier: 'home'
-      name: 'home'
+      name: 'Home'
       pageRef: '/'
-      weight: 10
-      params:
-        icon: 'home'
+      weight: 1
     - identifier: 'posts'
-      name: 'posts'
+      name: 'Posts'
       pageRef: '/posts'
-      weight: 20
+      weight: 2
     - identifier: 'tags'
       name: 'Tags'
       pageRef: '/tags'
-      weight: 30
-      params:
-        icon: 'pricetag'
+      weight: 3
     - identifier: 'about'
       name: 'About'
       pageRef: '/about'
-      weight: 40
-      params:
-        icon: 'person'
-    - name: 'Our Story'
-      pageRef: '/about/our-story'
-      parent: 'about'
-      weight: 41
-    - name: 'Our Team'
-      pageRef: '/about/team'
-      parent: 'about'
-      weight: 42
-      params:
-        icon: 'people'
-    - name: 'Marcelo Rodrigo'
-      url: 'https://marcelorodrigo.com'
-      parent: 'Our Team'
-      weight: 43
-      params:
-        icon: 'link'
+      weight: 4
 
 params:
-  author:
-    name: "Your Name"
-    email: "your-email@example.com"
-    bio: "A brief author biography or tagline."
-  footer:
-    content: This is my custom footer text.
-    showHugoCredit: true
-  postsPerPage: 9
-  # Enable site-wide search functionality
-  enable_site_search: true
 
 # Enable JSON output for search index (required when enable_site_search is true)
 outputs:
@@ -61,12 +29,3 @@ outputs:
     - HTML
     - RSS
     - JSON
-
-# Chroma syntax highlighting for orange theme
-markup:
-  highlight:
-    style: monokailight # Light style for base, will override with orange theme CSS
-    noClasses: false   # Use Chroma token classes so we can style them
-    tabWidth: 2
-    guessSyntax: true
-    lineNos: false
