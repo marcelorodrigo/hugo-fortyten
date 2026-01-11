@@ -1,67 +1,56 @@
 # Hugo FortyTen
 
-A free and open-source Hugo theme. Great for blogs and easy to customize. The theme is based on Tailwind CSS.
-
-It features responsive design and localization l10n support.
+A minimalist, responsive blog theme for Hugo built with Tailwind CSS.
 
 ## Features
 
-- Responsive Design
-- Localization l10n
+- **Dark mode** — automatic or manual theme switching with persistent preference
+- **Full-text search** — client-side fuzzy search with keyboard navigation
+- **Responsive design** — mobile-first approach that works on all devices
+- **Dark mode aware** — optimize images and prose styling for light and dark themes
+- **Localization (l10n)** — multi-language support ready
+- **Shortcodes** — custom components for icons, iframes, and Strava embeds
+- **Related posts** — intelligent post recommendations based on tags
+- **Tag taxonomy** — organize and filter content by tags
+- **SEO optimized** — meta tags, structured metadata, and sitemap support
+- **Alpine.js integration** — lightweight interactivity without heavy dependencies
+- **Typography plugin** — beautiful prose styling with Tailwind typography
 
-## Installation
+## Quick Start
 
-Given you already have git and hugo installed, run in your hugo project
+### Installation
 
 ```shell
 cd themes
 git clone https://github.com/marcelorodrigo/hugo-fortyten.git
 ```
 
-A folder `hugo-fortyten` should be available inside the `themes` directory .
+### Usage
 
-## Configuration
-
-The basic configuration is done on your `hugo.yaml` file
+Add to your `hugo.yaml`:
 
 ```yaml
 theme: "hugo-fortyten"
 ```
 
-## Development
+### Development
 
-### Project Structure
-
-This repository contains the theme and demo content:
-
-```
-hugo-fortyten/
-├── layouts/              # Theme templates
-├── assets/               # Theme styles and scripts
-├── static/               # Theme fonts and demo images
-├── content/              # Demo posts and pages
-├── tailwind.config.js    # Tailwind CSS configuration
-├── theme.yaml            # Theme metadata
-├── hugo.yaml             # Site configuration
-└── ...
-```
-
-### Local Development
-
-To preview the theme during development:
+Start the dev server:
 
 ```shell
 hugo server
 ```
 
-This starts a development server at `http://localhost:1313`.
-
-### Building
-
-To build the site for production:
+Build for production:
 
 ```shell
 hugo --minify
 ```
 
-The output will be in the `public/` directory.
+## Configuration
+
+The theme is configured via your `hugo.yaml` file. Customize author information, site metadata, menu structure, and search settings through standard Hugo configuration.
+
+## License
+
+Open source and free to use.

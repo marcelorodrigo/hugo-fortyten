@@ -30,7 +30,7 @@
                 </div>
                 
                 <!-- Search button on mobile (hidden on lg+) -->
-                {{- if site.Params.enable_site_search }}
+                {{- if site.Params.enableSiteSearch }}
                 <button 
                   id="search-mobile"
                   type="button" 
@@ -51,7 +51,7 @@
                     {{ partial "theme-toggle.html" . }}
                     
                     <!-- Search button on desktop (after menu) -->
-                    {{- if site.Params.enable_site_search }}
+                    {{- if site.Params.enableSiteSearch }}
                     <button 
                       id="search-desktop"
                       type="button" 

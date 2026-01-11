@@ -2,7 +2,7 @@
   {{ $page := . }}
   {{ with $page.Params.image }}
     <div class="relative w-full h-64 sm:h-80 rounded-lg border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden group flex flex-col justify-end">
-      <img src="{{ . }}" alt="{{ $page.Title }}" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" loading="lazy">
+      <img src="{{ . }}" alt="{{ $page.Title }}" class="absolute inset-0 w-full h-full object-cover grayscale-50 group-hover:grayscale-0 transition-all duration-300" loading="lazy">
       <div class="absolute inset-0 bg-gradient-to-b from-transparent to-white dark:to-gray-800 pointer-events-none"></div>
       
       <!-- Content overlay -->

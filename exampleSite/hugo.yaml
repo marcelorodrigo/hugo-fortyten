@@ -1,0 +1,71 @@
+baseURL: 'https://fortyten.marcelorodrigo.com'
+languageCode: 'en-us'
+title: 'FortyTen Theme'
+theme: 'fortyten'
+menus:
+  main:
+  - identifier: 'home'
+    name: 'Home'
+    url: '/'
+    weight: 1
+  - identifier: 'setup'
+    name: 'Setup'
+    url: '/setup'
+    weight: 2
+  - identifier: 'configuration'
+    name: 'Configuration'
+    weight: 3
+    url: '#'
+  - identifier: 'site-settings'
+    name: 'Site Settings'
+    url: '/configuration/site-settings'
+    parent: 'configuration'
+    weight: 1
+  - identifier: 'page-settings'
+    name: 'Page Settings'
+    url: '/configuration/page-settings'
+    parent: 'configuration'
+    weight: 2
+  - identifier: 'site-search'
+    name: 'Search'
+    url: '/configuration/enabling-site-search'
+    parent: 'configuration'
+    weight: 3
+  - identifier: 'shortcodes'
+    name: 'Shortcodes'
+    weight: 4
+    url: '#'
+  - identifier: 'icon-shortcode'
+    name: 'Icons'
+    url: '/shortcodes/icon'
+    parent: 'shortcodes'
+    weight: 1
+  - identifier: 'iframe-shortcode'
+    name: 'Iframe'
+    url: '/shortcodes/iframe'
+    parent: 'shortcodes'
+    weight: 2
+  - identifier: 'strava-shortcode'
+    name: 'Strava'
+    url: '/shortcodes/strava'
+    parent: 'shortcodes'
+    weight: 3
+  - identifier: 'youtube-shortcode'
+    name: 'YouTube'
+    url: '/shortcodes/youtube'
+    parent: 'shortcodes'
+    weight: 4
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+markup:
+  goldmark:
+    parser:
+      attribute:
+        block: true
+params:
+  description: "FortyTen is a modern, clean, and responsive Hugo theme designed for personal blogs and portfolios."
+  keywords: "Hugo, Theme, Blog, Portfolio, Responsive, Dark Mode, Search, SEO"
+  enableSiteSearch: true
