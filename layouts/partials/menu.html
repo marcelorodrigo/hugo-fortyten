@@ -60,7 +60,7 @@ Example:
   {{- $icon := $item.Params.icon }}
   {{- $iconSize := $item.Params.iconSize }}
   {{- if $page.IsMenuCurrent $item.Menu $item }}
-    {{- $attrs = merge $attrs (dict "class" "active font-bold text-sky-700" "aria-current" "page") }}
+    {{- $attrs = merge $attrs (dict "class" "active font-bold text-orange-600 dark:text-orange-400" "aria-current" "page") }}
   {{- else if $page.HasMenuCurrent $item.Menu $item }}
     {{- $attrs = merge $attrs (dict "class" "ancestor" "data-ancestor" "true") }}
   {{- end }}
@@ -76,7 +76,7 @@ Example:
   {{- $hasChildren := gt (len $item.Children) 0 }}
   
   <li class="relative group flex items-center gap-1">
-    <a class="text-md font-bold hover:text-sky-700 dark:hover:text-sky-400 transition ease-in-out flex items-center gap-1 py-2" title="{{ $name }}"
+    <a class="text-md font-bold hover:text-orange-600 dark:hover:text-orange-400 transition ease-in-out flex items-center gap-1 py-2" title="{{ $name }}"
       {{- range $k, $v := $attrs }}
         {{- with $v }}
           {{- printf " %s=%q" $k $v | safeHTMLAttr }}
@@ -103,7 +103,7 @@ Example:
   {{- range .children }}
     {{- $item := . }}
     <li class="relative group/submenu hover:bg-gray-100 dark:hover:bg-gray-700">
-      <a href="{{ .URL }}" class="block px-4 py-2 text-md font-bold text-gray-900 dark:text-gray-100 hover:text-sky-700 dark:hover:text-sky-400 transition ease-in-out flex items-center gap-1">
+      <a href="{{ .URL }}" class="block px-4 py-2 text-md font-bold text-gray-900 dark:text-gray-100 hover:text-orange-600 dark:hover:text-orange-400 transition ease-in-out flex items-center gap-1">
         {{- with .Params.icon }}
           <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block" aria-hidden="true"></ion-icon>
         {{- end }}
