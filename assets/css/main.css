@@ -32,3 +32,20 @@
     inset-block-end: auto;
   }
 }
+
+@layer utilities {
+  /* Prevent body scroll when mobile menu is open */
+  body.overflow-hidden {
+    overflow: hidden;
+  }
+
+  /* Smooth slide animation for mobile menu panel */
+  #mobile-menu-panel {
+    will-change: transform;
+  }
+
+  /* Smooth overlay fade */
+  #mobile-menu-overlay {
+    will-change: opacity;
+  }
+}

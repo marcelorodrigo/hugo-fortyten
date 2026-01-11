@@ -38,6 +38,7 @@ Example:
 
 {{- with index site.Menus $menuID }}
   
+  <!-- DESKTOP MENU (horizontal, visible on md and above) -->
   <nav aria-label="Main navigation" class="flex items-center gap-6">
     <ul class="flex flex-row space-x-6">
       {{- /* Only render items that have identifiers (top-level items) */ -}}
@@ -47,7 +48,7 @@ Example:
         {{- end }}
       {{- end }}
     </ul>
-    {{- /* Search button (only shown if site search is enabled) */ -}}
+    {{- /* Search button (only shown if site search is enabled, desktop only) */ -}}
     {{- if site.Params.enable_site_search }}
     <button 
       type="button" 
@@ -60,6 +61,44 @@ Example:
     </button>
     {{- end }}
   </nav>
+  
+  <!-- MOBILE MENU PANEL (slide-in from left, hidden on md and above) -->
+  <div id="mobile-menu-overlay" 
+       class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300" 
+       aria-hidden="true"
+       role="presentation"></div>
+  
+  <aside id="mobile-menu-panel" 
+         class="fixed top-0 left-0 h-full w-72 bg-white z-50 
+                transform -translate-x-full transition-transform duration-300 ease-in-out
+                overflow-y-auto shadow-xl"
+         aria-label="Mobile navigation"
+         aria-hidden="true"
+         role="navigation">
+    
+    <!-- Close button -->
+    <div class="flex justify-end p-4 border-b border-orange-100">
+      <button 
+        id="mobile-menu-close" 
+        type="button"
+        class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+        aria-label="Close menu"
+      >
+        <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
+      </button>
+    </div>
+    
+    <!-- Mobile menu content (treeview - all expanded) -->
+    <nav class="p-4">
+      <ul class="space-y-1">
+        {{- /* Render all items in mobile menu, including top-level items */ -}}
+        {{- range . }}
+          {{- partial "inline/menu/mobile-item.html" (dict "page" $page "item" . "level" 0) }}
+        {{- end }}
+      </ul>
+    </nav>
+  </aside>
+
 {{- end }}
 
 {{- define "partials/inline/menu/item.html" }}
@@ -129,4 +168,62 @@ Example:
       {{- end }}
     </li>
   {{- end }}
+{{- end }}
+
+{{- define "partials/inline/menu/mobile-item.html" }}
+  {{- $page := .page }}
+  {{- $item := .item }}
+  {{- $level := .level }}
+  {{- $hasChildren := gt (len $item.Children) 0 }}
+  
+  {{- $paddingClass := "" }}
+  {{- if eq $level 0 }}
+    {{- $paddingClass = "" }}
+  {{- else if eq $level 1 }}
+    {{- $paddingClass = "pl-4" }}
+  {{- else if eq $level 2 }}
+    {{- $paddingClass = "pl-8" }}
+  {{- else }}
+    {{- $paddingClass = "pl-12" }}
+  {{- end }}
+  
+  <li>
+    {{- if or (not $item.Identifier) $hasChildren }}
+      {{- /* Non-link parent or section header */ -}}
+      <div class="flex items-center gap-2 py-2 px-3 rounded {{ $paddingClass }}">
+        {{- with $item.Params.icon }}
+          <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+        {{- end }}
+        <span class="font-bold text-gray-900">{{ $item.Name }}</span>
+      </div>
+    {{- else }}
+      {{- /* Link item */ -}}
+      {{- $attrs := dict "href" $item.URL }}
+      {{- if $page.IsMenuCurrent $item.Menu $item }}
+        {{- $attrs = merge $attrs (dict "class" "active text-sky-700 font-bold" "aria-current" "page") }}
+      {{- end }}
+      
+      <a class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}"
+        {{- range $k, $v := $attrs }}
+          {{- with $v }}
+            {{- printf " %s=%q" $k $v | safeHTMLAttr }}
+          {{- end }}
+        {{- end -}}
+      >
+        {{- with $item.Params.icon }}
+          <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+        {{- end }}
+        {{ $item.Name }}
+      </a>
+    {{- end }}
+    
+    {{- /* Recursively render children (always expanded in mobile) */ -}}
+    {{- if $hasChildren }}
+      <ul class="space-y-1">
+        {{- range $item.Children }}
+          {{- partial "inline/menu/mobile-item.html" (dict "page" $page "item" . "level" (add $level 1)) }}
+        {{- end }}
+      </ul>
+    {{- end }}
+  </li>
 {{- end }}
