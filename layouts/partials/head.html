@@ -2,6 +2,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {{- /* Alpine.js cloak - prevents flash of unstyled content */ -}}
 <style>[x-cloak] { display: none !important; }</style>
+{{- /* Theme detection script - runs before any content renders to prevent FOUC */ -}}
+<script>
+  (function() {
+    var isDark = localStorage.theme === 'dark' ||
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', isDark);
+  })();
+</script>
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
 {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
 {{ with .Site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}

@@ -2,8 +2,8 @@
   <!-- Tags index page showing all tags as a cloud -->
   <div class="container mx-auto px-4 py-12 max-w-4xl">
     <div class="mb-12">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3">Explore Topics</h1>
-      <p class="text-lg text-gray-600">Discover all posts organized by topic. Larger tags indicate more posts in that category.</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-3">Explore Topics</h1>
+      <p class="text-lg text-gray-600 dark:text-gray-400">Discover all posts organized by topic. Larger tags indicate more posts in that category.</p>
     </div>
 
     {{ if site.Taxonomies.tags }}
@@ -17,31 +17,31 @@
 
         {{ range $sortedTags }}
           {{ $tagCount := .count }}
-          {{ $bgClass := "bg-orange-50" }}
+          {{ $bgClass := "bg-orange-50 dark:bg-orange-950" }}
           {{ if gt $tagCount 5 }}
-            {{ $bgClass = "bg-orange-100" }}
+            {{ $bgClass = "bg-orange-100 dark:bg-orange-900" }}
           {{ end }}
           {{ if gt $tagCount 10 }}
-            {{ $bgClass = "bg-orange-200" }}
+            {{ $bgClass = "bg-orange-200 dark:bg-orange-800" }}
           {{ end }}
           {{ if gt $tagCount 15 }}
-            {{ $bgClass = "bg-orange-300" }}
+            {{ $bgClass = "bg-orange-300 dark:bg-orange-700" }}
           {{ end }}
 
           <a 
             href="{{ (path.Join "tags" .name) | relURL }}" 
-            class="inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-all duration-200 whitespace-nowrap {{ $bgClass }} text-orange-900 hover:bg-orange-400 hover:shadow-lg hover:scale-110 text-base"
+            class="inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-all duration-200 whitespace-nowrap {{ $bgClass }} text-orange-900 dark:text-orange-100 hover:bg-orange-400 dark:hover:bg-orange-600 hover:shadow-lg hover:scale-110 text-base"
             rel="tag"
             aria-label="View {{ $tagCount }} post{{ if ne $tagCount 1 }}s{{ end }} tagged with {{ .name }}"
           >
             {{ .name }}
-            <span class="text-sm text-orange-700">({{ $tagCount }})</span>
+            <span class="text-sm text-orange-700 dark:text-orange-300">({{ $tagCount }})</span>
           </a>
         {{ end }}
       </div>
     {{ else }}
       <div class="text-center py-12">
-        <p class="text-gray-600 text-lg">No tags found yet.</p>
+        <p class="text-gray-600 dark:text-gray-400 text-lg">No tags found yet.</p>
       </div>
     {{ end }}
   </div>
