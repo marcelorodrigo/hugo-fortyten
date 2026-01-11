@@ -2,25 +2,6 @@ baseURL: 'https://fortyten.marcelorodrigo.com/'
 languageCode: 'en-US'
 title: 'FortyTen Theme'
 
-menus:
-  main:
-    - identifier: 'home'
-      name: 'Home'
-      pageRef: '/'
-      weight: 1
-    - identifier: 'posts'
-      name: 'Posts'
-      pageRef: '/posts'
-      weight: 2
-    - identifier: 'tags'
-      name: 'Tags'
-      pageRef: '/tags'
-      weight: 3
-    - identifier: 'about'
-      name: 'About'
-      pageRef: '/about'
-      weight: 4
-
 params:
 
 # Enable JSON output for search index (required when enable_site_search is true)

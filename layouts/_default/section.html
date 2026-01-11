@@ -1,0 +1,8 @@
+{{ define "main" }}
+  <div class="container mx-auto px-4 py-8 max-w-4xl bg-white dark:bg-gray-800 rounded-lg">
+    {{ partial "post-header.html" . }}
+    <article class="mx-auto prose dark:prose-invert prose-xl">
+      {{ .Content }}
+    </article>
+  </div>
+{{ end }}
