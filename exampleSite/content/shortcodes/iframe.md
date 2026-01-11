@@ -101,4 +101,4 @@ Screen readers announce: "iframe: Dashboard" — telling users the embedded cont
 1. **Always provide meaningful titles** — Describe the content clearly
 2. **Apply sandbox restrictions** — Use minimum permissions needed
 3. **Use fixed dimensions for dashboards** — Dashboards often need specific sizes
-4 **Test cross-origin content** — Verify loading and CORS permissions
+4. **Test cross-origin content** — Verify loading and CORS permissions
