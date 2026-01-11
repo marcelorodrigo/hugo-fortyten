@@ -15,7 +15,118 @@ Features:
 @context none (standalone partial)
 */ -}}
 
-<div x-data="{ searchIndex: null, query: '', results: [], selectedIndex: -1, isLoading: false, loadError: false, errorMessage: '', async open() { this.$refs.dialog.showModal(); this.$nextTick(() => this.$refs.input.focus()); if (!this.searchIndex && !this.loadError) { await this.loadSearchIndex(); } if (!this.query.trim() && this.searchIndex) { this.results = window.ThemeUtilities.sortByDate(this.searchIndex).slice(0, 10); } }, close() { this.$refs.dialog.close(); }, async loadSearchIndex() { this.isLoading = true; this.loadError = false; try { const response = await fetch('/index.json'); if (!response.ok) { throw new Error(`HTTP ${response.status}`); } this.searchIndex = await response.json(); } catch (error) { console.error('Failed to load search index:', error); this.loadError = true; this.errorMessage = 'Unable to load search. Please try again later.'; } finally { this.isLoading = false; } }, handleSearch() { if (!this.searchIndex) return; const trimmedQuery = this.query.trim(); if (trimmedQuery === '') { this.results = window.ThemeUtilities.sortByDate(this.searchIndex).slice(0, 10); } else { this.results = window.ThemeUtilities.fuzzySearch(trimmedQuery, this.searchIndex); } this.selectedIndex = -1; }, handleKeydown(event) { if (this.results.length === 0) return; switch(event.key) { case 'ArrowDown': event.preventDefault(); this.selectedIndex = Math.min(this.selectedIndex + 1, this.results.length - 1); this.scrollToSelected(); break; case 'ArrowUp': event.preventDefault(); this.selectedIndex = Math.max(this.selectedIndex - 1, -1); this.scrollToSelected(); break; case 'Enter': event.preventDefault(); if (this.selectedIndex >= 0) { window.location.href = this.results[this.selectedIndex].url; } break; } }, scrollToSelected() { if (this.selectedIndex < 0) return; this.$nextTick(() => { const items = this.$refs.resultsList.querySelectorAll('li[role=option]'); if (items[this.selectedIndex]) { items[this.selectedIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } }); }, isSelected(index) { return this.selectedIndex === index; } }" @search-toggle.window="open()">
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('searchModal', () => ({
+      searchIndex: null,
+      query: '',
+      results: [],
+      selectedIndex: -1,
+      isLoading: false,
+      loadError: false,
+      errorMessage: '',
+      async open() {
+        this.$refs.dialog.showModal();
+        this.$nextTick(() => this.$refs.input.focus());
+
+        if (!this.searchIndex && !this.loadError) {
+          await this.loadSearchIndex();
+        }
+
+        if (!this.query.trim() && this.searchIndex) {
+          this.results = window.ThemeUtilities
+            .sortByDate(this.searchIndex)
+            .slice(0, 10);
+        }
+      },
+      close() {
+        this.$refs.dialog.close();
+      },
+      async loadSearchIndex() {
+        this.isLoading = true;
+        this.loadError = false;
+
+        try {
+          const response = await fetch('/index.json');
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          this.searchIndex = await response.json();
+        } catch (error) {
+          console.error('Failed to load search index:', error);
+          this.loadError = true;
+          this.errorMessage = 'Unable to load search. Please try again later.';
+        } finally {
+          this.isLoading = false;
+        }
+      },
+      handleSearch() {
+        if (!this.searchIndex) return;
+
+        const trimmedQuery = this.query.trim();
+
+        if (trimmedQuery === '') {
+          this.results = window.ThemeUtilities
+            .sortByDate(this.searchIndex)
+            .slice(0, 10);
+        } else {
+          this.results = window.ThemeUtilities.fuzzySearch(
+            trimmedQuery,
+            this.searchIndex
+          );
+        }
+
+        this.selectedIndex = -1;
+      },
+      handleKeydown(event) {
+        if (this.results.length === 0) return;
+
+        switch (event.key) {
+          case 'ArrowDown':
+            event.preventDefault();
+            this.selectedIndex = Math.min(
+              this.selectedIndex + 1,
+              this.results.length - 1
+            );
+            this.scrollToSelected();
+            break;
+          case 'ArrowUp':
+            event.preventDefault();
+            this.selectedIndex = Math.max(this.selectedIndex - 1, -1);
+            this.scrollToSelected();
+            break;
+          case 'Enter':
+            event.preventDefault();
+            if (this.selectedIndex >= 0) {
+              window.location.href = this.results[this.selectedIndex].url;
+            }
+            break;
+        }
+      },
+      scrollToSelected() {
+        if (this.selectedIndex < 0) return;
+
+        this.$nextTick(() => {
+          const items = this.$refs.resultsList.querySelectorAll(
+            'li[role=option]'
+          );
+
+          if (items[this.selectedIndex]) {
+            items[this.selectedIndex].scrollIntoView({
+              block: 'nearest',
+              behavior: 'smooth'
+            });
+          }
+        });
+      },
+      isSelected(index) {
+        return this.selectedIndex === index;
+      }
+    }));
+  });
+</script>
+
+<div x-data="searchModal()" @search-toggle.window="open()">
   <dialog x-ref="dialog" 
           @click.self="close()"
           @close="query = ''; selectedIndex = -1; results = [];"
