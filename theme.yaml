@@ -1,6 +1,6 @@
 name: 'FortyTen'
 license: 'MIT'
-licenselink: 'https://github.com/marcelorodrigo/hugo-fortyten/LICENSE'
+licenselink: 'https://github.com/marcelorodrigo/hugo-fortyten/blob/master/LICENSE'
 description: 'FortyTen is a minimalist, responsive Hugo theme for personal blogs and developer portfolios, built with Tailwind CSS and supporting dark mode.'
 homepage: 'https://github.com/marcelorodrigo/hugo-fortyten'
 demosite: 'https://fortyten.marcelorodrigo.com'
