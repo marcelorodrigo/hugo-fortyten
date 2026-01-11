@@ -22,4 +22,3 @@
 {{ with .Site.Params.keywords }}<meta name="keywords" content="{{ . }}">{{ end }}
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}
-{{ if $.Page.Scratch.Get "includeStravaEmbed" }}<script src="https://strava-embeds.com/embed.js"></script>{{ end }}
