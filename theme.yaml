@@ -32,7 +32,7 @@ features:
   - 'performance optimized'
   - 'search'
 author:
-  name: 'Marcelo Rodrigo'
+  name: 'Marcelo Wiebbelling'
   homepage: 'https://marcelorodrigo.com'
 module:
   hugoVersion:
