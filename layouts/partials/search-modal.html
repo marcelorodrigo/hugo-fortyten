@@ -16,6 +16,9 @@ Features:
 */ -}}
 
 <script>
+  // Shared promise for fetch operation to prevent duplicate requests
+  let fetchIndexPromise = null;
+
   document.addEventListener('alpine:init', () => {
     Alpine.data('searchModal', () => ({
       searchIndex: null,
@@ -29,6 +32,7 @@ Features:
         this.$refs.dialog.showModal();
         this.$nextTick(() => this.$refs.input.focus());
 
+        // Lazy-load search index on first modal open
         if (!this.searchIndex && !this.loadError) {
           await this.loadSearchIndex();
         }
@@ -47,15 +51,23 @@ Features:
         this.loadError = false;
 
         try {
-          const response = await fetch('/index.json');
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+          // Reuse promise if fetch is already in progress (prevents duplicate requests)
+          if (!fetchIndexPromise) {
+            fetchIndexPromise = (async () => {
+              const response = await fetch('/index.json');
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+              }
+              return response.json();
+            })();
           }
-          this.searchIndex = await response.json();
+
+          this.searchIndex = await fetchIndexPromise;
         } catch (error) {
           console.error('Failed to load search index:', error);
           this.loadError = true;
           this.errorMessage = 'Unable to load search. Please try again later.';
+          fetchIndexPromise = null; // Reset on error so retry is possible
         } finally {
           this.isLoading = false;
         }
@@ -130,21 +142,29 @@ Features:
   <dialog x-ref="dialog" 
           @click.self="close()"
           @close="query = ''; selectedIndex = -1; results = [];"
+          aria-labelledby="search-title"
+          aria-modal="true"
           class="mx-auto w-full max-w-2xl rounded-xl bg-white p-0 shadow-2xl ring-1 ring-black/5 backdrop:bg-black/50 backdrop:backdrop-blur-sm">
+    {{- /* Visually hidden title for screen readers */ -}}
+    <h1 id="search-title" class="sr-only">Search pages</h1>
+
     {{- /* Header with search input and close button */ -}}
-    <div class="relative flex items-center border-b border-gray-200">
+    <div class="relative flex items-center border-b border-gray-200" role="search">
       <ion-icon name="search" class="pointer-events-none absolute left-4 text-gray-400 text-xl" aria-hidden="true"></ion-icon>
       <input
-        type="text"
+        type="search"
         x-ref="input"
         x-model="query"
         @input="handleSearch()"
         @keydown="handleKeydown($event)"
         class="h-14 w-full border-0 bg-transparent pl-12 pr-14 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none text-base"
-        placeholder="Search pages..."
+        placeholder="Search pages by title or content..."
         aria-label="Search pages"
+        aria-describedby="search-hints"
         aria-controls="search-results"
         aria-autocomplete="list"
+        :aria-expanded="results.length > 0"
+        :aria-busy="isLoading"
         autocomplete="off"
         spellcheck="false"
       >
@@ -181,9 +201,10 @@ Features:
         <template x-for="(result, index) in results" :key="result.url">
           <li role="option" 
               :aria-selected="isSelected(index)"
+              :tabindex="isSelected(index) ? '0' : '-1'"
               :class="{ 'bg-sky-50': isSelected(index) }"
               class="rounded-lg hover:bg-sky-50 transition-colors">
-            <a :href="result.url" class="block px-3 py-3">
+            <a :href="result.url" class="block px-3 py-3" @click="close()">
               <div class="flex items-start gap-3">
                 <ion-icon name="document-text-outline" class="text-gray-400 text-lg mt-0.5 flex-shrink-0" aria-hidden="true"></ion-icon>
                 <div class="min-w-0 flex-1">
@@ -204,14 +225,18 @@ Features:
     </div>
     
     {{- /* Footer with keyboard hints */ -}}
-    <div class="flex items-center justify-end gap-4 border-t border-gray-200 px-4 py-2.5 text-xs text-gray-500">
-      <span class="flex items-center gap-1">
-        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Esc</kbd>
-        <span>to close</span>
+    <div id="search-hints" class="flex items-center justify-end gap-4 border-t border-gray-200 px-4 py-2.5 text-xs text-gray-500">
+      <span class="flex items-center gap-1" role="note">
+        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">↑↓</kbd>
+        <span>navigate</span>
       </span>
-      <span class="flex items-center gap-1">
+      <span class="flex items-center gap-1" role="note">
         <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Enter</kbd>
-        <span>to select</span>
+        <span>select</span>
+      </span>
+      <span class="flex items-center gap-1" role="note">
+        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Esc</kbd>
+        <span>close</span>
       </span>
     </div>
   </dialog>

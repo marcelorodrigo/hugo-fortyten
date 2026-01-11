@@ -83,15 +83,15 @@ x-init="(() => { const handler = () => { if (window.innerWidth >= 1024 && this.i
       </button>
     </div>
     
-    <!-- Mobile menu content (treeview - all expanded) -->
-    <nav class="p-4">
-      <ul class="space-y-1">
-        {{- /* Render all top-level items with children expanded */ -}}
-        {{- range . }}
-          {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" 0) }}
-        {{- end }}
-      </ul>
-    </nav>
+     <!-- Mobile menu content (treeview - all expanded) -->
+     <nav class="p-4" aria-label="Site navigation">
+       <ul class="space-y-1" role="tree">
+         {{- /* Render all top-level items with children expanded */ -}}
+         {{- range . }}
+           {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" 0) }}
+         {{- end }}
+       </ul>
+     </nav>
   </aside>
   
 </div>
@@ -114,43 +114,45 @@ x-init="(() => { const handler = () => { if (window.innerWidth >= 1024 && this.i
     {{- $paddingClass = "pl-12" }}
   {{- end }}
   
-  <li>
-    {{- if $hasChildren }}
-      {{- /* Parent item with children - render as header with link if URL exists */ -}}
-      {{- if $item.URL }}
-        <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
-          {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
-        >
-          {{- with $item.Params.icon }}
-            <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
-          {{- end }}
-          {{ $item.Name }}
-        </a>
-      {{- else }}
-        <div class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
-          {{- with $item.Params.icon }}
-            <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
-          {{- end }}
-          <span>{{ $item.Name }}</span>
-        </div>
-      {{- end }}
-      
-      {{- /* Render children (always expanded) */ -}}
-      <ul class="space-y-1">
-        {{- range $item.Children }}
-          {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" (add $level 1)) }}
-        {{- end }}
-      </ul>
-    {{- else }}
-      {{- /* Leaf item - render as link */ -}}
-      <a href="{{ $item.URL }}" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}{{ if $page.IsMenuCurrent $item.Menu $item }} text-sky-700 font-bold{{ end }}"
-        {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
-      >
-        {{- with $item.Params.icon }}
-          <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
-        {{- end }}
-        {{ $item.Name }}
-      </a>
-    {{- end }}
-  </li>
+   <li>
+     {{- if $hasChildren }}
+       {{- /* Parent item with children - render as header with link if URL exists */ -}}
+       {{- if $item.URL }}
+         <a href="{{ $item.URL }}" role="treeitem" :aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
+           {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
+         >
+           {{- with $item.Params.icon }}
+             <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+           {{- end }}
+           {{ $item.Name }}
+           <ion-icon name="chevron-down" class="ml-auto text-sm flex-shrink-0" aria-hidden="true"></ion-icon>
+         </a>
+       {{- else }}
+         <div role="treeitem" :aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
+           {{- with $item.Params.icon }}
+             <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+           {{- end }}
+           <span>{{ $item.Name }}</span>
+           <ion-icon name="chevron-down" class="ml-auto text-sm flex-shrink-0" aria-hidden="true"></ion-icon>
+         </div>
+       {{- end }}
+       
+       {{- /* Render children (always expanded) */ -}}
+       <ul class="space-y-1" role="group">
+         {{- range $item.Children }}
+           {{- partial "inline/mobile-menu/item.html" (dict "page" $page "item" . "level" (add $level 1)) }}
+         {{- end }}
+       </ul>
+     {{- else }}
+       {{- /* Leaf item - render as link */ -}}
+       <a href="{{ $item.URL }}" role="treeitem" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}{{ if $page.IsMenuCurrent $item.Menu $item }} text-sky-700 font-bold{{ end }}"
+         {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
+       >
+         {{- with $item.Params.icon }}
+           <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
+         {{- end }}
+         {{ $item.Name }}
+       </a>
+     {{- end }}
+   </li>
 {{- end }}

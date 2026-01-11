@@ -5,11 +5,13 @@
             <div class="flex items-center gap-4">
                 <!-- Mobile hamburger button (hidden on lg and above) -->
                 <button 
+                  id="mobile-menu-toggle"
                   type="button" 
                   @click="$dispatch('mobile-menu-toggle')"
                   class="lg:hidden text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                  aria-label="Open menu"
+                  aria-label="Toggle mobile menu"
                   aria-expanded="false"
+                  aria-controls="mobile-menu"
                 >
                   <ion-icon name="menu" class="text-xl" aria-hidden="true"></ion-icon>
                 </button>
@@ -25,10 +27,12 @@
                 <!-- Search button on mobile (hidden on lg+) -->
                 {{- if site.Params.enable_site_search }}
                 <button 
+                  id="search-mobile"
                   type="button" 
                   @click="$dispatch('search-toggle')"
                   class="lg:hidden text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                  aria-label="Open search"
+                  aria-label="Open search (mobile)"
+                  aria-expanded="false"
                 >
                   <ion-icon name="search" class="text-xl" aria-hidden="true"></ion-icon>
                 </button>
@@ -41,10 +45,13 @@
                     <!-- Search button on desktop (after menu) -->
                     {{- if site.Params.enable_site_search }}
                     <button 
+                      id="search-desktop"
                       type="button" 
                       @click="$dispatch('search-toggle')"
                       class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       aria-label="Open search"
+                      aria-expanded="false"
+                      aria-keyshortcuts="Cmd+K"
                     >
                       <ion-icon name="search" class="text-xl" aria-hidden="true"></ion-icon>
                     </button>
