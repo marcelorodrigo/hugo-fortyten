@@ -28,6 +28,15 @@ Features:
       isLoading: false,
       loadError: false,
       errorMessage: '',
+      baseUrl: '',
+      init() {
+        // Get base URL from data attribute (supports subdirectory deployments)
+        this.baseUrl = this.$el.getAttribute('data-base-url') || '/';
+        // Ensure baseUrl ends with /
+        if (!this.baseUrl.endsWith('/')) {
+          this.baseUrl += '/';
+        }
+      },
       async open() {
         this.$refs.dialog.showModal();
         this.$nextTick(() => this.$refs.input.focus());
@@ -54,7 +63,8 @@ Features:
           // Reuse promise if fetch is already in progress (prevents duplicate requests)
           if (!fetchIndexPromise) {
             fetchIndexPromise = (async () => {
-              const response = await fetch('/index.json');
+              const indexUrl = this.baseUrl + 'index.json';
+              const response = await fetch(indexUrl);
               if (!response.ok) {
                 throw new Error(`HTTP ${response.status}`);
               }
@@ -138,7 +148,7 @@ Features:
   });
 </script>
 
-<div x-data="searchModal()" @search-toggle.window="open()">
+<div x-data="searchModal()" @search-toggle.window="open()" @alpine:init="init()" data-base-url="{{ "" | relURL }}">
   <dialog x-ref="dialog" 
           @click.self="close()"
           @close="query = ''; selectedIndex = -1; results = [];"
