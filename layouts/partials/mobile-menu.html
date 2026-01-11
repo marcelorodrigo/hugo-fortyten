@@ -15,8 +15,36 @@ It should be included outside any hidden containers to ensure proper visibility.
 
 {{- with index site.Menus $menuID }}
 
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('mobileMenu', () => ({
+      isOpen: false,
+      open() {
+        this.isOpen = true;
+        document.body.classList.add('overflow-hidden');
+        this.$nextTick(() => this.$refs.closeBtn?.focus());
+      },
+      close() {
+        this.isOpen = false;
+        document.body.classList.remove('overflow-hidden');
+        document.getElementById('mobile-menu-toggle')?.focus();
+      },
+      toggle() {
+        this.isOpen ? this.close() : this.open();
+      },
+      init() {
+        window.addEventListener('resize', () => {
+          if (window.innerWidth >= 1024 && this.isOpen) {
+            this.close();
+          }
+        });
+      }
+    }));
+  });
+</script>
+
 <!-- Mobile Menu Container (Alpine.js component) -->
-<div x-data="{ isOpen: false, open() { this.isOpen = true; document.body.classList.add('overflow-hidden'); this.$nextTick(() => this.$refs.closeBtn?.focus()); }, close() { this.isOpen = false; document.body.classList.remove('overflow-hidden'); document.getElementById('mobile-menu-toggle')?.focus(); }, toggle() { this.isOpen ? this.close() : this.open(); }, init() { window.addEventListener('resize', () => { if (window.innerWidth >= 1024 && this.isOpen) { this.close(); } }); } }" 
+<div x-data="mobileMenu()"
 @keydown.escape.window="isOpen && close()"
 @mobile-menu-toggle.window="toggle()">
 
