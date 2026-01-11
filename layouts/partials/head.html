@@ -11,12 +11,12 @@
   })();
 </script>
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="Forty Ten" />
-<link rel="manifest" href="/site.webmanifest" />
+{{ if fileExists "static/favicon-96x96.png" }}<link rel="icon" type="image/png" href="{{ `favicon-96x96.png` | absURL }}" sizes="96x96" />{{ end }}
+{{ if fileExists "static/favicon.svg" }}<link rel="icon" type="image/svg+xml" href="{{ `favicon.svg` | absURL }}" />{{ end }}
+{{ if fileExists "static/favicon.ico" }}<link rel="shortcut icon" href="{{ `favicon.ico` | absURL }}" />{{ end }}
+{{ if fileExists "static/apple-touch-icon.png" }}<link rel="apple-touch-icon" sizes="180x180" href="{{ `apple-touch-icon.png` | absURL }}" />{{ end }}
+<meta name="apple-mobile-web-app-title" content="{{ .Site.Title }}" />
+{{ if fileExists "static/site.webmanifest" }}<link rel="manifest" href="{{ `site.webmanifest` | absURL }}" />{{ end }}
 {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
 {{ with .Site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
 {{ with .Site.Params.keywords }}<meta name="keywords" content="{{ . }}">{{ end }}
