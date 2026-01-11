@@ -3,6 +3,7 @@
  * 
  * Includes:
  * - Site search functionality with modal UI
+ * - Mobile menu functionality with slide-in panel
  */
 
 (function() {
@@ -372,11 +373,196 @@
     }
   };
 
+  // ============================================
+  // Mobile Menu Functionality
+  // ============================================
+
+  const MobileMenu = {
+    // State
+    isOpen: false,
+    
+    // DOM Elements (cached after init)
+    elements: {},
+
+    /**
+     * Initialize mobile menu functionality
+     */
+    init() {
+      this.cacheElements();
+      if (!this.elements.toggle) return; // Mobile menu not in DOM
+      
+      this.bindEvents();
+    },
+
+    /**
+     * Cache DOM elements for performance
+     */
+    cacheElements() {
+      this.elements = {
+        toggle: document.getElementById('mobile-menu-toggle'),
+        panel: document.getElementById('mobile-menu-panel'),
+        overlay: document.getElementById('mobile-menu-overlay'),
+        closeBtn: document.getElementById('mobile-menu-close'),
+        body: document.body
+      };
+    },
+
+    /**
+     * Bind event listeners
+     */
+    bindEvents() {
+      const { toggle, overlay, closeBtn } = this.elements;
+
+      // Open on hamburger click
+      if (toggle) {
+        toggle.addEventListener('click', () => this.open());
+      }
+
+      // Close on X button
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => this.close());
+      }
+
+      // Close on overlay click
+      if (overlay) {
+        overlay.addEventListener('click', () => this.close());
+      }
+
+      // Close on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.isOpen) {
+          this.close();
+        }
+        // Handle focus trapping when mobile menu is open
+        if (e.key === 'Tab' && this.isOpen) {
+          this.handleTabKey(e);
+        }
+      });
+
+      // Close on window resize to desktop (lg breakpoint = 1024px)
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024 && this.isOpen) {
+          this.close();
+        }
+      });
+
+      // Close on link click inside mobile menu
+      const menuLinks = this.elements.panel?.querySelectorAll('a');
+      if (menuLinks) {
+        menuLinks.forEach(link => {
+          link.addEventListener('click', () => this.close());
+        });
+      }
+
+      // Handle search button inside mobile menu
+      const mobileSearchTrigger = this.elements.panel?.querySelector('.mobile-search-trigger');
+      if (mobileSearchTrigger) {
+        mobileSearchTrigger.addEventListener('click', () => {
+          this.close();
+          // Open search dialog after a small delay to let mobile menu close
+          setTimeout(() => Search.open(), 150);
+        });
+      }
+    },
+
+    /**
+     * Handle Tab key for focus trapping within mobile menu
+     */
+    handleTabKey(e) {
+      const { panel } = this.elements;
+      if (!panel) return;
+
+      // Get all focusable elements within the mobile menu
+      const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+      const focusableElements = panel.querySelectorAll(focusableSelector);
+      
+      if (focusableElements.length === 0) return;
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      // If Shift+Tab on first element, wrap to last
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault();
+        lastElement.focus();
+      }
+      // If Tab on last element, wrap to first
+      else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault();
+        firstElement.focus();
+      }
+    },
+
+    /**
+     * Open mobile menu
+     */
+    open() {
+      const { panel, overlay, toggle, body } = this.elements;
+      
+      if (!panel || !overlay) return;
+
+      // Show panel with slide-in animation
+      panel.classList.remove('-translate-x-full');
+      panel.setAttribute('aria-hidden', 'false');
+
+      // Show overlay with fade-in animation
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      overlay.classList.add('opacity-100', 'pointer-events-auto');
+
+      // Prevent body scroll
+      body.classList.add('overflow-hidden');
+
+      // Update toggle button state
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-pressed', 'true');
+      }
+
+      this.isOpen = true;
+
+      // Focus the close button for accessibility
+      document.getElementById('mobile-menu-close')?.focus();
+    },
+
+    /**
+     * Close mobile menu
+     */
+    close() {
+      const { panel, overlay, toggle, body } = this.elements;
+      
+      if (!panel || !overlay) return;
+
+      // Hide panel with slide-out animation
+      panel.classList.add('-translate-x-full');
+      panel.setAttribute('aria-hidden', 'true');
+
+      // Hide overlay with fade-out animation
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      overlay.classList.remove('opacity-100', 'pointer-events-auto');
+
+      // Restore body scroll
+      body.classList.remove('overflow-hidden');
+
+      // Update toggle button state
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-pressed', 'false');
+        toggle.focus();
+      }
+
+      this.isOpen = false;
+    }
+  };
+
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => Search.init());
+    document.addEventListener('DOMContentLoaded', () => {
+      Search.init();
+      MobileMenu.init();
+    });
   } else {
     Search.init();
+    MobileMenu.init();
   }
 
 })();
