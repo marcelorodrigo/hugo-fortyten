@@ -1,4 +1,4 @@
-<header class="pt-4 border-b border-orange-100" x-data="{}">
+<header class="pt-4 border-b border-orange-100 dark:border-orange-900 dark:bg-gray-900" x-data="{}">
     <div class="container mx-auto py-8">
         <div class="flex flex-row justify-between items-center">
             <!-- Left side: hamburger (mobile) + logo -->
@@ -8,7 +8,7 @@
                   id="mobile-menu-toggle"
                   type="button" 
                   @click="$dispatch('mobile-menu-toggle')"
-                  class="lg:hidden text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  class="lg:hidden text-gray-700 dark:text-gray-300 hover:text-sky-700 dark:hover:text-sky-400 transition ease-in-out p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400"
                   aria-label="Toggle mobile menu"
                   aria-expanded="false"
                   aria-controls="mobile-menu"
@@ -18,19 +18,24 @@
                 
                 <h1 id="logo">
                     <a href="{{ absURL "" }}" title="{{ site.Title }}"
-                       class="text-2xl antialiased font-extrabold hover:text-orange-600 transition ease-in-out">{{ site.Title }}</a>
+                       class="text-2xl antialiased font-extrabold hover:text-orange-600 dark:hover:text-orange-400 dark:text-gray-100 transition ease-in-out">{{ site.Title }}</a>
                 </h1>
             </div>
             
             <!-- Right side: Search (on mobile only) + Desktop menu and search (on lg+) -->
             <div class="flex items-center gap-4">
+                <!-- Theme toggle on mobile (hidden on lg+) -->
+                <div class="lg:hidden">
+                    {{ partial "theme-toggle.html" . }}
+                </div>
+                
                 <!-- Search button on mobile (hidden on lg+) -->
                 {{- if site.Params.enable_site_search }}
                 <button 
                   id="search-mobile"
                   type="button" 
                   @click="$dispatch('search-toggle')"
-                  class="lg:hidden text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  class="lg:hidden text-gray-700 dark:text-gray-300 hover:text-sky-700 dark:hover:text-sky-400 transition ease-in-out p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400"
                   aria-label="Open search (mobile)"
                   aria-expanded="false"
                 >
@@ -42,13 +47,16 @@
                 <div class="hidden lg:flex lg:items-center lg:gap-6">
                     {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
                     
+                    <!-- Theme toggle on desktop (after menu, before search) -->
+                    {{ partial "theme-toggle.html" . }}
+                    
                     <!-- Search button on desktop (after menu) -->
                     {{- if site.Params.enable_site_search }}
                     <button 
                       id="search-desktop"
                       type="button" 
                       @click="$dispatch('search-toggle')"
-                      class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      class="text-gray-700 dark:text-gray-300 hover:text-sky-700 dark:hover:text-sky-400 transition ease-in-out p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400"
                       aria-label="Open search"
                       aria-expanded="false"
                       aria-keyshortcuts="Cmd+K"

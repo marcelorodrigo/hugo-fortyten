@@ -1,4 +1,4 @@
-<footer class="container mx-auto flex justify-between items-center text-sm pt-10 pb-6 border-t border-orange-100 flex-wrap gap-4">
+<footer class="container mx-auto flex justify-between items-center text-sm pt-10 pb-6 border-t border-orange-100 dark:border-orange-900 flex-wrap gap-4 text-gray-700 dark:text-gray-300">
     <div>
          {{ if .Site.Params.footer.content }}
              {{ .Site.Params.footer.content | .RenderString }}
@@ -8,6 +8,6 @@
         <ion-icon name="heart" size="64"></ion-icon>
     </div>
     {{ if ne .Site.Params.footer.showHugoCredit false }}
-        <div>Published with <a href="https://gohugo.io" target="_blank" rel="noopener noreferrer" title="Hugo" class="hover:text-orange-600 transition ease-in-out">Hugo</a>.</div>
+        <div>Published with <a href="https://gohugo.io" target="_blank" rel="noopener noreferrer" title="Hugo" class="hover:text-orange-600 dark:hover:text-orange-400 transition ease-in-out">Hugo</a>.</div>
     {{ end }}
 </footer>

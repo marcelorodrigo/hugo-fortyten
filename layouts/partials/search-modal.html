@@ -154,20 +154,20 @@ Features:
           @close="query = ''; selectedIndex = -1; results = [];"
           aria-labelledby="search-title"
           aria-modal="true"
-          class="mx-auto w-full max-w-2xl rounded-xl bg-white p-0 shadow-2xl ring-1 ring-black/5 backdrop:bg-black/50 backdrop:backdrop-blur-sm">
+          class="mx-auto w-full max-w-2xl rounded-xl bg-white dark:bg-gray-800 p-0 shadow-2xl ring-1 ring-black/5 dark:ring-gray-700 backdrop:bg-black/50 backdrop:backdrop-blur-sm">
     {{- /* Visually hidden title for screen readers */ -}}
     <h1 id="search-title" class="sr-only">Search pages</h1>
 
     {{- /* Header with search input and close button */ -}}
-    <div class="relative flex items-center border-b border-gray-200" role="search">
-      <ion-icon name="search" class="pointer-events-none absolute left-4 text-gray-400 text-xl" aria-hidden="true"></ion-icon>
+    <div class="relative flex items-center border-b border-gray-200 dark:border-gray-700" role="search">
+      <ion-icon name="search" class="pointer-events-none absolute left-4 text-gray-400 dark:text-gray-500 text-xl" aria-hidden="true"></ion-icon>
       <input
         type="search"
         x-ref="input"
         x-model="query"
         @input="handleSearch()"
         @keydown="handleKeydown($event)"
-        class="h-14 w-full border-0 bg-transparent pl-12 pr-14 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none text-base"
+        class="h-14 w-full border-0 bg-transparent pl-12 pr-14 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-0 focus:outline-none text-base"
         placeholder="Search pages by title or content..."
         aria-label="Search pages"
         aria-describedby="search-hints"
@@ -181,7 +181,7 @@ Features:
       <button
         type="button"
         @click="close()"
-        class="absolute right-3 p-1.5 text-gray-400 hover:text-gray-600 transition rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+        class="absolute right-3 p-1.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400"
         aria-label="Close search"
       >
         <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
@@ -192,14 +192,14 @@ Features:
     <div class="max-h-[60vh] overflow-y-auto">
       {{- /* Loading state */ -}}
       <div x-show="isLoading" class="px-4 py-14 text-center">
-        <ion-icon name="reload" class="mx-auto text-4xl text-gray-400 animate-spin" aria-hidden="true"></ion-icon>
-        <p class="mt-4 text-sm text-gray-600">Loading search index...</p>
+        <ion-icon name="reload" class="mx-auto text-4xl text-gray-400 dark:text-gray-500 animate-spin" aria-hidden="true"></ion-icon>
+        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">Loading search index...</p>
       </div>
       
       {{- /* Error state */ -}}
       <div x-show="loadError" class="px-4 py-14 text-center">
-        <ion-icon name="alert-circle-outline" class="mx-auto text-4xl text-red-400" aria-hidden="true"></ion-icon>
-        <p class="mt-4 text-sm text-gray-600" x-text="errorMessage"></p>
+        <ion-icon name="alert-circle-outline" class="mx-auto text-4xl text-red-400 dark:text-red-500" aria-hidden="true"></ion-icon>
+        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400" x-text="errorMessage"></p>
       </div>
       
        {{- /* Results list */ -}}
@@ -207,20 +207,20 @@ Features:
            id="search-results"
            x-show="!isLoading && !loadError && results.length > 0" 
            role="listbox" 
-           class="divide-y divide-gray-100 p-2">
+           class="divide-y divide-gray-100 dark:divide-gray-700 p-2">
         {{- /* Results populated by Alpine */ -}}
         <template x-for="(result, index) in results" :key="result.url">
           <li role="option" 
               :aria-selected="isSelected(index)"
               :tabindex="isSelected(index) ? '0' : '-1'"
-              :class="{ 'bg-sky-50': isSelected(index) }"
-              class="rounded-lg hover:bg-sky-50 transition-colors">
+              :class="{ 'bg-sky-50 dark:bg-sky-900': isSelected(index) }"
+              class="rounded-lg hover:bg-sky-50 dark:hover:bg-sky-900 transition-colors">
             <a :href="result.url" class="block px-3 py-3" @click="close()">
               <div class="flex items-start gap-3">
-                <ion-icon name="document-text-outline" class="text-gray-400 text-lg mt-0.5 flex-shrink-0" aria-hidden="true"></ion-icon>
+                <ion-icon name="document-text-outline" class="text-gray-400 dark:text-gray-500 text-lg mt-0.5 flex-shrink-0" aria-hidden="true"></ion-icon>
                 <div class="min-w-0 flex-1">
-                  <p class="text-sm font-medium text-gray-900 truncate" x-text="result.title"></p>
-                  <p x-show="result.summary" class="text-sm text-gray-500 line-clamp-2 mt-0.5" x-text="result.summary"></p>
+                  <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate" x-text="result.title"></p>
+                  <p x-show="result.summary" class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mt-0.5" x-text="result.summary"></p>
                 </div>
               </div>
             </a>
@@ -230,23 +230,23 @@ Features:
       
       {{- /* No results message */ -}}
       <div x-show="!isLoading && !loadError && results.length === 0 && query.trim() !== ''" class="px-4 py-14 text-center">
-        <ion-icon name="search-outline" class="mx-auto text-4xl text-gray-400" aria-hidden="true"></ion-icon>
-        <p class="mt-4 text-sm text-gray-600">No results found. Try a different search term.</p>
+        <ion-icon name="search-outline" class="mx-auto text-4xl text-gray-400 dark:text-gray-500" aria-hidden="true"></ion-icon>
+        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">No results found. Try a different search term.</p>
       </div>
     </div>
     
     {{- /* Footer with keyboard hints */ -}}
-    <div id="search-hints" class="flex items-center justify-end gap-4 border-t border-gray-200 px-4 py-2.5 text-xs text-gray-500">
+    <div id="search-hints" class="flex items-center justify-end gap-4 border-t border-gray-200 dark:border-gray-700 px-4 py-2.5 text-xs text-gray-500 dark:text-gray-400">
       <span class="flex items-center gap-1" role="note">
-        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">↑↓</kbd>
+        <kbd class="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-1.5 py-0.5 font-mono text-xs">↑↓</kbd>
         <span>navigate</span>
       </span>
       <span class="flex items-center gap-1" role="note">
-        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Enter</kbd>
+        <kbd class="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-1.5 py-0.5 font-mono text-xs">Enter</kbd>
         <span>select</span>
       </span>
       <span class="flex items-center gap-1" role="note">
-        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Esc</kbd>
+        <kbd class="rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 px-1.5 py-0.5 font-mono text-xs">Esc</kbd>
         <span>close</span>
       </span>
     </div>

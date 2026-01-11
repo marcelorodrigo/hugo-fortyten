@@ -1,0 +1,27 @@
+{{- /*
+Renders a theme toggle button that switches between light and dark mode.
+
+Uses Alpine.js for reactive state management and localStorage for persistence.
+Icons: sunny (shown in dark mode) and moon (shown in light mode).
+
+@example: {{ partial "theme-toggle.html" . }}
+*/ -}}
+
+<button 
+  x-data="{ 
+    isDark: document.documentElement.classList.contains('dark'),
+    toggle() {
+      this.isDark = !this.isDark;
+      document.documentElement.classList.toggle('dark', this.isDark);
+      localStorage.theme = this.isDark ? 'dark' : 'light';
+    }
+  }"
+  @click="toggle()"
+  :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+  type="button"
+  class="text-gray-700 dark:text-gray-300 hover:text-sky-700 dark:hover:text-sky-400 transition ease-in-out p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400"
+  title="Toggle theme"
+>
+  <ion-icon x-show="isDark" name="sunny" class="text-xl" aria-hidden="true" x-cloak></ion-icon>
+  <ion-icon x-show="!isDark" name="moon" class="text-xl" aria-hidden="true" x-cloak></ion-icon>
+</button>

@@ -50,20 +50,26 @@ Alpine.js Implementation Notes:
          x-transition:leave="transition ease-in duration-300"
          x-transition:leave-start="translate-x-0"
          x-transition:leave-end="-translate-x-full"
-         class="fixed top-0 left-0 h-full w-72 bg-white z-50 
+         class="fixed top-0 left-0 h-full w-72 bg-white dark:bg-gray-900 z-50 
                 transform overflow-y-auto shadow-xl"
          aria-label="Mobile navigation"
          :aria-hidden="!isOpen"
          role="navigation"
          x-cloak>
      
-     <!-- Header: Close button only -->
-     <div class="flex justify-end p-4 border-b border-orange-100">
+     <!-- Header: Theme toggle and Close button -->
+     <div class="flex justify-between items-center p-4 border-b border-orange-100 dark:border-orange-900">
+       <!-- Theme toggle -->
+       <div>
+         {{ partial "theme-toggle.html" $page }}
+       </div>
+       
+       <!-- Close button -->
        <button 
          x-ref="closeBtn"
          type="button"
          @click="close()"
-         class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+         class="text-gray-700 dark:text-gray-300 hover:text-sky-700 dark:hover:text-sky-400 transition ease-in-out p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:ring-sky-400"
          aria-label="Close menu"
        >
          <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
@@ -105,7 +111,7 @@ Alpine.js Implementation Notes:
      {{- if $hasChildren }}
         {{- /* Parent item with children - render as header with link if URL exists */ -}}
         {{- if $item.URL }}
-          <a href="{{ $item.URL }}" role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out font-bold {{ $paddingClass }}"
+          <a href="{{ $item.URL }}" role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 dark:text-gray-100 hover:text-sky-700 dark:hover:text-sky-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition ease-in-out font-bold {{ $paddingClass }}"
             {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
           >
            {{- with $item.Params.icon }}
@@ -115,7 +121,7 @@ Alpine.js Implementation Notes:
            <ion-icon name="chevron-down" class="ml-auto text-sm flex-shrink-0" aria-hidden="true"></ion-icon>
          </a>
        {{- else }}
-          <div role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 {{ $paddingClass }}">
+          <div role="treeitem" aria-expanded="true" class="flex items-center gap-2 py-2 px-3 rounded font-bold text-gray-900 dark:text-gray-100 {{ $paddingClass }}">
            {{- with $item.Params.icon }}
              <ion-icon name="{{ . }}"{{ with $item.Params.iconSize }} size="{{ . }}"{{ end }} class="inline-block flex-shrink-0" aria-hidden="true"></ion-icon>
            {{- end }}
@@ -132,7 +138,7 @@ Alpine.js Implementation Notes:
        </ul>
      {{- else }}
        {{- /* Leaf item - render as link */ -}}
-       <a href="{{ $item.URL }}" role="treeitem" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 hover:text-sky-700 hover:bg-gray-50 transition ease-in-out {{ $paddingClass }}{{ if $page.IsMenuCurrent $item.Menu $item }} text-sky-700 font-bold{{ end }}"
+       <a href="{{ $item.URL }}" role="treeitem" class="flex items-center gap-2 py-2 px-3 rounded text-gray-900 dark:text-gray-100 hover:text-sky-700 dark:hover:text-sky-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition ease-in-out {{ $paddingClass }}{{ if $page.IsMenuCurrent $item.Menu $item }} text-sky-700 dark:text-sky-400 font-bold{{ end }}"
          {{- if $page.IsMenuCurrent $item.Menu $item }} aria-current="page"{{ end -}}
        >
          {{- with $item.Params.icon }}
