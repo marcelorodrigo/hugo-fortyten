@@ -56,9 +56,10 @@ menus:
     parent: 'shortcodes'
     weight: 4
 outputs:
-  - html
-  - rss
-  - json
+  home:
+    - HTML
+    - RSS
+    - JSON
 markup:
   goldmark:
     parser:

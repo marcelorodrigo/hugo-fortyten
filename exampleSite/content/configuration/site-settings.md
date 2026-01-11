@@ -135,9 +135,3 @@ menus:
       url: '/posts'
       weight: 2
 ```
-
-## Next Steps
-
-- [Hugo Configuration Reference](https://gohugo.io/getting-started/configuration/#all-configuration-settings) — comprehensive guide
-- [Setup Guide](/setup) — installation and deployment instructions
-- [Hugo Directory Structure](https://gohugo.io/getting-started/directory-structure/) — understand your site layout

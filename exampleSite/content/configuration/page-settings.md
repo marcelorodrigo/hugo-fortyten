@@ -204,8 +204,3 @@ searchHidden: false
 4. **Use tags consistently** — Related posts work better with consistent tagging
 5. **Keep summaries concise** — Search result summaries should be 1-2 sentences
 
-## Next Steps
-
-- [Site Settings](/configuration/site-settings) — Configure your site globally
-- [Enabling Site Search](/configuration/enabling-site-search) — Set up search functionality
-- [Hugo Front Matter Documentation](https://gohugo.io/content-management/front-matter/) — Complete Hugo reference

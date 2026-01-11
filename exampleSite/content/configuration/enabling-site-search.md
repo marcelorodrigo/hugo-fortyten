@@ -25,9 +25,9 @@ params:
 
 outputs:
   home:
-    - html
-    - rss
-    - json  # Required for search to work
+    - HTML
+    - RSS
+    - JSON  # Required for search to work
 ```
 
 That's it! Once enabled, a search button will appear in your site's header on both desktop and mobile.
@@ -116,15 +116,7 @@ The `json` output on the home page generates the search index that enables the s
 
 If the search button appears but shows an error when you try to use it, the search index file may not be generated. This usually means the `json` output format is not enabled for the home page.
 
-Ensure your `hugo.yaml` includes the correct output configuration under the home page:
-
-```yaml
-outputs:
-  home:
-    - html
-    - rss
-    - json  # Required for search to work
-```
+Ensure your `hugo.yaml` includes the correct output configuration under the home page.
 
 See the [Output Format Configuration](#output-format-configuration) section above for more details on configuring outputs correctly.
 
@@ -136,9 +128,3 @@ The search feature requires Hugo to generate the `index.json` file. This happens
 - Run `hugo --minify` for production builds
 
 The generated `public/index.json` contains the complete search index and is served to clients.
-
-## Next Steps
-
-- [Site Settings](/configuration/site-settings) — Configure other site options
-- [Setup Guide](/setup) — Installation and deployment instructions
-- [Hugo Configuration Reference](https://gohugo.io/getting-started/configuration/#all-configuration-settings) — All Hugo configuration options
