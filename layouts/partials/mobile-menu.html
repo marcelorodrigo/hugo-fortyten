@@ -1,5 +1,5 @@
 {{- /*
-Renders the mobile menu panel with slide-in animation.
+Renders the mobile menu panel with slide-in animation using Alpine.js.
 
 This partial renders the mobile menu overlay, panel, and treeview navigation.
 It should be included outside any hidden containers to ensure proper visibility.
@@ -15,26 +15,60 @@ It should be included outside any hidden containers to ensure proper visibility.
 
 {{- with index site.Menus $menuID }}
 
-  <!-- MOBILE MENU OVERLAY (backdrop) -->
-  <div id="mobile-menu-overlay" 
-       class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity duration-300" 
+<!-- Mobile Menu Container (Alpine.js component) -->
+<div x-data="{ isOpen: false, open() { this.isOpen = true; document.body.classList.add('overflow-hidden'); this.$nextTick(() => this.$refs.closeBtn?.focus()); }, close() { this.isOpen = false; document.body.classList.remove('overflow-hidden'); document.getElementById('mobile-menu-toggle')?.focus(); }, toggle() { this.isOpen ? this.close() : this.open(); }, init() { window.addEventListener('resize', () => { if (window.innerWidth >= 1024 && this.isOpen) { this.close(); } }); } }" 
+@keydown.escape.window="isOpen && close()"
+@mobile-menu-toggle.window="toggle()">
+
+  <!-- MOBILE MENU OVERLAY (backdrop with fade transition) -->
+  <div x-show="isOpen"
+       x-transition:enter="transition-opacity ease-out duration-300"
+       x-transition:enter-start="opacity-0"
+       x-transition:enter-end="opacity-100"
+       x-transition:leave="transition-opacity ease-in duration-300"
+       x-transition:leave-start="opacity-100"
+       x-transition:leave-end="opacity-0"
+       @click="close()"
+       class="fixed inset-0 bg-black/50 z-40" 
        aria-hidden="true"
-       role="presentation"></div>
+       role="presentation"
+       x-cloak></div>
   
   <!-- MOBILE MENU PANEL (slide-in from left) -->
-  <aside id="mobile-menu-panel" 
+  <aside x-show="isOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="-translate-x-full"
+         x-transition:enter-end="translate-x-0"
+         x-transition:leave="transition ease-in duration-300"
+         x-transition:leave-start="translate-x-0"
+         x-transition:leave-end="-translate-x-full"
          class="fixed top-0 left-0 h-full w-72 bg-white z-50 
-                transform -translate-x-full transition-transform duration-300 ease-in-out
-                overflow-y-auto shadow-xl"
+                transform overflow-y-auto shadow-xl"
          aria-label="Mobile navigation"
-         aria-hidden="true"
-         role="navigation">
+         :aria-hidden="!isOpen"
+         role="navigation"
+         x-cloak>
     
-    <!-- Close button -->
-    <div class="flex justify-end p-4 border-b border-orange-100">
+    <!-- Header: Search + Close button -->
+    <div class="flex justify-between items-center p-4 border-b border-orange-100">
+      {{- /* Search button in mobile menu (only if search is enabled) */ -}}
+      {{- if site.Params.enable_site_search }}
       <button 
-        id="mobile-menu-close" 
         type="button"
+        @click="close(); $dispatch('search-toggle')"
+        class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+        aria-label="Open search"
+      >
+        <ion-icon name="search" class="text-xl pointer-events-none" aria-hidden="true"></ion-icon>
+      </button>
+      {{- else }}
+      <div></div>{{- /* Empty spacer when search is disabled */ -}}
+      {{- end }}
+      
+      <button 
+        x-ref="closeBtn"
+        type="button"
+        @click="close()"
         class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
         aria-label="Close menu"
       >
@@ -52,6 +86,8 @@ It should be included outside any hidden containers to ensure proper visibility.
       </ul>
     </nav>
   </aside>
+  
+</div>
 
 {{- end }}
 

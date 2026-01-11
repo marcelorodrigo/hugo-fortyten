@@ -1,4 +1,5 @@
-{{- with resources.Get "js/main.js" }}
+{{- /* Utilities JavaScript (must load before Alpine) */ -}}
+{{- with resources.Get "js/utilities.js" }}
   {{- if eq hugo.Environment "development" }}
     {{- with . | js.Build }}
       <script src="{{ .RelPermalink }}"></script>
@@ -10,3 +11,6 @@
     {{- end }}
   {{- end }}
 {{- end }}
+
+{{- /* Alpine.js (loads after utilities, defer ensures DOM is ready) */ -}}
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>

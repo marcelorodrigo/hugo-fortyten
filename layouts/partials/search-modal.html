@@ -1,5 +1,5 @@
 {{- /*
-Search Modal Component
+Search Modal Component (Alpine.js)
 
 Renders a modal dialog for site-wide search functionality.
 Uses the native <dialog> element for better accessibility and simpler code.
@@ -10,64 +10,98 @@ Features:
 - Results display with title and summary
 - Close via X button, ESC key (built-in), or clicking backdrop
 - Keyboard navigation support
+- User-friendly error messages when search index fails to load
 
 @context none (standalone partial)
 */ -}}
 
-<dialog id="search-modal" class="mx-auto w-full max-w-2xl rounded-xl bg-white p-0 shadow-2xl ring-1 ring-black/5 backdrop:bg-black/50 backdrop:backdrop-blur-sm">
-  {{- /* Header with search input and close button */ -}}
-  <div class="relative flex items-center border-b border-gray-200">
-    <ion-icon name="search" class="pointer-events-none absolute left-4 text-gray-400 text-xl" aria-hidden="true"></ion-icon>
-    <input
-      type="text"
-      id="search-input"
-      class="h-14 w-full border-0 bg-transparent pl-12 pr-14 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none text-base"
-      placeholder="Search pages..."
-      aria-label="Search pages"
-      aria-controls="search-results"
-      aria-autocomplete="list"
-      autocomplete="off"
-      spellcheck="false"
-    >
-    <button
-      type="button"
-      id="search-close"
-      class="absolute right-3 p-1.5 text-gray-400 hover:text-gray-600 transition rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
-      aria-label="Close search"
-    >
-      <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
-    </button>
-  </div>
-  
-  {{- /* Results container */ -}}
-  <div id="search-results-container" class="max-h-[60vh] overflow-y-auto">
-    {{- /* Results list */ -}}
-    <ul id="search-results" role="listbox" class="divide-y divide-gray-100 p-2">
-      {{- /* Results populated by JavaScript */ -}}
-    </ul>
-    
-    {{- /* No results message */ -}}
-    <div id="search-no-results" class="hidden px-4 py-14 text-center">
-      <ion-icon name="search-outline" class="mx-auto text-4xl text-gray-400" aria-hidden="true"></ion-icon>
-      <p class="mt-4 text-sm text-gray-600">No results found. Try a different search term.</p>
+<div x-data="{ searchIndex: null, query: '', results: [], selectedIndex: -1, isLoading: false, loadError: false, errorMessage: '', async open() { this.$refs.dialog.showModal(); this.$nextTick(() => this.$refs.input.focus()); if (!this.searchIndex && !this.loadError) { await this.loadSearchIndex(); } if (!this.query.trim() && this.searchIndex) { this.results = window.ThemeUtilities.sortByDate(this.searchIndex).slice(0, 10); } }, close() { this.$refs.dialog.close(); }, async loadSearchIndex() { this.isLoading = true; this.loadError = false; try { const response = await fetch('/index.json'); if (!response.ok) { throw new Error(`HTTP ${response.status}`); } this.searchIndex = await response.json(); } catch (error) { console.error('Failed to load search index:', error); this.loadError = true; this.errorMessage = 'Unable to load search. Please try again later.'; } finally { this.isLoading = false; } }, handleSearch() { if (!this.searchIndex) return; const trimmedQuery = this.query.trim(); if (trimmedQuery === '') { this.results = window.ThemeUtilities.sortByDate(this.searchIndex).slice(0, 10); } else { this.results = window.ThemeUtilities.fuzzySearch(trimmedQuery, this.searchIndex); } this.selectedIndex = -1; }, handleKeydown(event) { if (this.results.length === 0) return; switch(event.key) { case 'ArrowDown': event.preventDefault(); this.selectedIndex = Math.min(this.selectedIndex + 1, this.results.length - 1); this.scrollToSelected(); break; case 'ArrowUp': event.preventDefault(); this.selectedIndex = Math.max(this.selectedIndex - 1, -1); this.scrollToSelected(); break; case 'Enter': event.preventDefault(); if (this.selectedIndex >= 0) { window.location.href = this.results[this.selectedIndex].url; } break; } }, scrollToSelected() { if (this.selectedIndex < 0) return; this.$nextTick(() => { const items = this.$refs.resultsList.querySelectorAll('li[role=option]'); if (items[this.selectedIndex]) { items[this.selectedIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } }); }, isSelected(index) { return this.selectedIndex === index; } }" @search-toggle.window="open()">
+  <dialog x-ref="dialog" 
+          @click.self="close()"
+          @close="query = ''; selectedIndex = -1; results = [];"
+          class="mx-auto w-full max-w-2xl rounded-xl bg-white p-0 shadow-2xl ring-1 ring-black/5 backdrop:bg-black/50 backdrop:backdrop-blur-sm">
+    {{- /* Header with search input and close button */ -}}
+    <div class="relative flex items-center border-b border-gray-200">
+      <ion-icon name="search" class="pointer-events-none absolute left-4 text-gray-400 text-xl" aria-hidden="true"></ion-icon>
+      <input
+        type="text"
+        x-ref="input"
+        x-model="query"
+        @input="handleSearch()"
+        @keydown="handleKeydown($event)"
+        class="h-14 w-full border-0 bg-transparent pl-12 pr-14 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none text-base"
+        placeholder="Search pages..."
+        aria-label="Search pages"
+        aria-controls="search-results"
+        aria-autocomplete="list"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button
+        type="button"
+        @click="close()"
+        class="absolute right-3 p-1.5 text-gray-400 hover:text-gray-600 transition rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+        aria-label="Close search"
+      >
+        <ion-icon name="close" class="text-xl" aria-hidden="true"></ion-icon>
+      </button>
     </div>
     
-    {{- /* Loading state */ -}}
-    <div id="search-loading" class="hidden px-4 py-14 text-center">
-      <ion-icon name="reload" class="mx-auto text-4xl text-gray-400 animate-spin" aria-hidden="true"></ion-icon>
-      <p class="mt-4 text-sm text-gray-600">Loading search index...</p>
+    {{- /* Results container */ -}}
+    <div class="max-h-[60vh] overflow-y-auto">
+      {{- /* Loading state */ -}}
+      <div x-show="isLoading" class="px-4 py-14 text-center">
+        <ion-icon name="reload" class="mx-auto text-4xl text-gray-400 animate-spin" aria-hidden="true"></ion-icon>
+        <p class="mt-4 text-sm text-gray-600">Loading search index...</p>
+      </div>
+      
+      {{- /* Error state */ -}}
+      <div x-show="loadError" class="px-4 py-14 text-center">
+        <ion-icon name="alert-circle-outline" class="mx-auto text-4xl text-red-400" aria-hidden="true"></ion-icon>
+        <p class="mt-4 text-sm text-gray-600" x-text="errorMessage"></p>
+      </div>
+      
+      {{- /* Results list */ -}}
+      <ul x-ref="resultsList" 
+          x-show="!isLoading && !loadError && results.length > 0" 
+          role="listbox" 
+          class="divide-y divide-gray-100 p-2">
+        {{- /* Results populated by Alpine */ -}}
+        <template x-for="(result, index) in results" :key="result.url">
+          <li role="option" 
+              :aria-selected="isSelected(index)"
+              :class="{ 'bg-sky-50': isSelected(index) }"
+              class="rounded-lg hover:bg-sky-50 transition-colors">
+            <a :href="result.url" class="block px-3 py-3">
+              <div class="flex items-start gap-3">
+                <ion-icon name="document-text-outline" class="text-gray-400 text-lg mt-0.5 flex-shrink-0" aria-hidden="true"></ion-icon>
+                <div class="min-w-0 flex-1">
+                  <p class="text-sm font-medium text-gray-900 truncate" x-text="result.title"></p>
+                  <p x-show="result.summary" class="text-sm text-gray-500 line-clamp-2 mt-0.5" x-text="result.summary"></p>
+                </div>
+              </div>
+            </a>
+          </li>
+        </template>
+      </ul>
+      
+      {{- /* No results message */ -}}
+      <div x-show="!isLoading && !loadError && results.length === 0 && query.trim() !== ''" class="px-4 py-14 text-center">
+        <ion-icon name="search-outline" class="mx-auto text-4xl text-gray-400" aria-hidden="true"></ion-icon>
+        <p class="mt-4 text-sm text-gray-600">No results found. Try a different search term.</p>
+      </div>
     </div>
-  </div>
-  
-  {{- /* Footer with keyboard hints */ -}}
-  <div class="flex items-center justify-end gap-4 border-t border-gray-200 px-4 py-2.5 text-xs text-gray-500">
-    <span class="flex items-center gap-1">
-      <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Esc</kbd>
-      <span>to close</span>
-    </span>
-    <span class="flex items-center gap-1">
-      <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Enter</kbd>
-      <span>to select</span>
-    </span>
-  </div>
-</dialog>
+    
+    {{- /* Footer with keyboard hints */ -}}
+    <div class="flex items-center justify-end gap-4 border-t border-gray-200 px-4 py-2.5 text-xs text-gray-500">
+      <span class="flex items-center gap-1">
+        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Esc</kbd>
+        <span>to close</span>
+      </span>
+      <span class="flex items-center gap-1">
+        <kbd class="rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5 font-mono text-xs">Enter</kbd>
+        <span>to select</span>
+      </span>
+    </div>
+  </dialog>
+</div>
