@@ -18,35 +18,45 @@ window.ThemeUtilities = {
    * Searches through items by title and summary, scoring matches
    * 
    * @param {string} query - Search query string
-   * @param {Array} items - Array of items to search (must have title, summary properties)
+   * @param {Array} items - Array of items to search (each item should have title and optionally summary)
    * @returns {Array} - Filtered and sorted array of items (top 10)
+   * 
+   * Note: Items without a valid title (null, undefined, or empty string) are skipped.
+   * Summary is optional and defaults to empty string if missing.
    */
   fuzzySearch(query, items) {
     if (!query || !items || items.length === 0) return [];
 
     const terms = query.toLowerCase().trim().split(/\s+/);
 
-    const scored = items.map(item => {
-      let score = 0;
-      const titleLower = item.title.toLowerCase();
-      const summaryLower = (item.summary || '').toLowerCase();
-
-      for (const term of terms) {
-        // Title matches (higher weight)
-        if (titleLower.includes(term)) {
-          score += titleLower.startsWith(term) ? 10 : 5;
+    const scored = items
+      .map(item => {
+        // Defensive: Skip items without a valid title
+        if (!item || typeof item.title !== 'string' || item.title.trim() === '') {
+          return null;
         }
-        // Summary matches
-        if (summaryLower.includes(term)) {
-          score += 2;
-        }
-      }
 
-      return { ...item, score };
-    });
+        let score = 0;
+        // Safely normalize title and summary to lowercase strings
+        const titleLower = item.title.toLowerCase();
+        const summaryLower = typeof item.summary === 'string' ? item.summary.toLowerCase() : '';
+
+        for (const term of terms) {
+          // Title matches (higher weight)
+          if (titleLower.includes(term)) {
+            score += titleLower.startsWith(term) ? 10 : 5;
+          }
+          // Summary matches
+          if (summaryLower.includes(term)) {
+            score += 2;
+          }
+        }
+
+        return { ...item, score };
+      })
+      .filter(item => item !== null && item.score > 0);
 
     return scored
-      .filter(item => item.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, 10);
   },
