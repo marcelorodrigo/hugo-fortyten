@@ -1,5 +1,5 @@
 {{- /*
-Renders a menu for the given menu ID with support for nested menus.
+Renders a desktop menu for the given menu ID with support for nested menus.
 
 Hugo menu system documentation:
 https://gohugo.io/configuration/menus/
@@ -38,7 +38,8 @@ Example:
 
 {{- with index site.Menus $menuID }}
   
-  <nav aria-label="Main navigation" class="flex items-center gap-6">
+  <!-- DESKTOP MENU (horizontal with hover dropdowns) -->
+  <nav aria-label="Main navigation">
     <ul class="flex flex-row space-x-6">
       {{- /* Only render items that have identifiers (top-level items) */ -}}
       {{- range . }}
@@ -47,19 +48,8 @@ Example:
         {{- end }}
       {{- end }}
     </ul>
-    {{- /* Search button (only shown if site search is enabled) */ -}}
-    {{- if site.Params.enable_site_search }}
-    <button 
-      type="button" 
-      id="search-button" 
-      class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
-      aria-label="Open search"
-      title="Search (Ctrl+K or Cmd+K)"
-    >
-      <ion-icon name="search" class="text-xl" aria-hidden="true"></ion-icon>
-    </button>
-    {{- end }}
   </nav>
+
 {{- end }}
 
 {{- define "partials/inline/menu/item.html" }}

@@ -1,11 +1,61 @@
 <header class="pt-4 border-b border-orange-100">
     <div class="container mx-auto py-8">
-        <div class="flex flex-row justify-between">
-            <h1 id="logo">
-                <a href="{{ absURL "" }}" title="{{ site.Title }}"
-                   class="text-2xl antialiased font-extrabold hover:text-orange-600 transition ease-in-out">{{ site.Title }}</a>
-            </h1>
-            {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+        <div class="flex flex-row justify-between items-center">
+            <!-- Left side: hamburger (mobile) + logo -->
+            <div class="flex items-center gap-4">
+                <!-- Mobile hamburger button (hidden on lg and above) -->
+                <button 
+                  type="button" 
+                  id="mobile-menu-toggle" 
+                  class="lg:hidden text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  aria-label="Open menu"
+                  aria-expanded="false"
+                >
+                  <ion-icon name="menu" class="text-xl" aria-hidden="true"></ion-icon>
+                </button>
+                
+                <h1 id="logo">
+                    <a href="{{ absURL "" }}" title="{{ site.Title }}"
+                       class="text-2xl antialiased font-extrabold hover:text-orange-600 transition ease-in-out">{{ site.Title }}</a>
+                </h1>
+            </div>
+            
+            <!-- Right side: Search (on mobile only) + Desktop menu and search (on lg+) -->
+            <div class="flex items-center gap-4">
+                <!-- Search button on mobile (hidden on lg+) -->
+                {{- if site.Params.enable_site_search }}
+                <button 
+                  type="button" 
+                  id="search-button" 
+                  class="lg:hidden text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  aria-label="Open search"
+                  title="Search (Ctrl+K or Cmd+K)"
+                >
+                  <ion-icon name="search" class="text-xl" aria-hidden="true"></ion-icon>
+                </button>
+                {{- end }}
+                
+                <!-- Desktop menu and search (hidden on mobile, visible on lg+) -->
+                <div class="hidden lg:flex lg:items-center lg:gap-6">
+                    {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+                    
+                    <!-- Search button on desktop (after menu) -->
+                    {{- if site.Params.enable_site_search }}
+                    <button 
+                      type="button" 
+                      id="search-button-desktop" 
+                      class="text-gray-700 hover:text-sky-700 transition ease-in-out p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      aria-label="Open search"
+                      title="Search (Ctrl+K or Cmd+K)"
+                    >
+                      <ion-icon name="search" class="text-xl" aria-hidden="true"></ion-icon>
+                    </button>
+                    {{- end }}
+                </div>
+            </div>
         </div>
     </div>
 </header>
+
+<!-- Mobile menu panel (rendered outside header, always in DOM) -->
+{{ partial "mobile-menu.html" (dict "menuID" "main" "page" .) }}
