@@ -57,7 +57,7 @@ window.ThemeUtilities = {
       .filter(item => item !== null && item.score > 0);
 
     return scored
-      .sort((a, b) => b.score - a.score)
+      .toSorted((a, b) => b.score - a.score)
       .slice(0, 10);
   },
 
