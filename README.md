@@ -1,5 +1,7 @@
 # Hugo FortyTen
 
+<img src="https://raw.githubusercontent.com/marcelorodrigo/hugo-fortyten/main/images/screenshot.png" alt="Hugo FortyTen Theme Preview" />
+
 A minimalist, responsive blog theme for Hugo built with Tailwind CSS.
 
 ## Features

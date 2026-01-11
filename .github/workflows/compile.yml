@@ -35,3 +35,4 @@ jobs:
 
       - name: Build Hugo site
         run: hugo --minify
+        working-directory: exampleSite
