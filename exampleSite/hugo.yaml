@@ -1,0 +1,18 @@
+baseURL: 'https://fortyten.marcelorodrigo.com'
+languageCode: 'en-us'
+title: 'FortyTen Theme'
+theme: 'fortyten'
+menus:
+  main:
+  - identifier: 'home'
+    name: 'Home'
+    url: '/'
+    weight: 1
+  - identifier: 'setup'
+    name: 'Setup'
+    url: '/setup'
+    weight: 2
+params:
+  description: "FortyTen is a modern, clean, and responsive Hugo theme designed for personal blogs and portfolios."
+  keywords: "Hugo, Theme, Blog, Portfolio, Responsive, Dark Mode, Search, SEO"
+  enable_site_search: true
