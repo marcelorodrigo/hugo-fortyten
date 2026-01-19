@@ -55,6 +55,11 @@ menus:
     url: '/shortcodes/youtube'
     parent: 'shortcodes'
     weight: 4
+  - identifier: 'gist-shortcode'
+    name: 'Gist'
+    url: '/shortcodes/gist'
+    parent: 'shortcodes'
+    weight: 5
 outputs:
   home:
     - HTML
