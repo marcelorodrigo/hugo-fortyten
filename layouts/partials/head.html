@@ -17,7 +17,11 @@
 {{ if fileExists "static/apple-touch-icon.png" }}<link rel="apple-touch-icon" sizes="180x180" href="{{ `apple-touch-icon.png` | absURL }}" />{{ end }}
 <meta name="apple-mobile-web-app-title" content="{{ .Site.Title }}" />
 {{ if fileExists "static/site.webmanifest" }}<link rel="manifest" href="{{ `site.webmanifest` | absURL }}" />{{ end }}
-{{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
+{{- if and (reflect.IsMap .Params.author) .Params.author.name .Params.author.email }}
+<meta name="author" content="{{ .Params.author.name }}">
+{{- else if and (reflect.IsMap site.Params.author) site.Params.author.name site.Params.author.email }}
+<meta name="author" content="{{ site.Params.author.name }}">
+{{- end }}
 {{ with .Site.Params.description }}<meta name="description" content="{{ . }}">{{ end }}
 {{ with .Site.Params.keywords }}<meta name="keywords" content="{{ . }}">{{ end }}
 {{ partialCached "head/css.html" . }}

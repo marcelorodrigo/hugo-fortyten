@@ -5,8 +5,10 @@
   {{ .Content }}
 </article>
   </div>
-  {{ if and (site.Params.author.name) (site.Params.author.email) }}
-    {{ partial "post-author.html" . }}
-  {{ end }}
+  {{- if and (reflect.IsMap .Params.author) .Params.author.name .Params.author.email }}
+    {{ partial "post-author.html" (dict "author" .Params.author) }}
+  {{- else if and (reflect.IsMap site.Params.author) site.Params.author.name site.Params.author.email }}
+    {{ partial "post-author.html" (dict "author" site.Params.author) }}
+  {{- end }}
   {{ partial "post-related.html" . }}
 {{ end }}

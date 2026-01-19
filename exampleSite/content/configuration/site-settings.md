@@ -93,6 +93,60 @@ Generate favicons from a source image:
 - [Icon Kitchen](https://icon.kitchen/) — simple online icon generator
 - [GIMP](https://www.gimp.org/) — free image editor
 
+## Author Configuration
+
+FortyTen supports optional author information that appears in an author box at the bottom of posts. To enable the author box, configure the `params.author` section in your `hugo.yaml`:
+
+```yaml
+params:
+  author:
+    name: "Your Name"
+    email: "your.email@example.com"
+    bio: "Brief bio about you"
+```
+
+### Author Configuration Details
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | string | **Required** — Your full name |
+| `email` | string | **Required** — Your email address (used to generate Gravatar avatar) |
+| `bio` | string | Optional — A short bio that appears below your name |
+
+### Example with Author Configuration
+
+```yaml
+baseURL: 'https://myblog.com'
+languageCode: 'en-us'
+title: 'My Blog'
+theme: 'fortyten'
+
+params:
+  description: "A personal blog built with FortyTen"
+  keywords: "Hugo, Blog, Theme"
+  enableSiteSearch: true
+  author:
+    name: "Jane Doe"
+    email: "jane@example.com"
+    bio: "Full-stack developer passionate about open source"
+
+menus:
+  main:
+    - identifier: 'home'
+      name: 'Home'
+      url: '/'
+      weight: 1
+```
+
+### Author Box Display
+
+The author box displays:
+- **Avatar**: Generated from your email using [Gravatar](https://gravatar.com/)
+- **Name**: Your configured author name
+- **Bio**: Your short biographical description
+
+The author box only appears when **both** `name` and `email` are configured. If either is missing, the author box will not be displayed.
+
 ## Additional Configuration
 
 For all other Hugo configuration options, refer to the official documentation:
@@ -123,6 +177,10 @@ params:
   description: "A personal blog built with FortyTen"
   keywords: "Hugo, Blog, Theme"
   enableSiteSearch: true
+  author:
+    name: "Jane Doe"
+    email: "jane@example.com"
+    bio: "Developer and writer"
 
 menus:
   main:
