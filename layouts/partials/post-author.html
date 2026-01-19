@@ -1,5 +1,5 @@
-{{ $author := site.Params.author }}
-{{ if and $author.name $author.email }}
+{{ $author := .author }}
+{{ if $author }}
   {{/* Calculate gravatar hash */}}
   {{ $emailLower := lower $author.email }}
   {{ $md5 := $emailLower | md5 }}

@@ -1,0 +1,26 @@
+{{- /* Custom Gist shortcode to replace Hugo's deprecated gist shortcode (v0.143.0+) */ -}}
+{{- /* Supports both positional and named parameters: */ -}}
+{{- /* Positional: {{< gist "username" "gist-id" >}} or {{< gist "username" "gist-id" "filename.js" >}} */ -}}
+{{- /* Named: {{< gist username="username" id="gist-id" file="filename.js" >}} */ -}}
+
+{{- $username := .Get 0 | default (.Get "username") -}}
+{{- $gistId := .Get 1 | default (.Get "id") -}}
+{{- $file := .Get 2 | default (.Get "file") -}}
+
+{{- /* Validate required parameters */ -}}
+{{- if not $username -}}
+  {{- errorf "gist shortcode requires a GitHub username. Usage: {{< gist \"username\" \"gist-id\" >}} or {{< gist username=\"username\" id=\"gist-id\" >}}" -}}
+{{- end -}}
+
+{{- if not $gistId -}}
+  {{- errorf "gist shortcode requires a gist ID. Usage: {{< gist \"username\" \"gist-id\" >}} or {{< gist username=\"username\" id=\"gist-id\" >}}" -}}
+{{- end -}}
+
+{{- /* Build the gist URL with optional file parameter */ -}}
+{{- $url := printf "https://gist.github.com/%s/%s.js" $username $gistId -}}
+{{- if $file -}}
+  {{- $url = printf "%s?file=%s" $url $file -}}
+{{- end -}}
+
+{{- /* Render the script tag */ -}}
+<script src="{{ $url }}"></script>
