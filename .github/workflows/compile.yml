@@ -28,8 +28,8 @@ jobs:
       - name: Install npm dependencies (frozen)
         run: npm ci
 
-      - run: npm run build
-        name: Build assets
+      - name: Build assets
+        run: npm run build
 
       - name: Check for changes
         id: changes
@@ -37,7 +37,7 @@ jobs:
           git diff --quiet assets/dist/ || echo "changed=true" >> $GITHUB_OUTPUT
 
       - name: Commit updated assets
-        if: steps.changes.outputs.changed == 'true'
+        if: github.event_name == 'push' && steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
