@@ -1,16 +1,19 @@
-{{- /* Utilities JavaScript (must load before Alpine) */ -}}
-{{- with resources.Get "js/utilities.js" }}
-  {{- if eq hugo.Environment "development" }}
-    {{- with . | js.Build }}
-      <script src="{{ .RelPermalink }}"></script>
-    {{- end }}
-  {{- else }}
-    {{- $opts := dict "minify" true }}
-    {{- with . | js.Build $opts | fingerprint }}
-      <script src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous"></script>
-    {{- end }}
-  {{- end }}
-{{- end }}
+{{/* Utilities JavaScript (must load before Alpine) */}}
+{{ if hugo.IsDevelopment }}
+    {{/* Development: Use js.Build for live updates */}}
+    {{ with resources.Get "js/utilities.js" }}
+        {{ with . | js.Build }}
+            <script src="{{ .RelPermalink }}"></script>
+        {{ end }}
+    {{ end }}
+{{ else }}
+    {{/* Production: Use pre-built assets with SRI */}}
+    {{ with resources.Get "dist/js/utilities.js" }}
+        {{ with . | fingerprint }}
+            <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+        {{ end }}
+    {{ end }}
+{{ end }}
 
-{{- /* Alpine.js (pinned version with SRI for security and integrity verification) */ -}}
+{{/* Alpine.js (pinned version with SRI for security and integrity verification) */}}
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.15.3/dist/cdn.min.js" integrity="sha384-4E5IZutrbnm0GBnBqEA2tgLsTg6ublElJlpE9qQQNL0WrY9g4GPahFyJYwnDet2+" crossorigin="anonymous"></script>
