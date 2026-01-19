@@ -4,9 +4,15 @@
   "description": "A free and open-source Hugo theme",
   "author": "Marcelo Rodrigo",
   "license": "MIT",
+  "scripts": {
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "npx @tailwindcss/cli -i assets/css/main.css -o assets/dist/css/main.css --minify",
+    "build:js": "npx esbuild assets/js/utilities.js --bundle --minify --outfile=assets/dist/js/utilities.js"
+  },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
+    "esbuild": "^0.24.0",
     "tailwindcss": "^4.1.18"
   }
 }
