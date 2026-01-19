@@ -26,7 +26,7 @@ jobs:
           cache: 'npm'
 
       - name: Install npm dependencies (frozen)
-        run: npm ci --frozen-lockfile
+        run: npm ci
 
       - run: npm run build
         name: Build assets
