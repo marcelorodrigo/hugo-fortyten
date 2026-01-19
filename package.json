@@ -12,7 +12,7 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.18"
   }
 }
