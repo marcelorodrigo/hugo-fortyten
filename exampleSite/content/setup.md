@@ -114,16 +114,24 @@ jobs:
       - uses: actions/checkout@v6
         with:
           submodules: recursive
-      
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: npm ci
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v4
         with:
           hugo-version: 'latest'
           extended: true
-      
+
       - name: Build
         run: hugo --minify
-      
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
