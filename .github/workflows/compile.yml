@@ -18,6 +18,17 @@ jobs:
         with:
           fetch-depth: 1
           show-progress: false
+      - name: Setup Node.js 24 LTS
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install npm dependencies (frozen)
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
