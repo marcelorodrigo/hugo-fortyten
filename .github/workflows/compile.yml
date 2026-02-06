@@ -27,9 +27,6 @@ jobs:
       - name: Install npm dependencies (frozen)
         run: npm ci
 
-      - name: Build assets
-        run: npm run build
-
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
