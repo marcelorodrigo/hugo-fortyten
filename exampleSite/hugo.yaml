@@ -74,3 +74,6 @@ params:
   description: "FortyTen is a modern, clean, and responsive Hugo theme designed for personal blogs and portfolios."
   keywords: "Hugo, Theme, Blog, Portfolio, Responsive, Dark Mode, Search, SEO"
   enableSiteSearch: true
+
+build:
+  writeStats: true

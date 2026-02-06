@@ -18,7 +18,6 @@ jobs:
         with:
           fetch-depth: 1
           show-progress: false
-
       - name: Setup Node.js 24 LTS
         uses: actions/setup-node@v6
         with:
@@ -27,23 +26,6 @@ jobs:
 
       - name: Install npm dependencies (frozen)
         run: npm ci
-
-      - name: Build assets
-        run: npm run build
-
-      - name: Check for changes
-        id: changes
-        run: |
-          git diff --quiet assets/dist/ || echo "changed=true" >> $GITHUB_OUTPUT
-
-      - name: Commit updated assets
-        if: github.event_name == 'push' && steps.changes.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/dist/
-          git commit -m "build: update pre-built assets"
-          git push
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3

@@ -1,16 +1,12 @@
-{{ if hugo.IsDevelopment }}
-    {{/* Development: Use Tailwind CLI for live updates */}}
-    {{ with resources.Get "css/main.css" }}
-        {{ $opts := dict "minify" false }}
-        {{ with . | css.TailwindCSS $opts }}
-            <link rel="stylesheet" href="{{ .RelPermalink }}">
-        {{ end }}
+{{ with resources.Get "css/main.css" }}
+  {{ $opts := dict "minify" (not hugo.IsDevelopment) }}
+  {{ with . | css.TailwindCSS $opts }}
+    {{ if hugo.IsDevelopment }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{ else }}
+      {{ with . | fingerprint }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
+      {{ end }}
     {{ end }}
-{{ else }}
-    {{/* Production: Use pre-built assets with SRI */}}
-    {{ with resources.Get "dist/css/main.css" }}
-        {{ with . | fingerprint }}
-            <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
-        {{ end }}
-    {{ end }}
+  {{ end }}
 {{ end }}
