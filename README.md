@@ -49,6 +49,26 @@ Build for production:
 hugo --minify
 ```
 
+## Requirements
+
+- **Hugo Extended** (v0.140.2+)
+- **Node.js**
+- **Tailwind CSS v4 CLI** - Processed by Hugo via `npx tailwindcss` or locally installed
+
+**About Tailwind CLI:**
+The simplest and fastest way to get up and running with Tailwind CSS from scratch is with the Tailwind CLI tool. The CLI is also available as a standalone executable if you want to use it without installing Node.js.
+
+Verify:
+```shell
+hugo version              # Should show "extended"
+npx tailwindcss --help    # Verify Tailwind CLI is installed
+```
+
+**Optional:** Install Tailwind CLI locally for faster builds:
+```shell
+npm install tailwindcss @tailwindcss/cli @tailwindcss/typography
+```
+
 ## Configuration
 
 The theme is configured via your `hugo.yaml` file. Customize author information, site metadata, menu structure, and search settings through standard Hugo configuration.

@@ -34,6 +34,24 @@ Verify installation:
 hugo version
 ```
 
+### Install Tailwind CSS CLI
+
+**About Tailwind CLI:**
+The simplest and fastest way to get up and running with Tailwind CSS from scratch is with the Tailwind CLI tool. The CLI is also available as a standalone executable if you want to use it without installing Node.js.
+
+**Using npx (no installation required):**
+```bash
+npx @tailwindcss/cli --help
+```
+
+**For faster builds (install locally):**
+```bash
+npm install -D tailwindcss @tailwindcss/cli @tailwindcss/typography
+npx tailwindcss --help
+```
+
+> **Note:** Hugo's `css.TailwindCSS` function requires the Tailwind CLI binary. Using `npx` downloads it on first run.
+
 ### Create a New Site
 
 ```bash

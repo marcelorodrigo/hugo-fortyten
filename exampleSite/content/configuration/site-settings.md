@@ -163,6 +163,21 @@ This includes:
 - Server configuration
 - And much more
 
+## Tailwind CSS Stats
+
+FortyTen uses Tailwind CSS v4 with automatic class detection via Hugo's build stats. If you want your extra tailwindcss classes to be added, you must enable stats writing in your configuration:
+
+```yaml
+build:
+  writeStats: true
+```
+
+This generates a `hugo_stats.json` file at your project root, which the theme's CSS uses to detect and include only the Tailwind classes actually used in your content.
+
+**Required for:**
+- Theme consumers using `@source "hugo_stats.json"` in their CSS
+- Automatic purging/optimization of Tailwind utility classes
+
 ## Complete Example
 
 Here's a minimal `hugo.yaml` for a FortyTen site:
