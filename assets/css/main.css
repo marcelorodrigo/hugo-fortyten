@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "hugo_stats.json";
 @plugin "@tailwindcss/typography";
 
 /* Enable class-based dark mode */

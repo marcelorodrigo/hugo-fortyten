@@ -3,6 +3,8 @@ module.exports = {
         './layouts/**/*.html',
         './content/**/*.md',
         './assets/**/*.js',
+        './exampleSite/content/**/*.md',
+        './exampleSite/layouts/**/*.html',
     ],
     safelist: [
         'sm:grid-cols-1',

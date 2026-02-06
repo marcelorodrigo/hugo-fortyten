@@ -1,18 +1,19 @@
 {{/* Utilities JavaScript (must load before Alpine) */}}
-{{ if hugo.IsDevelopment }}
-    {{/* Development: Use js.Build for live updates */}}
-    {{ with resources.Get "js/utilities.js" }}
-        {{ with . | js.Build }}
-            <script src="{{ .RelPermalink }}"></script>
-        {{ end }}
+{{ with resources.Get "js/utilities.js" }}
+  {{ $opts := dict 
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" "js/utilities.js"
+  }}
+  {{ with . | js.Build $opts }}
+    {{ if hugo.IsDevelopment }}
+      <script src="{{ .RelPermalink }}"></script>
+    {{ else }}
+      {{ with . | fingerprint }}
+        <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
+      {{ end }}
     {{ end }}
-{{ else }}
-    {{/* Production: Use pre-built assets with SRI */}}
-    {{ with resources.Get "dist/js/utilities.js" }}
-        {{ with . | fingerprint }}
-            <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>
-        {{ end }}
-    {{ end }}
+  {{ end }}
 {{ end }}
 
 {{/* Alpine.js (pinned version with SRI for security and integrity verification) */}}
