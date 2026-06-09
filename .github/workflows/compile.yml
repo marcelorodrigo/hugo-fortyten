@@ -18,10 +18,10 @@ jobs:
         with:
           fetch-depth: 1
           show-progress: false
-      - name: Setup Node.js 24 LTS
+      - name: Setup Node.js 26 LTS
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '26'
           cache: 'npm'
 
       - name: Install npm dependencies (frozen)
