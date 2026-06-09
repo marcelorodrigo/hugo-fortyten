@@ -52,7 +52,7 @@ hugo --minify
 ## Requirements
 
 - **Hugo Extended** (v0.140.2+)
-- **Node.js**
+- **Node.js** (v20+)
 - **Tailwind CSS v4 CLI** - Processed by Hugo via `npx tailwindcss` or locally installed
 
 **About Tailwind CLI:**

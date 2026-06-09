@@ -116,9 +116,9 @@ jobs:
           submodules: recursive
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '25'
+          node-version: '26'
 
       - name: Install npm dependencies
         run: npm ci
