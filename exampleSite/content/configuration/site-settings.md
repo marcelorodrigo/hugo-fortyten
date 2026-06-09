@@ -42,7 +42,7 @@ For local development, you can omit this or set it to `http://localhost:1313/`.
 
 ### Language
 
-Set the default language code:
+Set the default locale:
 
 ```yaml
 locale: 'en-us'
