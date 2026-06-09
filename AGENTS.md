@@ -5,7 +5,7 @@ Purpose: concise instructions and discoverable patterns for AI coding agents wor
 ## What this project is
 - **Hugo theme repository**: contains both the theme (`layouts/`, `assets/`) and a demo site (`exampleSite/`).
 - Tailwind CSS v4 with typography plugin, Alpine.js for interactivity, Ionicons for icons.
-- Requires Hugo Extended (min v0.140.2) — Hugo handles Tailwind builds via `css.TailwindCSS`.
+- Requires Hugo Extended (min v0.161.0) — Hugo handles Tailwind builds via `css.TailwindCSS`.
 
 ## Repository structure
 ```

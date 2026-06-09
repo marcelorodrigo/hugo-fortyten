@@ -39,5 +39,5 @@ name = 'Marcelo Wiebbelling'
 homepage = 'https://marcelorodrigo.com'
 
 [module.hugoVersion]
-min = '0.140.2'
+min = '0.161.0'
 extended = true
