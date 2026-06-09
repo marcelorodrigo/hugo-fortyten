@@ -51,22 +51,20 @@ hugo --minify
 
 ## Requirements
 
-- **Hugo Extended** (v0.140.2+)
-- **Node.js** (v20+)
-- **Tailwind CSS v4 CLI** - Processed by Hugo via `npx tailwindcss` or locally installed
+- **Hugo Extended** (v0.161.0+) — required for `css.TailwindCSS` processing
+- **Node.js** (v20+) — required for Tailwind CSS and npm dependencies
 
-**About Tailwind CLI:**
-The simplest and fastest way to get up and running with Tailwind CSS from scratch is with the Tailwind CLI tool. The CLI is also available as a standalone executable if you want to use it without installing Node.js.
+As of v0.161.0, Hugo no longer supports the Tailwind standalone binary. You must install the Tailwind CSS CLI via npm.
 
 Verify:
 ```shell
-hugo version              # Should show "extended"
-npx tailwindcss --help    # Verify Tailwind CLI is installed
+hugo version    # Should show "extended"
+node --version  # Should be v20+
 ```
 
-**Optional:** Install Tailwind CLI locally for faster builds:
+Install dependencies:
 ```shell
-npm install tailwindcss @tailwindcss/cli @tailwindcss/typography
+npm install --save-dev tailwindcss @tailwindcss/cli @tailwindcss/typography
 ```
 
 ## Configuration
