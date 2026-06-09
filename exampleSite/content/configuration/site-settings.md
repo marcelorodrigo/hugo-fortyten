@@ -163,20 +163,53 @@ This includes:
 - Server configuration
 - And much more
 
-## Tailwind CSS Stats
+## Tailwind CSS Build Configuration
 
-FortyTen uses Tailwind CSS v4 with automatic class detection via Hugo's build stats. If you want your extra tailwindcss classes to be added, you must enable stats writing in your configuration:
+FortyTen uses Tailwind CSS v4 with Hugo's `css.TailwindCSS` function. As of Hugo v0.161.0, the Tailwind CLI must be installed via npm (standalone binary no longer supported).
+
+### Required Hugo Config
+
+Add the following to your `hugo.yaml` to enable build stats and mount them so Tailwind can detect your utility class usage:
 
 ```yaml
 build:
-  writeStats: true
+  buildStats:
+    enable: true
+  cachebusters:
+  - source: 'assets/notwatching/hugo_stats\.json'
+    target: css
+  - source: '(postcss|tailwind)\.config\.js'
+    target: css
+module:
+  mounts:
+  - source: assets
+    target: assets
+  - disableWatch: true
+    source: hugo_stats.json
+    target: assets/notwatching/hugo_stats.json
 ```
 
-This generates a `hugo_stats.json` file at your project root, which the theme's CSS uses to detect and include only the Tailwind classes actually used in your content.
+This configuration:
 
-**Required for:**
-- Theme consumers using `@source "hugo_stats.json"` in their CSS
-- Automatic purging/optimization of Tailwind utility classes
+- **`buildStats.enable: true`** — generates a `hugo_stats.json` file tracking which Tailwind classes are used across your templates
+- **`cachebusters`** — forces CSS rebuilds when the stats file or Tailwind config changes
+- **`module.mounts`** — makes `hugo_stats.json` available to Tailwind's `@source` directive in your CSS (the `assets/notwatching/` prefix prevents Hugo from registering the file itself as a build asset)
+
+### Required npm Packages
+
+Install the Tailwind CLI via npm (the standalone binary is no longer supported):
+
+```bash
+npm install --save-dev tailwindcss @tailwindcss/cli @tailwindcss/typography
+```
+
+### Build Command
+
+When deploying, the `tailwindcss` binary must be in PATH. Use `$(npm root)/.bin` to resolve the absolute path (Hugo may change the working directory during the build, so relative paths break):
+
+```bash
+npm install && PATH="$(npm root)/.bin:$PATH" hugo --minify
+```
 
 ## Complete Example
 
@@ -207,4 +240,20 @@ menus:
       name: 'Posts'
       url: '/posts'
       weight: 2
+
+build:
+  buildStats:
+    enable: true
+  cachebusters:
+  - source: 'assets/notwatching/hugo_stats\.json'
+    target: css
+  - source: '(postcss|tailwind)\.config\.js'
+    target: css
+module:
+  mounts:
+  - source: assets
+    target: assets
+  - disableWatch: true
+    source: hugo_stats.json
+    target: assets/notwatching/hugo_stats.json
 ```

@@ -11,7 +11,7 @@ image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80"
 
 ### Install Hugo Extended
 
-FortyTen requires **Hugo Extended** (v0.140.2+) for Tailwind CSS support.
+FortyTen requires **Hugo Extended** (v0.161.0+) for Tailwind CSS support. As of v0.161.0, Hugo no longer supports the standalone Tailwind binary — the Tailwind CSS CLI must be installed via npm.
 Download it from [hugo.io](https://gohugo.io/installation/).
 
 **macOS (Homebrew):**
@@ -36,21 +36,13 @@ hugo version
 
 ### Install Tailwind CSS CLI
 
-**About Tailwind CLI:**
-The simplest and fastest way to get up and running with Tailwind CSS from scratch is with the Tailwind CLI tool. The CLI is also available as a standalone executable if you want to use it without installing Node.js.
+FortyTen requires Tailwind CSS v4 with the Tailwind CLI installed locally via npm. As of Hugo v0.161.0, the standalone Tailwind binary is no longer supported — you must install the npm package.
 
-**Using npx (no installation required):**
 ```bash
-npx @tailwindcss/cli --help
+npm install --save-dev tailwindcss @tailwindcss/cli @tailwindcss/typography
 ```
 
-**For faster builds (install locally):**
-```bash
-npm install -D tailwindcss @tailwindcss/cli @tailwindcss/typography
-npx tailwindcss --help
-```
-
-> **Note:** Hugo's `css.TailwindCSS` function requires the Tailwind CLI binary. Using `npx` downloads it on first run.
+> **Note:** Hugo's `css.TailwindCSS` function calls the `tailwindcss` binary directly. A local npm install places it in `node_modules/.bin/tailwindcss`, which Hugo resolves automatically when it's in PATH.
 
 ### Create a New Site
 
@@ -91,6 +83,11 @@ hugo --minify
 ```
 
 Output will be in the `public/` directory.
+
+> **Important:** Some deployment environments (e.g., Cloudflare Pages) may not have `node_modules/.bin` in PATH. If you get a "binary not found" error, add it explicitly:
+> ```bash
+> npm install && PATH="$(npm root)/.bin:$PATH" hugo --minify
+> ```
 
 ### Deployment
 
@@ -138,6 +135,19 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
 ```
+
+#### Deploy to Cloudflare Pages
+
+Set the following in the Cloudflare Pages dashboard:
+
+- **Build command:**
+  ```bash
+  npm install && PATH="$(npm root)/.bin:$PATH" hugo --minify
+  ```
+- **Build output directory:** `public`
+- **Root directory (optional):** `exampleSite` (if deploying the demo site)
+
+Cloudflare Pages includes Hugo Extended by default. No additional configuration is needed.
 
 ---
 
