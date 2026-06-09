@@ -45,7 +45,7 @@ For local development, you can omit this or set it to `http://localhost:1313/`.
 Set the default language code:
 
 ```yaml
-languageCode: 'en-us'
+locale: 'en-us'
 ```
 
 ## Favicons
@@ -117,7 +117,7 @@ params:
 
 ```yaml
 baseURL: 'https://myblog.com'
-languageCode: 'en-us'
+locale: 'en-us'
 title: 'My Blog'
 theme: 'fortyten'
 
@@ -184,7 +184,7 @@ Here's a minimal `hugo.yaml` for a FortyTen site:
 
 ```yaml
 baseURL: 'https://myblog.com'
-languageCode: 'en-us'
+locale: 'en-us'
 title: 'My Blog'
 theme: 'fortyten'
 
