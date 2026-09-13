@@ -1,4 +1,4 @@
-<div class="mb-6 pb-6 border-b border-orange-200 dark:border-orange-900">
+<div class="mb-6 pb-6 border-b border-orange-200 dark:border-sky-900">
   {{ $page := . }}
   {{ with $page.Params.image }}
     <div class="relative w-full h-64 sm:h-80 rounded-lg border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden group flex flex-col justify-end">
@@ -11,7 +11,7 @@
         {{ if $page.Params.tags }}
           <div class="flex flex-wrap gap-2" role="list" aria-label="Post tags">
             {{ range $page.Params.tags }}
-              <a href="{{ (path.Join "tags" . | relURL) }}" class="inline-block bg-orange-100 dark:bg-orange-900 text-orange-900 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-orange-300 dark:hover:bg-orange-800 hover:shadow-md hover:scale-105" rel="tag" role="listitem" aria-label="View all posts tagged with {{ . }}">{{ . }}</a>
+              <a href="{{ (path.Join "tags" . | relURL) }}" class="inline-block bg-orange-100 dark:bg-sky-900 text-orange-900 dark:text-sky-200 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-orange-300 dark:hover:bg-sky-800 hover:shadow-md hover:scale-105" rel="tag" role="listitem" aria-label="View all posts tagged with {{ . }}">{{ . }}</a>
             {{ end }}
           </div>
         {{ end }}
@@ -37,7 +37,7 @@
     {{ if $page.Params.tags }}
       <div class="flex flex-wrap gap-2 mb-4" role="list" aria-label="Post tags">
         {{ range $page.Params.tags }}
-          <a href="{{ (path.Join "tags" . | relURL) }}" class="inline-block bg-orange-100 dark:bg-orange-900 text-orange-900 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-orange-300 dark:hover:bg-orange-800 hover:shadow-md hover:scale-105" rel="tag" role="listitem" aria-label="View all posts tagged with {{ . }}">{{ . }}</a>
+          <a href="{{ (path.Join "tags" . | relURL) }}" class="inline-block bg-orange-100 dark:bg-sky-900 text-orange-900 dark:text-sky-200 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-orange-300 dark:hover:bg-sky-800 hover:shadow-md hover:scale-105" rel="tag" role="listitem" aria-label="View all posts tagged with {{ . }}">{{ . }}</a>
         {{ end }}
       </div>
     {{ end }}

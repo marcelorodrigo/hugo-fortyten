@@ -17,25 +17,25 @@
 
         {{ range $sortedTags }}
           {{ $tagCount := .count }}
-          {{ $bgClass := "bg-orange-50 dark:bg-orange-950" }}
+          {{ $bgClass := "bg-orange-50 dark:bg-sky-950" }}
           {{ if gt $tagCount 5 }}
-            {{ $bgClass = "bg-orange-100 dark:bg-orange-900" }}
+            {{ $bgClass = "bg-orange-100 dark:bg-sky-900" }}
           {{ end }}
           {{ if gt $tagCount 10 }}
-            {{ $bgClass = "bg-orange-200 dark:bg-orange-800" }}
+            {{ $bgClass = "bg-orange-200 dark:bg-sky-800" }}
           {{ end }}
           {{ if gt $tagCount 15 }}
-            {{ $bgClass = "bg-orange-300 dark:bg-orange-700" }}
+            {{ $bgClass = "bg-orange-300 dark:bg-sky-700" }}
           {{ end }}
 
           <a 
             href="{{ (path.Join "tags" .name) | relURL }}" 
-            class="inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-all duration-200 whitespace-nowrap {{ $bgClass }} text-orange-900 dark:text-orange-100 hover:bg-orange-400 dark:hover:bg-orange-600 hover:shadow-lg hover:scale-110 text-base"
+            class="inline-flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-all duration-200 whitespace-nowrap {{ $bgClass }} text-orange-900 dark:text-sky-100 hover:bg-orange-400 dark:hover:bg-sky-600 hover:shadow-lg hover:scale-110 text-base"
             rel="tag"
             aria-label="View {{ $tagCount }} post{{ if ne $tagCount 1 }}s{{ end }} tagged with {{ .name }}"
           >
             {{ .name }}
-            <span class="text-sm text-orange-700 dark:text-orange-300">({{ $tagCount }})</span>
+            <span class="text-sm text-orange-700 dark:text-sky-300">({{ $tagCount }})</span>
           </a>
         {{ end }}
       </div>
