@@ -89,6 +89,20 @@ build:
     target: css
   - source: '(postcss|tailwind)\.config\.js'
     target: css
+security:
+  exec:
+    allow:
+      - '^(dart-)?sass$'
+      - '^go$'
+      - '^git$'
+      - '^node$'
+      - '^postcss$'
+      - '^tailwindcss$'
+  node:
+    permissions:
+      allowRead:
+        - '.'
+        - '..'
 module:
   mounts:
   - source: assets

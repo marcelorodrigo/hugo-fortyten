@@ -1,7 +1,7 @@
 ---
 title: "Setup"
 description: "Get started with FortyTen theme - installation and configuration guide"
-date: 2026-01-09T12:00:00Z
+date: 2026-09-13T12:00:00Z
 draft: false
 tags: ["setup", "configuration"]
 image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80"
@@ -43,6 +43,24 @@ npm install --save-dev tailwindcss @tailwindcss/cli @tailwindcss/typography
 ```
 
 > **Note:** Hugo's `css.TailwindCSS` function calls the `tailwindcss` binary directly. A local npm install places it in `node_modules/.bin/tailwindcss`, which Hugo resolves automatically when it's in PATH.
+
+### Allow TailwindCSS in Hugo's Security Policy
+
+Hugo does not whitelist `tailwindcss` in its default security policy. Without the following entry in your site's `hugo.yaml`, your first build will fail with `access denied: "tailwindcss" is not whitelisted in policy "security.exec.allow"`. Themes cannot inject security settings — this must live in the site's own config.
+
+Add this to your root `hugo.yaml`:
+
+```yaml
+security:
+  exec:
+    allow:
+      - '^(dart-)?sass$'
+      - '^go$'
+      - '^git$'
+      - '^node$'
+      - '^postcss$'
+      - '^tailwindcss$'
+```
 
 ### Create a New Site
 
