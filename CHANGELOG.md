@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v3.1.1 - 2026-11-08
+
+### What's Changed
+
+This release is about dependencies bump and security updates.
+
+* chore(deps-dev): Bump tailwindcss from 4.3.3 to 4.3.4 by @dependabot[bot] in https://github.com/marcelorodrigo/hugo-fortyten/pull/40
+* chore(deps-dev): Bump source-map-js from 1.2.1 to 1.2.2 by @dependabot[bot] in https://github.com/marcelorodrigo/hugo-fortyten/pull/39
+* chore(deps-dev): Bump @tailwindcss/cli from 4.3.3 to 4.3.4 by @dependabot[bot] in https://github.com/marcelorodrigo/hugo-fortyten/pull/41
+
+**Full Changelog**: https://github.com/marcelorodrigo/hugo-fortyten/compare/v3.1.0...v3.1.1
+
 ## v3.1.0 - 2026-09-13
 
 ### What's Changed
